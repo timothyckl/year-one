@@ -2,18 +2,13 @@
 
 Freshman coursework projects, assignments, and notes archived as a single repository.
 
-| Module | Name | Type |
-|---|---|---|
-| AAI1001 | WasteManagement | Project |
-| AAI1001 | notes | Notes |
-| INF1002 | ClassManagementSystem | Project |
-| INF1002 | StalkingStocks | Project |
-| INF1003 | notes | Notes |
-| INF1004 | notes | Notes |
-| INF1005 | TalentBridge | Project |
-| INF1008 | assignment-01 | Assignment |
-| INF1008 | assignment-02 | Assignment |
-| INF1008 | notes | Notes |
-| INF1009 | MathQuestMaze | Project |
-| INF2008 | notes | Notes |
-| INF2008 | StrokePrediction | Project |
+| Module | Module Name |
+|---|---|
+| AAI1001 | Data Engineering and Visualization |
+| INF1002 | Programming Fundamentals |
+| INF1003 | Discrete Mathematics |
+| INF1004 | Statistics and Linear Algebra |
+| INF1005 | Web Systems and Technologies |
+| INF1008 | Data Structures and Algorithms |
+| INF1009 | Object-Oriented Programming |
+| INF2008 | Machine Learning |
