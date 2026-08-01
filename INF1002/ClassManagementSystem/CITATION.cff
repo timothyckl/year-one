@@ -1,0 +1,40 @@
+# This CITATION.cff file was generated with cffinit.
+# Visit https://bit.ly/cffinit to generate yours today!
+
+cff-version: 1.2.0
+title: Class Management System
+message: >-
+  If you use this software, please cite it using the
+  metadata from this file.
+type: software
+
+authors:
+  - given-names: Timothy
+    family-names: Chia
+    email: 2501530@sit.singaporetech.edu.sg
+    affiliation: Singapore Institute of Technology
+
+  - given-names: Muhammad Hasif
+    family-names: Bin Mohd Faisal
+    email: 2500619@sit.singaporetech.edu.sg
+    affiliation: Singapore Institute of Technology
+
+  - given-names: Dalton
+    family-names: Chng Cheng Hao
+    email: 2504003@sit.singaporetech.edu.sg
+    affiliation: Singapore Institute of Technology
+
+  - given-names: Mohammed
+    family-names: Aamir
+    email: 2500933@sit.singaporetech.edu.sg
+    affiliation: Singapore Institute of Technology
+
+  - given-names: Low
+    family-names: Gin Lim
+    email: 2501267@sit.singaporetech.edu.sg
+    affiliation: Singapore Institute of Technology
+
+repository-code: "https://github.com/timothyckl/INF1002-P1-08-CMS"
+
+abstract: >-
+  A terminal-based Class Management System for mana

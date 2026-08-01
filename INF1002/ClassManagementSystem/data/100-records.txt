@@ -1,0 +1,105 @@
+Database Name: Student Records
+Authors: P1-08
+
+Table Name: StudentRecords-100
+ID	Name	Programme	Mark
+2501001	Emily Wong	Software Engineering	71.20
+2501002	Marcus Hill	Computer Science	64.10
+2501003	Sofia Tan	Cyber Security	78.40
+2501004	Ryan Patel	Data Science	82.30
+2501005	Ibrahim Noor	Information Systems	69.50
+2501006	Helena Brooks	AI Engineering	73.80
+2501007	Oliver Yeo	Software Engineering	68.25
+2501008	Natasha Greer	Computer Science	59.40
+2501009	Kai Lim	Digital Supply Chain	81.70
+2501010	Rebecca Shaw	CS	66.10
+2501011	Daniel Morris	Software Engineering	74.60
+2501012	Amelia O'Shea	Computer Science	61.00
+2501013	Aidan Fraser	AI Engineering	85.20
+2501014	Charlotte Ling	CS	63.40
+2501015	Edward Loke	Data Science	79.30
+2501016	Patrick Doyle	Cyber Security	72.50
+2501017	Grace Clarke	Software Engineering	70.10
+2501018	Haris Yusof	Information Systems	67.40
+2501019	Chloe Hart	Computer Science	62.20
+2501020	Declan Ng	Digital Supply Chain	83.30
+2501021	Jenna Summers	AI Engineering	77.60
+2501022	Noah Price	Software Engineering	69.80
+2501023	Serena Koh	Computer Science	65.90
+2501024	Toby Andrews	CS	58.40
+2501025	Rachel Singh	Data Science	86.00
+2501026	Adam Parker	Cyber Security	73.20
+2501027	Mia Russell	Information Systems	70.70
+2501028	Leo Ho	Software Engineering	75.30
+2501029	Isabelle Ford	Computer Science	60.10
+2501030	Caleb Othman	Digital Supply Chain	82.10
+2501031	Zara Lake	AI Engineering	88.40
+2501032	Bryce Goh	CS	64.70
+2501033	Hannah Quill	Data Science	72.10
+2501034	Terence Mok	Cyber Security	76.90
+2501035	Jacob Hirst	Software Engineering	68.90
+2501036	Joyce Fong	Computer Science	63.50
+2501037	Cameron Watts	Information Systems	71.60
+2501038	Laura Ng	AI Engineering	79.80
+2501039	Ethan Pike	Software Engineering	65.40
+2501040	Sabrina Lau	Data Science	80.70
+2501041	Reuben Cross	CS	59.80
+2501042	Faith Morgan	Digital Supply Chain	84.50
+2501043	Ashwin Rao	Cyber Security	77.10
+2501044	Louise Walsh	Information Systems	73.40
+2501045	Hugo Tan	AI Engineering	81.20
+2501046	Stephanie Lee	Computer Science	62.80
+2501047	Matthew Bell	Software Engineering	72.50
+2501048	Anita Koh	Data Science	75.90
+2501049	Jonathan Grey	CS	60.70
+2501050	Keira Black	Digital Supply Chain	87.20
+2501051	Ben Fraser	Cyber Security	74.30
+2501052	Sophie Riordan	Information Systems	69.10
+2501053	Andre Wong	AI Engineering	78.10
+2501054	Fiona Rains	Computer Science	64.80
+2501055	Callum McKay	Software Engineering	71.90
+2501056	Emily Zhao	Data Science	83.40
+2501057	Zachary Tan	CS	62.30
+2501058	Nadia Brooks	Digital Supply Chain	85.60
+2501059	Shaun Hunter	Cyber Security	79.10
+2501060	Juliet Tan	Information Systems	72.20
+2501061	Ian Ho	AI Engineering	80.00
+2501062	Helen Torres	Computer Science	63.90
+2501063	Bernard Lim	Software Engineering	76.40
+2501064	Arianna Marsh	Data Science	81.80
+2501065	Lucas Chee	CS	59.10
+2501066	Veronica Ng	Digital Supply Chain	86.40
+2501067	Sean Murphy	Cyber Security	71.40
+2501068	Georgia Patel	Information Systems	68.50
+2501069	Jacob Owens	AI Engineering	82.70
+2501070	Leila Quinn	Computer Science	61.30
+2501071	Mark Rivers	Software Engineering	70.80
+2501072	Celine Ng	Data Science	84.10
+2501073	Robin Lee	CS	63.00
+2501074	Teresa Ong	Digital Supply Chain	78.60
+2501075	Kieran Page	Cyber Security	72.80
+2501076	Marina Holt	Information Systems	67.20
+2501077	Kevin Lau	AI Engineering	79.20
+2501078	Pamela Yeo	Computer Science	60.40
+2501079	Alex Doyle	Software Engineering	73.50
+2501080	Selena Wong	Data Science	82.90
+2501081	Darren Choo	CS	65.20
+2501082	Hazel Turner	Digital Supply Chain	85.80
+2501083	Ronald Lee	Cyber Security	69.60
+2501084	Lydia Tan	Information Systems	71.00
+2501085	Hugo Shaw	AI Engineering	87.90
+2501086	Alyssa Chua	Computer Science	62.50
+2501087	Gareth Mills	Software Engineering	74.10
+2501088	Jodie Tan	Data Science	79.60
+2501089	Timothy Cross	CS	58.90
+2501090	Megan O'Donnell	Digital Supply Chain	83.90
+2501091	Cyrus Ng	Cyber Security	75.80
+2501092	Lara Quinn	Information Systems	70.40
+2501093	Adrian Chia	AI Engineering	81.60
+2501094	Nicole Hart	Computer Science	64.20
+2501095	Dylan Pike	Software Engineering	72.30
+2501096	Karen Lee	Data Science	80.40
+2501097	Thomas Ng	CS	61.60
+2501098	Ellie Barker	Digital Supply Chain	86.90
+2501099	Stuart Wong	Cyber Security	78.50
+2501100	Rose Whitman	Information Systems	72.90

@@ -1,0 +1,10 @@
+# dependencies for question 3b: radix sort implementation
+#
+# core functionality requires no external dependencies (pure python)
+# optional dependencies for extended features:
+
+# for running tests
+pytest>=7.0.0
+
+# for plotting benchmark results (optional)
+matplotlib>=3.5.0

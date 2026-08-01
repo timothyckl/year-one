@@ -1,0 +1,528 @@
+---
+title: "Lecture 03: Tidyverse Single-Table Queries"
+author: "Timothy Chia"
+date: "Tuesday May 19, 2026"
+format:
+  html:
+    toc: true
+    toc-depth: 4
+    number-sections: true
+    embed-resources: true
+---
+
+# Introduction
+
+Previously, we have covered the basic and essential skills of R. In this lesson, you will be guided through the process of using `tidyverse` to query a single table stored in a data frame in R. We will use `readr`, `tibble`, `dplyr`, and `tidyr` packages. With them, you can extract valuable insights and answer questions that drive informed decision-making. For instance:
+
+1. What was the total number of passengers on the `titanic`?
+2. How many individuals belonged to each passenger class?
+3. What is the difference in survival rates between women and men?
+4. What was the mean age of the surviving crew members?
+
+# Importing the `titanic` dataset
+
+```{r}
+#| message: false
+library(tidyverse)
+```
+
+```{r import-data}
+# Import the data from the `.csv` files
+people <- read_csv("../data/titanic/people.csv", show_col_types = FALSE)
+tickets <- read_csv("../data/titanic/tickets.csv", show_col_types = FALSE)
+lifeboats <- read_csv("../data/titanic/lifeboats.csv", show_col_types = FALSE)
+```
+
+The raw data for the `titanic` used in this lesson are 3 CSV files. The first step is to import the data into R using the `read_csv()` function from the `readr` package. To do so, we can load either `tidyverse` or `readr` into the current session.
+
+If the code is successfully executed, the 3 data frames will appear under the **Environment** tab.
+
+# A glance at `tibble`
+
+```{r}
+class(people)
+class(mtcars)
+```
+
+```{r}
+mtcar_tbl <- as_tibble(mtcars)
+head(mtcar_tbl)
+```
+
+::: {.callout-note}
+More information about `tibble` can be found [here](https://r4ds.had.co.nz/tibbles.html).
+:::
+
+# A glance at `dplyr`
+
+`dplyr` is a grammar of data manipulation, providing a consistent set of verbs that help you solve the most common data manipulation challenges. dplyr functions for single-table query include:
+
+**Row-Wise:**
+- `filter()` — chooses rows based on column values.
+- `distinct()` — chooses unique rows.
+- `count()` — counts rows.
+- `slice()` — chooses rows based on location.
+- `arrange()` — changes the order of the rows.
+
+**Column-Wise:**
+- `select()` — changes whether or not a column is included.
+- `rename()` — changes the name of columns.
+- `mutate()` — changes the values of columns and creates new columns.
+
+**Groups-Wise:**
+- `summarise()` — collapses a group into a single row.
+
+::: {.callout-note}
+More information about `dplyr` can be found [here](https://dplyr.tidyverse.org/).
+:::
+
+## Selecting columns 
+
+```{r}
+# select columns with fam_name and given_name 
+people |>
+  select(fam_name, given_name) |>
+  head(3)
+```
+
+```{r}
+# select columns ending with "name"
+people |>
+  select(ends_with("name")) |>
+  head(3)
+```
+
+```{r}
+# select columns containing underscore  
+people |>
+  select(contains("_")) |>
+  head(3)
+```
+
+```{r}
+# select columns from "age" to "ticket" (inclusive) 
+people |>
+  select(age:ticket) |>
+  head(3)
+```
+
+::: {.callout-note}
+More information about `select()` can be found [here](https://dplyr.tidyverse.org/reference/select.html).
+:::
+
+
+# Counting rows and columns
+
+```{r}
+ncol(people)
+```
+
+```{r}
+nrow(people)
+```
+
+```{r}
+count(people)
+```
+
+```{r}
+count(
+  people,
+  missing = if_else(
+    is.na(age),  # condition
+    "yes",         # if true
+    "no"           # else
+  ),
+)
+```
+
+```{r}
+count(
+  people,
+  missing = if_else(
+    is.na(age),  # condition
+    "yes",         # if true
+    "no"           # else
+  ),
+  gender = sex, 
+  name = "num"
+)
+```
+
+```{r}
+distinct(
+   people,
+   embarkation_port
+)
+```
+
+```{r}
+count(
+  people,
+  embarkation_port,
+  name = "num"
+)
+```
+
+```{r}
+count(
+  people, 
+  embarkation_port,
+  sex
+)
+```
+
+::: {.callout-note}
+More information about `count()` can be found [here](https://dplyr.tidyverse.org/reference/count.html).
+:::
+
+# Filtering and sorting rows
+
+`filter()` mirrors the `WHERE` clause in SQL, and `arrange()` mirrors the `ORDER BY` clause in SQL (default is ascending).
+
+::: {.callout-tip}For ranking, `ROW_NUMBER()`, `RANK()`, and `DENSE_RANK()` correspond to `row_number()`, `min_rank()`, and `dense_rank()` in dplyr.
+:::
+
+```{r}
+filter(people, (age <= 20 & class == '3rd')) |>
+  select(fam_name, given_name, age) |>
+  head(4)
+```
+
+```{r}
+sum(is.na(pull(people, age) <= 20))
+```
+
+```{r}
+people |>
+  filter(age <= 20) |>
+  pull(age) |>
+  anyNA()
+```
+
+```{r}
+engineer_bodies <- 
+  people |>
+  filter(
+         str_detect(profession, "[Ee]ngineer") | 
+          str_detect(job_on_board, "[Ee]ngineer"),
+        !is.na(recovered_body)
+  ) |>
+  mutate(ticket_num = as.integer(ticket)) |>
+  select(fam_name, given_name, age, ticket_num, recovered_body)
+```
+
+```{r}
+engineer_bodies |> head(4)
+```
+
+```{r}
+engineer_bodies |>
+  select(fam_name, given_name, age) |>
+  arrange(desc(age)) |>
+  mutate(
+         row_number = row_number(desc(age)),
+         min_rank = min_rank(desc(age)),
+         dense_rank = dense_rank(desc(age))
+  ) |>
+  head(5)
+```
+
+::: {.callout-note}
+`mutate()` creates new columns that are functions of existing variables. More information about `mutate()` can be found [here](https://dplyr.tidyverse.org/reference/mutate.html).
+:::
+
+::: {.callout-tip}
+You can also use `slice_min()` and `slice_max()` to choose rows based on location, similar to `LIMIT` in SQL.
+:::
+
+# Summarising data by group
+
+For each class on `titanic`, how many male and female passengers survived, and what are the mean and standard deviation values of their ages?
+
+```{r}
+people |>
+  summarize(
+      n_people = n(),
+      mean_age = round(mean(age, na.rm = TRUE)),
+      std_age = sd(age, na.rm = TRUE),
+      .by = c(sex, class, survived)
+  ) |>
+  filter(class != "Crew", survived == TRUE) |>
+  arrange(sex, class)
+```
+
+::: {.callout-tip}
+More information about `dplyr::summarize()` can be found [here](https://dplyr.tidyverse.org/reference/summarise.html). 
+:::
+
+# Pivot tables
+
+Pivoting is the process of transforming a table from a **long format** (more rows than columns) to a **wide format** (more columns than rows) or vice versa. `tidyr::pivot_longer()` and `tidyr::pivot_wider()` are used to pivot data frames.
+
+```{r}
+job_per_port <- people |>
+  filter(!is.na(job_on_board)) |>
+  count(embarkation_port, job_on_board, name = "num")
+```
+
+```{r}
+job_per_port
+```
+
+```{r}
+age_stats <- 
+  people |>
+  summarize(
+      min = min(age, na.rm = TRUE),
+      lower_quartile = quantile(age, 0.25, na.rm = TRUE),
+      median = median(age, na.rm = TRUE),
+      upper_quartile = quantile(age, 0.75, na.rm = TRUE),
+      max = max(age, na.rm = TRUE), 
+      .by = class
+  )
+```
+
+```{r}
+age_stats
+```
+
+## Pivoting with `pivot_wider()`
+
+`pivot_wider()` takes long-format data and spreads it into wide format. It takes three key arguments:
+
+- `names_from`: the column whose values become new column names
+- `values_from`: the column whose values fill the new cells
+- `values_fill`: (optional) value to use when a combination has no data
+
+```{r}
+pivot_wider(
+    job_per_port,
+    names_from = embarkation_port,
+    values_from = num,
+    values_fill = 0
+)
+```
+
+## Pivoting with `pivot_longer()`
+
+`pivot_longer()` does the opposite — it takes wide-format data and collapses multiple columns into key-value pairs. It takes four key arguments:
+
+- `cols`: the columns to pivot into rows
+- `names_to`: the name of the new column that will hold the old column names
+- `values_to`: the name of the new column that will hold the values
+
+
+```{r}
+pivot_longer(
+   age_stats,
+   cols = c(
+      min, 
+      lower_quartile, 
+      median, 
+      upper_quartile, 
+      max
+   ),
+   names_to = "stat",
+   values_to = "value"
+) |> 
+arrange(class, value) 
+```
+
+# Summary
+
+This lecture introduced the `tidyverse` packages for querying and transforming tabular data in R:
+
+- **`readr`**: importing CSV files with `read_csv()`
+- **`tibble`**: the modern data frame format
+- **`dplyr` single-table verbs**:
+  - `select()` — choose columns
+  - `filter()` — subset rows (mirrors SQL `WHERE`)
+  - `arrange()` — sort rows (mirrors SQL `ORDER BY`)
+  - `mutate()` — create or modify columns
+  - `count()` / `distinct()` — frequency and unique values
+  - `summarize()` — aggregate data by group
+- **`tidyr`** pivot functions:
+  - `pivot_wider()` — long to wide format
+  - `pivot_longer()` — wide to long format
+
+These verbs are designed to compose together using the pipe operator (`|>`), enabling readable, chainable data queries.
+
+# Exercises
+
+## Exercise 1
+
+1. What was the total number of passengers on the `titanic`? Generate a single element table with column name `num`.
+
+```{r}
+tibble(num = nrow(people))
+```
+
+2. How many individuals belonged to each passenger class? Generate a table with columns `class` and `num`. 
+
+Hint: use `count()` or `summarize()`.
+
+```{r}
+count(people, class, name = "num")
+```
+
+3. What is the difference in survival between women and men? Generate a table with columns `sex` and `rate`.
+
+```{r}
+people |>
+  summarize(rate = mean(survived, na.rm = TRUE) * 100, .by = sex) |>
+  arrange(sex)
+```
+
+4. What was the mean age of the surviving crew members? Generate a single element table with column name `mean_age`.
+
+Hint: `filter()` then `summarize()`, or `summarize()` then `filter()`.
+
+```{r}
+people |>
+  filter(class == "Crew", survived == TRUE) |>
+  summarize(mean_age = round(mean(age, na.rm = TRUE), 2))
+```
+
+## Exercise 2 
+
+Suppose we propose the following `death_index` function:
+
+$$death\_index = age + 10 \times numeric\_class + 30 \times numeric\_sex$$
+
+The encoding mappings are:
+
+| Encoding | Values |
+|---|---|
+| `numeric_class` | `1st` → 1, `2nd` → 2, `3rd` → 3, `Crew` → 4 |
+| `numeric_sex` | `Female` → 0, `Male` → 1 |
+
+**Task 1:** Create a table with columns `fam_name`, `given_name`, `age`, `numeric_class`, `numeric_sex`, `survived`, and `death_index`.
+
+**Task 2:** Create a table with columns `numeric_class`, `numeric_sex`, `survive_rate`, and `mean_death_index`.
+
+1. Create a table with columns `fam_name`, `given_name`, `age`, `numeric_class`, `numeric_sex`, `survived`, and `death_index`.
+
+```{r}
+people |>
+  mutate(
+    numeric_class = case_when(
+      class == "1st" ~ 1,
+      class == "2nd" ~ 2,
+      class == "3rd" ~ 3,
+      class == "Crew" ~ 4
+    ),
+    numeric_sex = if_else(sex == "Female", 0, 1),
+    death_index = age + 10 * numeric_class + 30 * numeric_sex
+  ) |>
+  select(fam_name, given_name, age, numeric_class, numeric_sex, survived, death_index)
+```
+
+2. Create a table with columns `numeric_class`, `numeric_sex`, `survive_rate`, `mean_death_index`.
+
+```{r}
+people |>
+  mutate(
+    numeric_class = case_when(
+      class == "1st" ~ 1,
+      class == "2nd" ~ 2,
+      class == "3rd" ~ 3,
+      class == "Crew" ~ 4
+    ),
+    numeric_sex = if_else(sex == "Female", 0, 1),
+    death_index = age + 10 * numeric_class + 30 * numeric_sex
+  ) |>
+  group_by(numeric_class, numeric_sex) |>
+  summarize(
+    survive_rate = round(mean(survived, na.rm = TRUE) * 100, 4),
+    mean_death_index = round(mean(death_index, na.rm = TRUE), 2),
+    .groups = "drop"
+  )
+```
+
+What do you observe from the results? Is `death_index` a good predictor of survival rate?
+
+**Observation:** There is a clear inverse relationship between `death_index` and survival rate — lower death indices correlate with higher survival rates. Female passengers consistently have lower death indices and higher survival rates across all classes. Male crew members have the highest death indices and lowest survival rates. This suggests `death_index` is a reasonable predictor of survival.
+
+## Exercise 3 
+
+Titanic passengers with a shared ticket can be considered a ticket group. Typically, a ticket group comprised family members, friends, or domestic workers employed by the family.
+
+**Question:** How many ticket groups lost at least one member at sea?
+
+1. How many ticket groups lost at least one member at sea?
+
+Hint: check `group_by()` info [here](https://dplyr.tidyverse.org/reference/group_by.html).
+
+```{r}
+ticket_groups <- people |>
+  group_by(ticket) |>
+  summarize(any_died = any(!survived), .groups = "drop")
+
+ticket_groups |>
+  filter(any_died == TRUE) |>
+  summarize(n = n())
+```
+
+# Appendix
+
+## Appendix 1 — Content of Titanic Database
+
+### `people` table
+
+| Column Name | Description |
+|---|---|
+| `id` | Unique integer-valued identifier for each person |
+| `fam_name` | Family name |
+| `given_name` | Given name |
+| `age` | Age in years |
+| `class` | Class of travel (`1st`, `2nd`, `3rd`, or `Crew`) |
+| `gender` | `Male` or `Female` |
+| `survived` | `TRUE` or `FALSE`, indicating whether the person survived |
+| `ticket` | Character string identifying the ticket |
+| `embarkation_port` | Port where the person first boarded the Titanic |
+| `profession` | Profession of the person |
+| `job_on_board` | Job on board (e.g., `Engineering Crew`, `Servant`, `Musician`) |
+| `lifeboat` | Lifeboat number or letter |
+| `certain_on_lifeboat` | `TRUE` or `FALSE`, indicating strength of evidence |
+| `recovered_body` | Numeric identifier of the dead body recovered |
+
+### `tickets` table
+
+| Column Name | Description |
+|---|---|
+| `ticket` | Character string identifying the ticket |
+| `family_ticket` | Family ticket name (added unless evidence shows shared ticket) |
+| `price` | Fare paid in British pounds, shillings, and pence |
+
+::: {.callout-note}
+Note: Ticket identifiers in the original data source (Hind 2023) are not unique. The family ticket name was added unless there was convincing evidence that the person shared their ticket.
+:::
+
+### `lifeboats` table
+
+| Column Name | Description |
+|---|---|
+| `lifeboat` | Lifeboat number or letter |
+| `boat_name` | Name of the lifeboat (Encyclopedia Titanica) |
+| `boat_info` | Additional text information about the lifeboat |
+
+## Appendix 2 — tidyverse vs. PostgreSQL
+
+| Function | Equivalent |
+|---|---|
+| `select()` | `SELECT` |
+| `count()` | `COUNT` |
+| `filter()` | `WHERE` |
+| `distinct()` | `DISTINCT` |
+| `arrange()` | `ORDER BY` |
+| `desc()` | `DESC` (`ORDER BY ... DESC`) |
+| `slice_min()` | `LIMIT ... ORDER BY ...` |
+| `slice_max()` | `LIMIT ... ORDER BY ... DESC` |
+| `row_number()` | `ROW_NUMBER() OVER (ORDER BY ...)` |
+| `min_rank()` | `RANK() OVER (ORDER BY ...)` |
+| `dense_rank()` | `DENSE_RANK() OVER (ORDER BY ...)` |
+| `summarize()` | `SELECT aggregate_function ... GROUP BY ...` |
+| `pivot_wider()` | `CROSSTAB()` |
+| `pivot_longer()` | Not built into PostgreSQL |
+

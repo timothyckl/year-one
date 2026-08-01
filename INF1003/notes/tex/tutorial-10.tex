@@ -1,0 +1,377 @@
+\documentclass[12pt]{scrartcl}
+
+\usepackage{amsmath,amssymb}
+\usepackage{fullpage}
+\usepackage{enumitem}
+\usepackage{hyperref}
+
+\setlength{\parindent}{0pt}
+
+\begin{document}
+
+\begin{center}
+    \hrule
+    \vspace{0.4cm}
+    {\textbf{\large INF1003 Tutorial 10}}\\[0.2cm]
+\end{center}
+
+\textbf{Name:} Timothy Chia\hspace{\fill} \textbf{Topic:} Relations\\
+\textbf{Student ID:} 2501530 \hspace{\fill} \textbf{Due Date:} 16/11/2025, 10:00 PM\\
+
+\hrule
+
+\begin{enumerate}[label=\textbf{\arabic*.}]
+
+%------------------------------------------------------------
+\item
+Let $M_R$ be the matrix of a relation $R$ (with respect to the ordering
+$1,2,3,4$ of the underlying set $A=\{1,2,3,4\}$):
+\[
+M_R =
+\begin{pmatrix}
+1 & 0 & 1 & 0 \\
+1 & 1 & 0 & 1 \\
+1 & 1 & 1 & 0 \\
+1 & 1 & 0 & 1
+\end{pmatrix}.
+\]
+
+\medskip
+
+Determine whether $R$ is reflexive, symmetric, antisymmetric, or transitive.
+
+\medskip
+
+\textbf{Reflexive.}
+$R$ is reflexive on $A$ iff all diagonal entries are $1$:
+$M_{11}=M_{22}=M_{33}=M_{44}=1$.
+From the matrix this holds, so $R$ is \emph{reflexive}.
+
+\textbf{Symmetric.}
+$R$ is symmetric iff $M_{ij} = M_{ji}$ for all $i,j$.
+Here $M_{12}=0$ but $M_{21}=1$, so $M_R \ne M_R^{\mathsf T}$.
+Thus $R$ is \emph{not symmetric}.
+
+\textbf{Antisymmetric.}
+$R$ is antisymmetric iff for all $i \ne j$,
+if $M_{ij}=1$ and $M_{ji}=1$ then $i=j$ (contradiction).
+But $M_{13}=1$ and $M_{31}=1$ with $1 \ne 3$.
+Hence $R$ is \emph{not antisymmetric}.
+
+\textbf{Transitive.}
+$R$ is transitive iff whenever $(i,j)$ and $(j,k)$ are in $R$,
+then $(i,k)$ is also in $R$.
+From the matrix:
+\[
+(1,3) \in R\ (\text{since }M_{13}=1),\quad
+(3,2) \in R\ (\text{since }M_{32}=1),
+\]
+but
+\[
+(1,2) \notin R\ (\text{since }M_{12}=0).
+\]
+So the transitivity condition fails. Therefore $R$ is \emph{not transitive}.
+
+%------------------------------------------------------------
+\newpage
+\item
+Let $R$ be the relation on $A = \{1,2,3,4\}$ defined by
+\[
+R = \{(2,2),(2,3),(2,4),(3,2),(3,3),(3,4)\}.
+\]
+Decide whether $R$ is reflexive, symmetric, antisymmetric, and/or transitive.
+
+\medskip
+
+\textbf{Reflexive?}
+On $A$, reflexivity requires $(1,1),(2,2),(3,3),(4,4) \in R$.
+Here only $(2,2)$ and $(3,3)$ are present; $(1,1)$ and $(4,4)$ are missing.
+So $R$ is \emph{not reflexive}.
+
+\textbf{Symmetric?}
+Symmetry requires: whenever $(a,b)\in R$, then $(b,a)\in R$.
+We have $(2,4)\in R$ but $(4,2)\notin R$,
+so $R$ is \emph{not symmetric}.
+
+\textbf{Antisymmetric?}
+Antisymmetry requires: if $(a,b)\in R$ and $(b,a)\in R$ with $a\ne b$, this must never happen.
+But $(2,3)\in R$ and $(3,2)\in R$ with $2\ne 3$, so $R$ is \emph{not antisymmetric}.
+
+\textbf{Transitive?}
+Transitivity: if $(a,b)\in R$ and $(b,c)\in R$, then $(a,c)\in R$.
+
+We check all possible chains:
+
+\begin{itemize}
+    \item From $(2,2)$:
+    \[
+        (2,2),(2,2)\Rightarrow (2,2)\in R;\quad
+        (2,2),(2,3)\Rightarrow (2,3)\in R;\quad
+        (2,2),(2,4)\Rightarrow (2,4)\in R.
+    \]
+    \item From $(2,3)$:
+    \[
+        (2,3),(3,2)\Rightarrow (2,2)\in R;\quad
+        (2,3),(3,3)\Rightarrow (2,3)\in R;\quad
+        (2,3),(3,4)\Rightarrow (2,4)\in R.
+    \]
+    \item From $(3,2)$:
+    \[
+        (3,2),(2,2)\Rightarrow (3,2)\in R;\quad
+        (3,2),(2,3)\Rightarrow (3,3)\in R;\quad
+        (3,2),(2,4)\Rightarrow (3,4)\in R.
+    \]
+    \item From $(3,3)$:
+    \[
+        (3,3),(3,2)\Rightarrow (3,2)\in R;\quad
+        (3,3),(3,3)\Rightarrow (3,3)\in R;\quad
+        (3,3),(3,4)\Rightarrow (3,4)\in R.
+    \]
+    \item From $(2,4)$ or $(3,4)$ as first pair: there is no pair in $R$ whose first
+          component is $4$, so no further chain to check.
+\end{itemize}
+
+In every case where $(a,b)$ and $(b,c)$ belong to $R$, $(a,c)$ is also in $R$.
+Hence $R$ is \emph{transitive}.
+
+%------------------------------------------------------------
+\newpage
+\item
+For each of the relations in Question~3 (given as directed graphs on the worksheet),
+determine whether the relation is reflexive, symmetric, antisymmetric, and/or transitive.
+For any property that does not hold, give a brief explanation.
+
+\medskip
+
+Denote the three relations by $R_a$, $R_b$ and $R_c$.
+
+\begin{enumerate}[label=(\alph*)]
+    \item For $R_a$:
+    \begin{itemize}
+        \item \textbf{Reflexive:} Yes. Each element of the underlying set has a loop $(x,x)$,
+              so every element is related to itself.
+        \item \textbf{Symmetric:} Yes. For every arrow $x \to y$ in the digraph,
+              there is also an arrow $y \to x$, so if $(x,y)\in R_a$ then $(y,x)\in R_a$.
+        \item \textbf{Antisymmetric:} No. Since the relation is symmetric and there are
+              distinct elements joined by two-way arrows, we have distinct $x\ne y$
+              with both $(x,y)$ and $(y,x)$ in $R_a$, contradicting antisymmetry.
+        \item \textbf{Transitive:} No. There is at least one path $x \to y \to z$
+              where there is no direct edge $x \to z$, so $(x,y)$ and $(y,z)$ are in $R_a$
+              but $(x,z)$ is not.
+    \end{itemize}
+
+    \item For $R_b$:
+    \begin{itemize}
+        \item \textbf{Reflexive:} No. At least one element has no loop $(x,x)$.
+        \item \textbf{Symmetric:} No. There is at least one arrow $x \to y$ with
+              no matching arrow $y \to x$.
+        \item \textbf{Antisymmetric:} No. There exists a pair of distinct vertices
+              $x\ne y$ with arrows in both directions, $(x,y)$ and $(y,x)$.
+        \item \textbf{Transitive:} No. There is a two-step path $x \to y \to z$
+              with no direct arrow $x \to z$.
+    \end{itemize}
+
+    \item For $R_c$:
+    \begin{itemize}
+        \item \textbf{Reflexive:} No. Some vertex misses its loop $(x,x)$.
+        \item \textbf{Symmetric:} No. There is an arrow $x \to y$ without a reverse
+              arrow $y \to x$.
+        \item \textbf{Antisymmetric:} No. There is at least one pair of distinct
+              vertices $x\ne y$ with arrows both ways.
+        \item \textbf{Transitive:} No. Again there is a path $x \to y \to z$ with
+              no edge $x \to z$.
+    \end{itemize}
+\end{enumerate}
+
+%------------------------------------------------------------
+\newpage
+\item
+Which of the following relations on the set of SIT students are equivalence relations?
+For those that are, describe the equivalence classes. For each relation, briefly justify
+your answer.
+
+\begin{enumerate}[label=(\alph*)]
+    \item $\{(a,b)\mid a \text{ and } b \text{ are taking a module together}\}$.
+
+    Two students are related if they share at least one common module.
+
+    \textbf{Reflexive:} If every student is enrolled in at least one module, then each
+    student trivially shares a module with themselves, so $a$ is related to $a$.
+    \textbf{Symmetric:} If $a$ and $b$ share a module, then $b$ and $a$ do as well.
+    \textbf{Transitive:} Not necessarily. It can happen that $a$ and $b$ share module $X$,
+    and $b$ and $c$ share module $Y\ne X$, but $a$ and $c$ do not share any module.
+    Hence the relation is \emph{not transitive} and so \emph{not an equivalence relation}.
+
+    \item $\{(a,b)\mid a \text{ and } b \text{ study in the same programme}\}$.
+
+    \textbf{Reflexive:} Every student is in the same programme as themselves.  
+    \textbf{Symmetric:} If $a$ is in the same programme as $b$, then $b$ is in the
+    same programme as $a$.  
+    \textbf{Transitive:} If $a$ and $b$ are in the same programme and $b$ and $c$
+    are in the same programme, then $a$ and $c$ are in that same programme.
+
+    Thus this is an \emph{equivalence relation}.  The equivalence classes are the sets
+    of students in each programme (e.g. all AAI students, all SFT students, etc.).
+
+    \item $\{(a,b)\mid \text{GPA of }a \text{ is greater than or equal to GPA of }b\}$.
+
+    \textbf{Reflexive:} $\mathrm{GPA}(a)\ge \mathrm{GPA}(a)$, so $(a,a)$ is always in the relation.  
+    \textbf{Symmetric:} Fails in general: if $\mathrm{GPA}(a)>\mathrm{GPA}(b)$ then
+    $(a,b)$ is in the relation but $(b,a)$ is not.  
+    \textbf{Transitive:} If $\mathrm{GPA}(a)\ge\mathrm{GPA}(b)$ and
+    $\mathrm{GPA}(b)\ge\mathrm{GPA}(c)$, then $\mathrm{GPA}(a)\ge\mathrm{GPA}(c)$.
+
+    Since it is not symmetric, this is \emph{not} an equivalence relation.
+
+    \item $\{(a,b)\mid -0.5 \le \mathrm{GPA}(a)-\mathrm{GPA}(b) \le 0.5\}$.
+
+    \textbf{Reflexive:} $\mathrm{GPA}(a)-\mathrm{GPA}(a)=0$, which lies in $[-0.5,0.5]$, so reflexive.  
+
+    \textbf{Symmetric:} If
+    $-0.5 \le \mathrm{GPA}(a)-\mathrm{GPA}(b) \le 0.5$, then
+    $\mathrm{GPA}(b)-\mathrm{GPA}(a)=-(\mathrm{GPA}(a)-\mathrm{GPA}(b))$
+    also lies in $[-0.5,0.5]$. So the relation is symmetric.
+
+    \textbf{Transitive:} Not always.  
+    Example: let
+    \[
+        \mathrm{GPA}(a)=3.0,\quad
+        \mathrm{GPA}(b)=3.4,\quad
+        \mathrm{GPA}(c)=3.8.
+    \]
+    Then $\mathrm{GPA}(a)-\mathrm{GPA}(b)=-0.4$ and
+    $\mathrm{GPA}(b)-\mathrm{GPA}(c)=-0.4$ are both in $[-0.5,0.5]$, so
+    $(a,b)$ and $(b,c)$ are related. But
+    $\mathrm{GPA}(a)-\mathrm{GPA}(c)=-0.8$, which lies outside $[-0.5,0.5]$,
+    so $(a,c)$ is not related. Hence the relation is \emph{not transitive}
+    and so not an equivalence relation.
+
+    \item $\{(a,b)\mid a \text{ is taking the same number of academic credits as } b\}$.
+
+    \textbf{Reflexive:} Each student takes the same number of credits as themselves.  
+    \textbf{Symmetric:} If $a$ takes the same number of credits as $b$, then $b$ takes
+    the same number of credits as $a$.  
+    \textbf{Transitive:} If $a$ and $b$ take the same number of credits and $b$ and $c$ also
+    take the same number, then $a$ and $c$ take that same number.
+
+    Thus this is an \emph{equivalence relation}.  The equivalence classes are the sets of
+    students grouped by credit load (e.g. all students taking $20$ credits, all taking $15$ credits, etc.).
+\end{enumerate}
+
+%------------------------------------------------------------
+\item
+Let $R$ be the relation on the set of all strings of English letters such that
+$aRb$ iff $l(a)=l(b)$, where $l(x)$ is the length of the string $x$.
+
+\begin{enumerate}[label=(\alph*)]
+    \item Is $R$ reflexive?  
+
+    Yes.  For any string $a$, we have $l(a)=l(a)$, so $(a,a)\in R$.
+
+    \item Is $R$ symmetric?  
+
+    Yes.  If $l(a)=l(b)$, then $l(b)=l(a)$, so $(a,b)\in R$ implies $(b,a)\in R$.
+
+    \item Is $R$ transitive?  
+
+    Yes.  If $l(a)=l(b)$ and $l(b)=l(c)$, then $l(a)=l(c)$, so $(a,c)\in R$.
+
+    \item Is $R$ an equivalence relation? If so, what are the equivalence classes?
+
+    Since $R$ is reflexive, symmetric, and transitive, it is an \emph{equivalence relation}.
+    The equivalence classes are sets of strings of the same length.  For each integer
+    $n \ge 0$, there is one equivalence class consisting of all strings of length $n$.
+\end{enumerate}
+
+%------------------------------------------------------------
+\item
+Show that the ``divides'' relation on the set of positive integers is not an equivalence relation.
+
+\medskip
+
+Let the relation be $aRb$ iff $a$ divides $b$ (written $a \mid b$).
+
+\textbf{Reflexive:} For every positive integer $a$, we have $a \mid a$, since $a = a \cdot 1$.
+So the relation is reflexive.
+
+\textbf{Transitive:} If $a \mid b$ and $b \mid c$, then there exist integers $m,n$ such that
+$b = am$ and $c = bn = (am)n = a(mn)$, so $a \mid c$. Thus the relation is transitive.
+
+\textbf{Symmetric:} Not in general.  For example $2 \mid 4$ (since $4 = 2 \cdot 2$),
+but $4 \nmid 2$.  Therefore the relation is \emph{not symmetric}.
+
+Since it fails symmetry, the divides relation is \emph{not} an equivalence relation.
+
+%------------------------------------------------------------
+\newpage
+\item
+Define a relation $R$ from $\mathbb{Z}$ to $\mathbb{Z}$ by
+\[
+(m,n) \in R \iff (m-n) \text{ is odd}.
+\]
+
+\begin{enumerate}[label=(\alph*)]
+    \item Which of the following ordered pairs are in $R$?
+
+    \begin{enumerate}[label=(\roman*)]
+        \item $(8,2)$: $8-2 = 6$, which is even, so $(8,2) \notin R$.
+        \item $(1,4)$: $1-4 = -3$, which is odd, so $(1,4) \in R$.
+        \item $(5,-3)$: $5 - (-3) = 8$, which is even, so $(5,-3) \notin R$.
+        \item $(3,2)$: $3-2 = 1$, which is odd, so $(3,2) \in R$.
+    \end{enumerate}
+
+    \item List five integers that are related by $R$ to $5$.
+
+    We need integers $k$ such that $(k,5)\in R$, i.e. $k-5$ is odd.
+    Because $5$ is odd, $k-5$ is odd exactly when $k$ is even.
+    So all even integers are related to $5$.
+
+    Examples of five such integers:
+    \[
+        0,\ 2,\ 4,\ 6,\ 8.
+    \]
+
+    \item Prove that if $n$ is any even integer, then $(n,3) \in R$.
+
+    \textbf{Proof.}
+    Let $n$ be an even integer.  Then there exists an integer $k$ such that $n = 2k$.
+    Consider $n - 3$:
+    \[
+        n - 3 = 2k - 3 = 2k - 4 + 1 = 2(k-2) + 1.
+    \]
+    Since $k-2$ is an integer, $n-3$ is of the form $2(\text{integer}) + 1$, so it is odd.
+    Therefore $(n,3)\in R$ by definition of $R$.
+    \hfill$\Box$
+
+    \item Is $R$ an equivalence relation? If so, how many equivalence classes does it have?
+
+    We examine the usual properties on $\mathbb{Z}$.
+
+    \textbf{Reflexive?}
+    For reflexivity we would need $(n,n)\in R$ for all integers $n$.
+    But $n-n=0$, which is even, so $(n,n)\notin R$ for every $n$.
+    Thus $R$ is \emph{not reflexive}.
+
+    \textbf{Symmetric?}
+    If $(m,n)\in R$ then $m-n$ is odd.  Then $n-m = -(m-n)$ is also odd,
+    so $(n,m)\in R$.  Hence $R$ is symmetric.
+
+    \textbf{Transitive?}
+    Not always.  Take $1,2,3$:
+    \[
+        1 - 2 = -1 \text{ (odd)} \Rightarrow (1,2)\in R,\quad
+        2 - 3 = -1 \text{ (odd)} \Rightarrow (2,3)\in R,
+    \]
+    but
+    \[
+        1 - 3 = -2 \text{ (even)} \Rightarrow (1,3)\notin R.
+    \]
+    So $R$ is \emph{not transitive}.
+
+    Since $R$ is not reflexive and not transitive, it is \emph{not} an equivalence relation.
+    (So the question of equivalence classes does not apply.)
+\end{enumerate}
+
+\end{enumerate}
+
+\end{document}

@@ -1,0 +1,55 @@
+---
+title: AAI1001 Data Engineering and Data Visualisation 
+---
+
+## Module Information
+
+- **Module Lead**: Assoc. Prof. Guang HUA
+- **Co-Lead**: Asst. Prof. Pulakesh UPADHYAYA
+- **Co-Instructors**: Mr. Nai Tiong CHAN, Ms. Min Min CHAN
+- **Schedule**: Tue 9–11am (Lectorials), Wed 9–11am (Labs)
+
+## Course Overview
+
+This module builds a solid foundation in data engineering, predictive modeling, and visualization using Quarto and R. Topics include the `tidyverse` package collection, time series analysis, and Naive Bayes classification, culminating in a team project.
+
+## Learning Outcomes
+
+1. Apply Quarto to document and present data workflow
+2. Understand data engineering principles and practices
+3. Apply supervised machine learning techniques in R
+4. Assess data visualization effectiveness
+5. Apply R packages for effective visualizations
+6. Develop and deliver data analysis presentations
+
+## Assessment
+
+| Assessment | Week | Weight |
+|------------|------|--------|
+| Assessment 1 (Report) | 04 | 10% |
+| Assessment 2 (Quiz 1) | 06 | 20% |
+| Assessment 3 (Report) | 11 | 10% |
+| Assessment 4 (Quiz 2) | 12 | 20% |
+| In-Class Exercises | 2–6, 8–12 | 10% |
+| Team Project Proposal | 09 | 5% |
+| Team Project Presentation | 13 | 20% |
+| Peer Evaluation | 13 | 5% |
+
+::: {.callout-note}
+Final score contains 55% individual performance and 45% team performance.
+:::
+
+::: {.callout-note}
+Bring your laptop to class to ensure you can keep up with the hands-on learning.
+:::
+
+---
+
+## Lecture Notes
+
+| Week | Topic | Link |
+|------|-------|------|
+| 02 | Introduction to R | [Lecture 02](notes/lecture-02.qmd) |
+| 03 | Tidyverse Single-Table Queries | [Lecture 03](notes/lecture-03.qmd) |
+| 04 | Tidyverse Join-Table Queries | [Lecture 04](notes/lecture-04.qmd) |
+| 05 | Time Series Analysis Basics | [Lecture 05](notes/lecture-05.qmd) |

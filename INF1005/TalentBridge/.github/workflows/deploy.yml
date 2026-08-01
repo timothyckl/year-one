@@ -1,0 +1,113 @@
+name: CI / Deploy
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  # -------------------------------------------------------
+  # job 1: lint — check php syntax on every push and pr
+  # -------------------------------------------------------
+  lint:
+    name: PHP Lint
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up PHP 8.2
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+
+      - name: Check PHP syntax on all files
+        run: find . -name "*.php" ! -path "./.git/*" ! -path "./vendor/*" | xargs -n1 php -l
+
+  # -------------------------------------------------------
+  # job 2: test — run phpunit after lint passes
+  # -------------------------------------------------------
+  test:
+    name: PHPUnit Tests
+    needs: lint
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up PHP 8.2
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+
+      - name: Install Composer dependencies
+        run: composer install --no-progress --prefer-dist
+
+      - name: Run PHPUnit
+        run: vendor/bin/phpunit
+
+  # -------------------------------------------------------
+  # job 3: deploy — only runs on pushes to main after lint and test pass
+  # -------------------------------------------------------
+  deploy:
+    name: Deploy to GCP
+    needs: [lint, test]
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+
+    steps:
+      - uses: actions/checkout@v4
+
+      # write config.php from secrets — this file is gitignored and never committed
+      # uses php itself to write the file so special characters in secrets are handled safely
+      - name: Write config.php
+        env:
+          DB_HOST: ${{ secrets.DB_HOST }}
+          DB_NAME: ${{ secrets.DB_NAME }}
+          DB_USER: ${{ secrets.DB_USER }}
+          DB_PASS: ${{ secrets.DB_PASS }}
+        run: |
+          php -r '
+            $content = "<?php\n"
+              . "define(\"DB_HOST\", " . var_export(getenv("DB_HOST"), true) . ");\n"
+              . "define(\"DB_NAME\", " . var_export(getenv("DB_NAME"), true) . ");\n"
+              . "define(\"DB_USER\", " . var_export(getenv("DB_USER"), true) . ");\n"
+              . "define(\"DB_PASS\", " . var_export(getenv("DB_PASS"), true) . ");\n";
+            file_put_contents("config.php", $content);
+          '
+
+      # configure ssh so rsync can reach the gcp vm
+      - name: Configure SSH
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+        run: |
+          mkdir -p ~/.ssh
+          echo "${SSH_PRIVATE_KEY}" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          ssh-keyscan -H "${SSH_HOST}" >> ~/.ssh/known_hosts
+
+      # install rsync — not present on ubuntu-latest by default
+      - name: Install rsync
+        run: sudo apt-get install -y rsync
+
+      # rsync project files to the web root, skipping secrets and non-production paths
+      - name: Deploy via rsync
+        env:
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_USER: ${{ secrets.SSH_USER }}
+        run: |
+          rsync -avz --delete \
+            -e "ssh -i ~/.ssh/deploy_key" \
+            --exclude='.git' \
+            --exclude='.github' \
+            --exclude='.claude' \
+            --exclude='docs' \
+            --exclude='tests' \
+            --exclude='vendor' \
+            --exclude='composer.json' \
+            --exclude='composer.lock' \
+            --exclude='phpunit.xml' \
+            --exclude='config.php' \
+            ./ "${SSH_USER}@${SSH_HOST}:/var/www/html/"

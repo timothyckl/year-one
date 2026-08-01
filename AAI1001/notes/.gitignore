@@ -1,0 +1,24 @@
+# Quarto
+_site/
+.quarto/
+
+# R
+*.Rdata
+*.Rds
+.Rhistory
+.Rprofile
+.Ruserdata
+*.Rproj
+.Rproj.user/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Quarto cache
+*.qcache.json
+
+/.quarto/
+**/*.quarto_ipynb
+
+titanic/

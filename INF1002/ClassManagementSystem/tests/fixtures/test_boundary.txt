@@ -1,0 +1,8 @@
+Database Name: Boundary Values Test Database
+Authors: Test Suite
+
+Table Name: StudentRecords
+ID	Name	Programme	Mark
+2500000	MinID	Test Programme	0.00
+2600000	MaxID	Test Programme	100.00
+2550000	A	B	50.00

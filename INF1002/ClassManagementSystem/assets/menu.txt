@@ -1,0 +1,33 @@
+==============================================================
+                 Class Management System
+                    Command Reference
+==============================================================
+
+Available Commands:
+
+  Database Operations:
+    OPEN          Open a database file and read all records
+    SAVE          Save all records to the database file
+
+  Record Management:
+    SHOW ALL      Display all records in the database
+    INSERT        Add a new record to the database
+    QUERY         Search for a record in the database
+    UPDATE        Update a value for a given record
+    DELETE        Delete a record from the database
+
+  Analysis & Tools:
+    SORT          Sort records by ID or mark (ascending/descending)
+    ADV QUERY     Run the advanced query pipeline
+    STATISTICS    Display summary statistics for all students
+    CHECKSUM      Verify database integrity and display checksums
+
+  System:
+    SHOW LOG      Display operation history for this session
+    HELP          Display this menu again
+    EXIT          Exit the programme
+
+==============================================================
+
+Type a command and press ENTER to continue.
+

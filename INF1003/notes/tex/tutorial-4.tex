@@ -1,0 +1,411 @@
+\documentclass[12pt]{scrartcl}
+
+\usepackage{amsmath,amssymb}
+\usepackage{fullpage}
+\usepackage{enumitem}
+\usepackage{hyperref}
+
+\setlength{\parindent}{0pt}
+
+\begin{document}
+
+\begin{center}
+	\hrule
+	\vspace{0.4cm}
+	{\textbf{\large INF1003 Tutorial 4}}\\[0.2cm]
+\end{center}
+
+\textbf{Name:} Timothy Chia\hspace{\fill} \textbf{Topic:} Propositional Logic\\ 
+\textbf{Student ID:} 2501530 \hspace{\fill} \textbf{Due Date:} 28th September 2025, 10:00 PM\\
+
+\hrule
+
+\begin{enumerate}[label=\textbf{\arabic*.}]
+
+%------------------------------------------------------------
+\item Let $p$, $q$, and $r$ be the propositions
+\begin{itemize}[label=$\bullet$]
+    \item $p$: You have COVID-19;
+    \item $q$: You miss the final exam;
+    \item $r$: You pass the course.
+\end{itemize}
+Express each of the following compound propositions as an English sentence.
+
+\begin{enumerate}[label=(\alph*)]
+    \item $q \rightarrow \neg r$.
+
+    \textbf{Solution.} 
+    Here $q$ means ``you miss the final exam'' and $\neg r$ means ``you do not pass the course''.  
+    The implication $q \rightarrow \neg r$ is read as:
+    \emph{If you miss the final exam, then you do not pass the course.}
+
+    \item $(p \rightarrow \neg r) \lor (q \rightarrow \neg r)$.
+
+    \textbf{Solution.} 
+    $p \rightarrow \neg r$ means ``If you have COVID-19, then you do not pass the course'', and 
+    $q \rightarrow \neg r$ means ``If you miss the final exam, then you do not pass the course''.  
+    Their disjunction is:
+    \emph{Either, if you have COVID-19 then you do not pass the course, or, if you miss the final exam then you do not pass the course.}
+
+    \item $(p \land q) \lor (\neg q \land r)$.
+
+    \textbf{Solution.} 
+    $p \land q$ is ``you have COVID-19 and you miss the final exam'', while 
+    $\neg q \land r$ is ``you do not miss the final exam and you pass the course''.  
+    Thus the whole proposition says:
+    \emph{Either you have COVID-19 and miss the final exam, or you do not miss the final exam and you pass the course.}
+\end{enumerate}
+
+%------------------------------------------------------------
+\item Let $p$, $q$ and $r$ be the propositions
+\begin{itemize}[label=$\bullet$]
+    \item $p$: You get an A on the final exam;
+    \item $q$: You do every exercise in the textbook;
+    \item $r$: You get an A in this course.
+\end{itemize}
+Write the following propositions using $p$, $q$, and $r$, and logical connectives.
+
+\begin{enumerate}[label=(\alph*)]
+    \item You get an A in this course, but you do not do every exercise in the textbook.
+
+    \textbf{Solution.} 
+    ``You get an A in this course'' is $r$ and ``you do not do every exercise in the textbook'' is $\neg q$.  
+    The word ``but'' is logically the same as ``and'', so the proposition is
+    \[
+        r \land \neg q.
+    \]
+
+    \item You get an A on the final exam, but you do not do every exercise in the textbook; nevertheless, you get an A in this course.
+
+    \textbf{Solution.}
+    ``You get an A on the final exam'' is $p$, ``you do not do every exercise in the textbook'' is $\neg q$, 
+    and ``you get an A in this course'' is $r$.  
+    Joining them with ``and'' gives
+    \[
+        p \land \neg q \land r.
+    \]
+
+    \item Getting an A on the final exam and doing every exercise in the textbook is sufficient for getting an A in this course.
+
+    \textbf{Solution.}
+    ``Getting an A on the final exam and doing every exercise in the textbook'' is $p \land q$, which is a sufficient condition for $r$.  
+    So the proposition is
+    \[
+        (p \land q) \rightarrow r.
+    \]
+
+    \item You will get an A in this course if and only if you either do every exercise in the textbook or you get an A on the final exam.
+
+    \textbf{Solution.}
+    ``You will get an A in this course'' is $r$, and 
+    ``you either do every exercise in the textbook or you get an A on the final exam'' is $q \lor p$.  
+    ``If and only if'' is $\leftrightarrow$, so we obtain
+    \[
+        r \leftrightarrow (q \lor p).
+    \]
+\end{enumerate}
+
+%------------------------------------------------------------
+\item Write each of these statements in the form ``if $p$, then $q$'' in English.
+
+\begin{enumerate}[label=(\alph*)]
+    \item It is necessary to hike 2 km to get to the top of Bukit Timah Hill.
+
+    \textbf{Solution.}
+    Saying that hiking 2 km is \emph{necessary} to get to the top means that reaching the top implies that you have hiked 2 km.  
+    In ``if $p$, then $q$'' form:
+    \[
+        \text{If you get to the top of Bukit Timah Hill, then you must have hiked 2 km.}
+    \]
+
+    \item If you drive more than 650 km, you will need to buy petrol.
+
+    \textbf{Solution.}
+    This is already in the desired form:
+    \[
+        \text{If you drive more than $650$ km, then you will need to buy petrol.}
+    \]
+
+    \item Xiaoming will go swimming unless the water is too cold.
+
+    \textbf{Solution.}
+    ``$p$ unless $q$'' is logically equivalent to ``if not $q$, then $p$''.  
+    Here, let $p$ be ``Xiaoming will go swimming'' and let $q$ be ``the water is too cold''.  
+    Then the statement becomes:
+    \[
+        \text{If the water is not too cold, then Xiaoming will go swimming.}
+    \]
+\end{enumerate}
+
+%------------------------------------------------------------
+\item Construct a complete truth table for each of the following compound propositions.
+
+\begin{enumerate}[label=(\alph*)]
+    \item $(p \rightarrow q) \leftrightarrow (\neg q \rightarrow \neg p)$.
+
+    \textbf{Solution.}
+    \[
+    \begin{array}{c c | c c c c c}
+        p & q & p \rightarrow q & \neg q & \neg p & \neg q \rightarrow \neg p 
+          & (p \rightarrow q) \leftrightarrow (\neg q \rightarrow \neg p) \\
+        \hline
+        T & T & T & F & F & T & T \\
+        T & F & F & T & F & F & T \\
+        F & T & T & F & T & T & T \\
+        F & F & T & T & T & T & T \\
+    \end{array}
+    \]
+    The final column is always $T$, so the two implications are logically equivalent.
+
+    \item $(p \oplus q) \land (p \oplus \neg q)$.
+
+    \textbf{Solution.}
+    Recall that $p \oplus q$ is true exactly when $p$ and $q$ have different truth values.
+    \[
+    \begin{array}{c c | c c c c}
+        p & q & \neg q & p \oplus q & p \oplus \neg q 
+          & (p \oplus q) \land (p \oplus \neg q) \\
+        \hline
+        T & T & F & F & T & F \\
+        T & F & T & T & F & F \\
+        F & T & F & T & F & F \\
+        F & F & T & F & T & F \\
+    \end{array}
+    \]
+    The final column is always $F$, so the compound proposition is a contradiction.
+
+    \item $(p \leftrightarrow q) \lor (\neg q \leftrightarrow r)$.
+
+    \textbf{Solution.}
+    \[
+    \begin{array}{c c c | c c c c}
+        p & q & r & p \leftrightarrow q & \neg q & \neg q \leftrightarrow r 
+          & (p \leftrightarrow q) \lor (\neg q \leftrightarrow r) \\
+        \hline
+        T & T & T & T & F & F & T \\
+        T & T & F & T & F & T & T \\
+        T & F & T & F & T & T & T \\
+        T & F & F & F & T & F & F \\
+        F & T & T & F & F & F & F \\
+        F & T & F & F & F & T & T \\
+        F & F & T & T & T & T & T \\
+        F & F & F & T & T & F & T \\
+    \end{array}
+    \]
+
+    \item $\bigl((p \rightarrow q) \rightarrow r\bigr) \rightarrow s$.
+
+    \textbf{Solution.}
+    Let $A = (p \rightarrow q)$ and $B = (A \rightarrow r)$.  Then the whole formula is $B \rightarrow s$.
+    \[
+    \begin{array}{c c c c | c c c}
+        p & q & r & s & p \rightarrow q & (p \rightarrow q) \rightarrow r 
+          & \bigl((p \rightarrow q) \rightarrow r\bigr) \rightarrow s \\
+        \hline
+        T & T & T & T & T & T & T \\
+        T & T & T & F & T & T & F \\
+        T & T & F & T & T & F & T \\
+        T & T & F & F & T & F & T \\
+        T & F & T & T & F & T & T \\
+        T & F & T & F & F & T & F \\
+        T & F & F & T & F & T & T \\
+        T & F & F & F & F & T & F \\
+        F & T & T & T & T & T & T \\
+        F & T & T & F & T & T & F \\
+        F & T & F & T & T & F & T \\
+        F & T & F & F & T & F & T \\
+        F & F & T & T & T & T & T \\
+        F & F & T & F & T & T & F \\
+        F & F & F & T & T & F & T \\
+        F & F & F & F & T & F & T \\
+    \end{array}
+    \]
+
+    \item $(p \land r \land s) \leftrightarrow (p \lor q)$.
+
+    \textbf{Solution.}
+    Here the two sides are $p \land r \land s$ and $p \lor q$.
+    \[
+    \begin{array}{c c c c | c c c}
+        p & q & r & s & p \land r \land s & p \lor q 
+          & (p \land r \land s) \leftrightarrow (p \lor q) \\
+        \hline
+        T & T & T & T & T & T & T \\
+        T & T & T & F & F & T & F \\
+        T & T & F & T & F & T & F \\
+        T & T & F & F & F & T & F \\
+        T & F & T & T & T & T & T \\
+        T & F & T & F & F & T & F \\
+        T & F & F & T & F & T & F \\
+        T & F & F & F & F & T & F \\
+        F & T & T & T & F & T & F \\
+        F & T & T & F & F & T & F \\
+        F & T & F & T & F & T & F \\
+        F & T & F & F & F & T & F \\
+        F & F & T & T & F & F & T \\
+        F & F & T & F & F & F & T \\
+        F & F & F & T & F & F & T \\
+        F & F & F & F & F & F & T \\
+    \end{array}
+    \]
+\end{enumerate}
+
+%------------------------------------------------------------
+\item Suppose that
+\begin{itemize}[label=$\bullet$]
+    \item Smartphone A has $8$ GB RAM and $64$ GB ROM, and the resolution of its camera is $12$ MP;
+    \item Smartphone B has $16$ GB RAM and $128$ GB ROM, and the resolution of its camera is $5$ MP; and
+    \item Smartphone C has $4$ GB RAM and $64$ GB ROM, and the resolution of its camera is $8$ MP.
+\end{itemize}
+Determine the truth value of each of the following propositions. Make sure to provide appropriate derivations and explanations.
+
+\begin{enumerate}[label=(\alph*)]
+    \item Smartphone B has the most RAM of these three smartphones.
+
+    \textbf{Solution.}
+    RAM values: A has $8$ GB, B has $16$ GB, C has $4$ GB.  
+    Since $16 > 8$ and $16 > 4$, B has more RAM than both A and C, so B indeed has the most RAM.  
+    The proposition is therefore \textbf{true}.
+
+    \item Smartphone C has more ROM or a higher resolution camera than Smartphone B.
+
+    \textbf{Solution.}
+    ROM values: C has $64$ GB, B has $128$ GB, so C does \emph{not} have more ROM than B.  
+    Camera resolution: C has $8$ MP whereas B has $5$ MP, so C \emph{does} have a higher resolution camera.  
+    The statement is \emph{(more ROM)} $\lor$ \emph{(higher resolution camera)} $= F \lor T = T$.  
+    Hence the proposition is \textbf{true}.
+
+    \item Smartphone B has more RAM, more ROM, and a higher resolution camera than Smartphone A.
+
+    \textbf{Solution.}
+    Comparing B to A:
+    \begin{itemize}[label=$\circ$]
+        \item RAM: $16 > 8$ (B has more RAM) -- true.
+        \item ROM: $128 > 64$ (B has more ROM) -- true.
+        \item Camera: $5$ MP vs $12$ MP (B's camera resolution is lower than A's) -- false.
+    \end{itemize}
+    The proposition is a conjunction of the three comparisons, so it is
+    \[
+        T \land T \land F = F.
+    \]
+    Thus the proposition is \textbf{false}.
+
+    \item If Smartphone B has more RAM and more ROM than Smartphone C, then it also has a higher resolution camera.
+
+    \textbf{Solution.}
+    Antecedent: ``B has more RAM and more ROM than C'':
+    \[
+        16 > 4 \quad \text{and} \quad 128 > 64,
+    \]
+    which is true.  
+    Consequent: ``B has a higher resolution camera than C'':
+    \[
+        5 > 8
+    \]
+    is false.  
+    So the implication has the form $T \rightarrow F$, which is false.  
+    Therefore the proposition is \textbf{false}.
+
+    \item If Smartphone A has higher resolution camera than Smartphone B and Smartphone C, it has the most RAM of all the three smartphones.
+
+    \textbf{Solution.}
+    Antecedent: A's camera resolution is $12$ MP, B's is $5$ MP, and C's is $8$ MP.  
+    We have $12 > 5$ and $12 > 8$, so the antecedent is true.  
+    Consequent: ``A has the most RAM of all three smartphones'' would require
+    \[
+        8 > 16 \quad \text{and} \quad 8 > 4,
+    \]
+    which is false because B has more RAM than A.  
+    Hence the implication again has the form $T \rightarrow F$, which is false.  
+    The proposition is \textbf{false}.
+\end{enumerate}
+
+%------------------------------------------------------------
+\item Which of the following statement(s) is/are correct? Explain, for each of the statements, whether they are logically equivalent or not.
+\begin{enumerate}[label=(\alph*)]
+    \item $p \lor q \equiv q \lor p$.
+
+    \textbf{Solution.}
+    Disjunction is commutative: for every choice of truth values of $p$ and $q$, $p \lor q$ and $q \lor p$ have the same truth value.  
+    So the equivalence is \textbf{true}.
+
+    \item $p \leftrightarrow q \equiv \neg(p \rightarrow q) \land (\neg q \rightarrow p)$.
+
+    \textbf{Solution.}
+    Consider $p = T$ and $q = F$.
+    \[
+        p \leftrightarrow q = T \leftrightarrow F = F.
+    \]
+    On the other hand,
+    \[
+        p \rightarrow q = T \rightarrow F = F,\quad
+        \neg(p \rightarrow q) = T,
+    \]
+    and
+    \[
+        \neg q = T,\quad
+        (\neg q \rightarrow p) = T \rightarrow T = T,
+    \]
+    so
+    \[
+        \neg(p \rightarrow q) \land (\neg q \rightarrow p) = T \land T = T.
+    \]
+    The two sides have different truth values for this assignment, so they are \emph{not} logically equivalent.  
+    The stated equivalence is therefore \textbf{false}.
+
+    \item $p \lor q \equiv \neg p \rightarrow q$.
+
+    \textbf{Solution.}
+    We transform the implication:
+    \[
+        \neg p \rightarrow q \equiv \neg(\neg p) \lor q \equiv p \lor q.
+    \]
+    Thus $p \lor q$ and $\neg p \rightarrow q$ are logically equivalent, so the equivalence is \textbf{true}.
+\end{enumerate}
+
+%------------------------------------------------------------
+\item Find the converse, contrapositive, and inverse of the following statement:
+
+\emph{``When the customer’s insurance premium payment does not arrive by the deadline, an email reminder is sent.''}
+
+\textbf{Solution.}
+Let
+\[
+    p: \text{The customer’s insurance premium payment does not arrive by the deadline},\qquad
+    q: \text{An email reminder is sent}.
+\]
+The original statement is the implication $p \rightarrow q$.
+
+\begin{itemize}[label=$\bullet$]
+    \item \textbf{Converse:} $q \rightarrow p$.  
+    ``If an email reminder is sent, then the customer’s insurance premium payment does not arrive by the deadline.''
+
+    \item \textbf{Contrapositive:} $\neg q \rightarrow \neg p$.  
+    ``If an email reminder is not sent, then the customer’s insurance premium payment arrives by the deadline.''
+
+    \item \textbf{Inverse:} $\neg p \rightarrow \neg q$.  
+    ``If the customer’s insurance premium payment arrives by the deadline, then an email reminder is not sent.''
+\end{itemize}
+
+%------------------------------------------------------------
+\item Determine whether $\neg q \land (p \rightarrow q) \rightarrow \neg p$ is a tautology.
+
+\textbf{Solution.}
+We transform the expression using logical equivalences.
+\begin{align*}
+    \neg q \land (p \rightarrow q) \rightarrow \neg p
+    &\equiv \neg q \land (\neg p \lor q) \rightarrow \neg p && \text{since }(p \rightarrow q) \equiv \neg p \lor q, \\
+    &\equiv \bigl((\neg q \land \neg p) \lor (\neg q \land q)\bigr) \rightarrow \neg p && \text{distributivity}, \\
+    &\equiv (\neg q \land \neg p) \rightarrow \neg p && \text{since }(\neg q \land q) \text{ is always false}, \\
+    &\equiv \neg(\neg q \land \neg p) \lor \neg p && \text{because }(A \rightarrow B) \equiv \neg A \lor B, \\
+    &\equiv (q \lor p) \lor \neg p && \text{De Morgan and double negation}, \\
+    &\equiv q \lor (p \lor \neg p) && \text{associativity and commutativity}, \\
+    &\equiv q \lor \text{T} && \text{since }(p \lor \neg p) \text{ is a tautology}, \\
+    &\equiv \text{T}.
+\end{align*}
+As the expression simplifies to a statement that is always true, 
+$\neg q \land (p \rightarrow q) \rightarrow \neg p$ is a \textbf{tautology}.
+
+\end{enumerate}
+
+\end{document}

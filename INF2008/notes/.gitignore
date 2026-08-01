@@ -1,0 +1,12 @@
+# macOS
+.DS_Store
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Python
+__pycache__/
+*.py[cod]
+
+# Local lecture materials not included for copyright reasons
+lectures/

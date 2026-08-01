@@ -1,0 +1,9 @@
+Database Name: Sample-CMS
+Authors: Assistant Prof Oran Zane Devilly
+
+Table Name: StudentRecords
+ID	Name	Programme	Mark
+2501234	Joshua Chen	Software Engineering	70.50
+2501234	Isaac Teo	Computer Science	63.40
+2504567	John Levoy	Digital Supply Chain	85.90
+2500619	Hasif	CS	67.00

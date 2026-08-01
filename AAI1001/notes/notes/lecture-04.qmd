@@ -1,0 +1,341 @@
+---
+title: "Lecture 04: Tidyverse Join-Table Queries" 
+author: "Timothy Chia"
+date: "Tuesday May 26, 2026"
+format:
+  html:
+    toc: true
+    toc-depth: 4
+    number-sections: true
+    embed-resources: true
+---
+
+```{r}
+#| message: false
+library(tidyverse)
+```
+
+# Introduction
+
+```{r}
+people <- read_csv("../data/titanic/people.csv", show_col_types = FALSE)
+tickets <- read_csv("../data/titanic/tickets.csv", show_col_types = FALSE)
+lifeboats <- read_csv("../data/titanic/lifeboats.csv", show_col_types = FALSE)
+
+shareholders <- read_csv("../data/investments/shareholders.csv", show_col_types = FALSE)
+traded_companies <- read_csv("../data/investments/traded_companies.csv", show_col_types = FALSE)
+products <- read_csv("../data/investments/products.csv", show_col_types = FALSE)
+shares <- read_csv("../data/investments/shares.csv", show_col_types = FALSE)
+dividends_per_share <- read_csv("../data/investments/dividends_per_share.csv", show_col_types = FALSE)
+```
+
+# Overview of Join-Table Queries 
+
+Join-table queries are useful when the information we need is spread across multiple related tables. Instead of storing everything in one large table, datasets are often split into smaller tables that are connected by one or more **keys**.
+
+A key is a column, or a combination of columns, used to match rows across tables. For example, shareholder IDs can be used to connect shareholder information with share ownership records, while company IDs can be used to connect company information with products, shares, or dividends.
+
+```{r}
+shareholders |>
+  select(sh_holder_id, sh_holder_name, country)
+
+traded_companies |>
+  select(comp_id, comp_name, country)
+
+shares
+```
+
+In this lesson, we will mainly use two groups of `dplyr` joins:
+
+- **Mutating joins**, which add columns from one table to another.
+- **Filtering joins**, which keep or remove rows based on whether matching rows exist in another table.
+
+::: {.callout-note}
+More information about `dplyr`'s mutating and filtering joins can be found [here](https://dplyr.tidyverse.org/reference/mutate-joins.html) and [here](https://dplyr.tidyverse.org/reference/filter-joins.html)
+:::
+
+# Take a Look at the Data Tables
+
+```{r}
+shareholders |>
+  head(5)
+
+traded_companies|>
+  head(5)
+
+products |>
+  head(5)
+
+shares |>
+  head(5)
+
+dividends_per_share |>
+  head(5)
+```
+
+# Mutating Joins 
+
+Mutating joins add columns from table `y` (the second table) to table `x` (the first table), matching observations based on the keys. There are four mutating joins, i.e., one inner join and three outer joins.
+
+- `inner_join()` only keeps observations from `x` that have a matching key in `y`. Unmatched rows in either table are not included in the result.
+- Outer joins. The three outer joins keep observations that appear in **at least one** of the data frames:
+  - `left_join()` keeps all observations in `x`.
+  - `right_join()` keeps all observations in `y`.
+  - `full_join()` keeps all observations in `x` and `y`.
+
+## Inner Join
+
+An inner join is useful when we only want rows that have matching records in both tables. Rows without a match in either table are dropped from the result.
+
+### One-to-one
+
+Task: Find traded companies that are also shareholders, and list the shareholder names, shareholder ID, and company ID.
+
+Here, the matching columns have different names in the two tables. The expression `join_by(sh_holder_name == comp_name)` tells R to match shareholder names with company names.
+
+```{r}
+inner_join(
+  shareholders,
+  traded_companies,
+  join_by(sh_holder_name == comp_name),
+  relationship = "one-to-one"
+)
+```
+
+To keep only the columns needed for the task:
+
+```{r}
+inner_join(
+  shareholders,
+  traded_companies,
+  join_by(sh_holder_name == comp_name),
+  relationship = "one-to-one"
+) |> select(sh_holder_id, sh_holder_name, comp_id)
+```
+
+### One-to-many
+
+Task: Find traded companies that have products and list the company name, company ID, and product name.
+
+In this example, one company can have multiple products. As a result, a company may appear more than once in the joined table.
+
+```{r}
+inner_join(
+  traded_companies,
+  products,
+  join_by(comp_id == comp_id),
+  relationship = "one-to-many"
+) |> select(comp_name, comp_id, prod_name) 
+```
+
+::: {.callout-tip}
+One-to-many relationship will generate "duplicate" rows, while mutating joins generally create new columns but do not create new rows.
+:::
+
+### Many-to-many
+
+Task: find shareholders and traded companies that are in the same country, and list the country, shareholder name, and company name.
+
+A many-to-many join can create several combinations of rows. If multiple shareholders and multiple companies are from the same country, each matching shareholder-company pair appears in the result.
+
+```{r}
+inner_join(
+  shareholders,
+  traded_companies,
+  join_by(country == country),
+  relationship="many-to-many"
+) |> select(country, sh_holder_name, comp_name)
+```
+
+## Outer Join 
+
+### Left Join 
+
+Task: Add into `shareholders` the corresponding traded companies names in shareholder's countries, and list the country, shareholder name, and company name.
+
+```{r}
+left_join(
+  shareholders,
+  traded_companies,
+  join_by(country == country),
+  relationship="many-to-many"
+) |> select(country, sh_holder_name, comp_name) 
+```
+
+The result keeps all rows from `shareholders`. If a shareholder's country has no matching company, the company-related columns are filled with `NA`.
+
+### Right Join 
+
+Task: Add into `traded_companies` the corresponding shareholder names in the company's countries, and list the country, shareholder name, and company name.
+
+```{r}
+right_join(
+  shareholders,
+  traded_companies,
+  join_by(country),
+  relationship="many-to-many"
+) |> select(country, sh_holder_name, comp_name)
+```
+
+The result keeps all rows from `traded_companies`. If a company's country has no matching shareholder, the shareholder-related columns are filled with `NA`.
+
+### Full Join 
+
+Task: Combine `traded_companies` into a bigger table. List the country, shareholder name, and company name.
+
+```{r}
+full_join(
+  shareholders,
+  traded_companies,
+  join_by(country),
+  relationship="many-to-many"
+) |> select(country, sh_holder_name, comp_name)
+```
+
+The result keeps rows from both tables. This means unmatched shareholders and unmatched traded companies are both included.
+
+# Filter Joins
+
+Filtering joins filter rows from `x` based on the presence or absence of matches in `y`:
+
+- `semi_join()` returns all rows from x __with__ a match in `y`.
+- `anti_join()` returns all rows from x __without__ a match in `y`.
+
+## Semi Join
+
+A semi join keeps rows from `x` that have at least one match in `y`. It is useful when we want to filter one table using another table, but do not need to add any columns from the second table.
+
+```{r}
+semi_join(
+  shareholders,
+  traded_companies,
+  join_by(country),
+) |> select(sh_holder_name, country)
+```
+
+## Anti Join
+
+An anti join keeps rows from `x` that do not have a match in `y`. It is useful for finding unmatched records, checking data quality, or identifying missing relationships between tables.
+
+```{r}
+anti_join(
+  shareholders,
+  traded_companies,
+  join_by(country),
+) |> select(sh_holder_name, country)
+```
+
+# Summary
+
+- Join-table queries help us work with related data stored across multiple tables.
+- Joins use keys to match rows between tables.
+- Mutating joins add columns from one table to another:
+  - `inner_join()` keeps only matching rows.
+  - `left_join()` keeps all rows from the first table, `x`.
+  - `right_join()` keeps all rows from the second table, `y`.
+  - `full_join()` keeps all rows from both tables.
+- Filtering joins keep or remove rows without adding columns:
+  - `semi_join()` keeps rows in `x` that have a match in `y`.
+  - `anti_join()` keeps rows in `x` that do not have a match in `y`.
+- The `relationship` argument is useful for making the expected table relationship explicit.
+- After joining tables, it is good practice to check the join keys, row counts, and any `NA` values introduced by unmatched rows.
+
+---
+
+# Exercises
+
+## Exercise 1: Outer Joins
+
+Run the four code chunks below and check the results. Are some of the equivalent or different? Why?
+
+```{r}
+left_join(
+  traded_companies,
+  shareholders,
+  join_by(country),
+  relationship="many-to-many"
+)
+```
+
+```{r}
+right_join(
+  shareholders,
+  traded_companies,
+  join_by(country),
+  relationship="many-to-many"
+)
+```
+
+```{r}
+full_join(
+  shareholders,
+  traded_companies,
+  join_by(country),
+  relationship="many-to-many"
+)
+```
+
+```{r}
+full_join(
+  traded_companies,
+  shareholders,
+  join_by(country),
+  relationship="many-to-many"
+)
+```
+
+## Exercise 2: Additional Questions
+
+Create a table showing share holding information between shareholders and traded companies, including columns `sh_holder_name`, `sh_holder_id`, `comp_name`, `comp_id`, and `share_qty`.
+
+```{r}
+# your code here
+```
+
+Create a table showing dividend information, including columns `sh_holder_name`, `sh_holder_id`, `comp_name`, `comp_id`, and `dividend`, ranked by the total dividend amount in descending order.
+
+```{r}
+# your code here
+```
+
+Create a table showing the number of passengers on each lifeboat, including columns `boat_id`, `boat_name`, and `passenger_count`.
+
+```{r}
+# your code here
+```
+
+---
+
+# Class Quiz
+
+For the joining process below, which of the statements is true? Enter a single letter in your Dropbox submission.
+
+```{r}
+#| eval: false
+employees <- tibble(
+  emp_id = c(101, 102, 102),
+  name   = c("Bob", "Alice", "Alice")
+)
+
+access_cards <- tibble(
+  card_id = c(500, 501, 502),
+  emp_id  = c(101, 103, 104)
+)
+
+left_join(
+  employees,
+  access_cards,
+  by = "emp_id",
+  relationship = "one-to-one"
+)
+```
+
+Choose one only:
+
+- [ ] Warning: dplyr warns that rows 2 and 3 of x match the same key, but the join produces 3 rows. 
+
+- [ ] Error: dplyr stops because "Alice" (id 102) has no match in access_cards, violating the one-to-one constraint. 
+
+- [ ] C Success: The code runs without error or warning because "Alice" (102) is unmatched, so no multiple-match violation actually occurs. 
+
+- [x] Error: dplyr stops because the emp_id column in employees is not unique, which is required for a one-to-one relationship.

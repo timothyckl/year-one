@@ -1,0 +1,460 @@
+\documentclass[12pt]{scrartcl}
+
+\usepackage{amsmath,amssymb}
+\usepackage{fullpage}
+\usepackage{enumitem}
+\usepackage{hyperref}
+
+\setlength{\parindent}{0pt}
+
+\begin{document}
+
+\begin{center}
+	\hrule
+	\vspace{0.4cm}
+	{\textbf{\large INF1003 Tutorial 6}}\\[0.2cm]
+\end{center}
+
+\textbf{Name:} Timothy Chia\hspace{\fill} \textbf{Topic:} Rules of Inference\\
+\textbf{Student ID:} 2501530 \hspace{\fill} \textbf{Due Date:} 12/10/2025, 10:00 PM\\
+
+\hrule
+
+\begin{enumerate}[label=\textbf{\arabic*.}]
+
+	%------------------------------------------------------------
+	\item For each of the arguments below, define the propositions and state which rule of
+	      inference is used to conclude when the premises are true. If no conclusion can be
+	      drawn, explain why.
+
+	      \begin{enumerate}[label=(\alph*)]
+
+		      \item \emph{If I work all night on this homework, then I can answer all the exercises.
+			            If I answer all the exercises, I will understand the material. Therefore, if I work all
+			            night on this homework, then I will understand the material.}
+
+		            \textbf{Propositions.}
+		            \[
+			            \begin{aligned}
+				            p & : \text{I work all night on this homework}, \\
+				            q & : \text{I can answer all the exercises},    \\
+				            r & : \text{I will understand the material}.
+			            \end{aligned}
+		            \]
+
+		            \textbf{Formal argument.}
+		            \begin{align*}
+			            1.\; & p \rightarrow q &  & \text{Premise}                                        \\
+			            2.\; & q \rightarrow r &  & \text{Premise}                                        \\
+			            3.\; & p \rightarrow r &  & \text{From 1 and 2 by \emph{hypothetical syllogism}.}
+		            \end{align*}
+
+		            So the rule of inference used is \textbf{hypothetical syllogism}.
+
+		      \item \emph{If $n$ is a real number such that $n>3$, then $2n>6$.
+			            Suppose that $n \ge 2$. Can you conclude $2n>6$?}
+
+		            \textbf{Propositions.}
+		            \[
+			            p: n>3,\qquad
+			            q: 2n>6,\qquad
+			            r: n\ge 2.
+			            \begin{aligned}
+			            \end{aligned}
+		            \]
+
+		            \textbf{Given.}
+		            \[
+			            1.\; p \rightarrow q,\qquad
+			            2.\; r.
+		            \]
+
+		            To use modus ponens we would need $p$ as a premise (``$n>3$''),
+		            but we only know $r$ (``$n\ge 2$'').
+		            From $n\ge 2$ we \emph{cannot} deduce that $n>3$.
+
+		            For example, if $n=2.5$ then $n\ge 2$ is true, but $n>3$ is false
+		            and $2n = 5$ is not greater than $6$.
+
+		            Hence there is no valid rule of inference that lets us conclude $q$ from $1$ and $2$,
+		            and the answer is: \textbf{cannot conclude}; no valid inference rule applies.
+
+		      \item \emph{If it snows today, the university will close. The university is not
+			            closed today. Therefore, it did not snow today.}
+
+		            \textbf{Propositions.}
+		            \[
+			            p: \text{It snows today},\qquad
+			            q: \text{The university will close today}.
+		            \]
+
+		            \textbf{Formal argument.}
+		            \begin{align*}
+			            1.\; & p \rightarrow q &  & \text{Premise}                               \\
+			            2.\; & \neg q          &  & \text{Premise}                               \\
+			            3.\; & \neg p          &  & \text{From 1 and 2 by \emph{modus tollens}.}
+		            \end{align*}
+
+		            The rule used is \textbf{modus tollens}.
+
+		      \item \emph{I will go swimming, or I will stay in the sun too long.
+			            I did not stay in the sun too long. Therefore, I went swimming.}
+
+		            \textbf{Propositions.}
+		            \[
+			            p: \text{I will go swimming},\qquad
+			            q: \text{I will stay in the sun too long}.
+		            \]
+
+		            \textbf{Formal argument.}
+		            \begin{align*}
+			            1.\; & p \lor q &  & \text{Premise}                                       \\
+			            2.\; & \neg q   &  & \text{Premise}                                       \\
+			            3.\; & p        &  & \text{From 1 and 2 by \emph{disjunctive syllogism}.}
+		            \end{align*}
+
+		            The rule used is \textbf{disjunctive syllogism}.
+
+		      \item \emph{If $n$ is a real number such that $n>2$, then $n^{2}>4$.
+			            Suppose that $n^{2}\le 4$, then $n\le 2$.}
+
+		            \textbf{Propositions.}
+		            \[
+			            p: n>2,\qquad
+			            q: n^{2}>4.
+		            \]
+
+		            \textbf{Formal argument.}
+		            \begin{align*}
+			            1.\; & p \rightarrow q &  & \text{Premise}                                                      \\
+			            2.\; & \neg q          &  & \text{Premise (since }n^{2}\le 4\text{ means }\neg(n^{2}>4)\text{)} \\
+			            3.\; & \neg p          &  & \text{From 1 and 2 by \emph{modus tollens}.}
+		            \end{align*}
+		            The conclusion $\neg p$ is $n\le 2$.
+		            The rule used is \textbf{modus tollens}.
+
+	      \end{enumerate}
+
+	      %------------------------------------------------------------
+	      \newpage
+	\item Use rules of inference to show that if the premises (a–c) are true, then they imply the
+	      conclusion \emph{``It rained''}. Define propositions clearly.
+
+	      The premises are:
+	      \begin{itemize}
+		      \item[(a)] If it does not rain or if it is foggy, then the sailing race will be held and the
+		            lifesaving demonstration will go on.
+		      \item[(b)] If the sailing race is held, then the trophy will be awarded.
+		      \item[(c)] The trophy was not awarded.
+	      \end{itemize}
+
+	      \textbf{Propositions.}
+	      \[
+		      \begin{aligned}
+			      % p: \text{It rained} \\
+			      % q: \text{It is foggy} \\
+			      % r: \text{The sailing race will be held} \\
+			      % s: \text{The lifesaving demonstration will go on} \\
+			      % t: \text{The trophy will be awarded}.
+			      p & : \text{It rained}                               \\
+			      q & : \text{It is foggy}                             \\
+			      r & : \text{The sailing race will be held}           \\
+			      s & : \text{The lifesaving demonstration will go on} \\
+			      t & : \text{The trophy will be awarded}.
+		      \end{aligned}
+	      \]
+
+	      \textbf{Formal proof.}
+	      \begin{align*}
+		      1.\;  & (\neg p \lor q) \rightarrow (r \land s)              &                            & \text{Premise (a)}                    \\
+		      2.\;  & r \rightarrow t                                      &                            & \text{Premise (b)}                    \\
+		      3.\;  & \neg t                                               &                            & \text{Premise (c)}                    \\[4pt]
+		      4.\;  & \neg r                                               &                            & \text{From 2 and 3 by modus tollens}  \\[4pt]
+		      5.\;  & (r \land s) \rightarrow r                            &                            & \text{Tautology (simplification)}     \\
+		      6.\;  & \neg(r \land s)                                      &                            & \text{From 4 and 5 by modus tollens}  \\[4pt]
+		      7.\;  & \neg(r \land s) \rightarrow \neg(\neg p \lor q)
+		            &                                                      & \text{Contrapositive of 1}                                         \\
+		      8.\;  & \neg(\neg p \lor q)                                  &                            & \text{From 6 and 7 by modus ponens}   \\[4pt]
+		      9.\;  & \neg(\neg p \lor q) \equiv (\neg\neg p \land \neg q)
+		            &                                                      & \text{De Morgan’s law}                                             \\
+		      10.\; & p \land \neg q                                       &                            & \text{From 8 and 9 (double negation)} \\
+		      11.\; & p                                                    &                            & \text{From 10 by simplification}
+	      \end{align*}
+
+	      Thus, from the premises we can conclude that \textbf{it rained}.
+
+	      %------------------------------------------------------------
+	      \newpage
+	\item Use the rule of resolution to show that premises (a–c) below imply that
+	      \emph{``Alice does not get wet''}. Define propositions clearly.
+
+	      \begin{itemize}
+		      \item[(a)] It is not raining or Alice has her umbrella.
+		      \item[(b)] If Alice has her umbrella, then she does not get wet.
+		      \item[(c)] It is raining or Alice does not get wet.
+	      \end{itemize}
+
+	      \textbf{Propositions.}
+	      \[
+		      r: \text{It is raining},\quad
+		      u: \text{Alice has her umbrella},\quad
+		      w: \text{Alice gets wet}.
+	      \]
+
+	      \textbf{Rewrite premises in disjunctive form.}
+	      \begin{align*}
+		       & \text{(a)}\quad \neg r \lor u.                                  \\
+		       & \text{(b)}\quad u \rightarrow \neg w \equiv \neg u \lor \neg w. \\
+		       & \text{(c)}\quad r \lor \neg w.
+	      \end{align*}
+
+	      \textbf{Resolution steps.}
+	      \begin{align*}
+		      1.\; & \neg r \lor u      &                               & \text{From (a)} \\
+		      2.\; & \neg u \lor \neg w &                               & \text{From (b)} \\
+		      3.\; & r \lor \neg w      &                               & \text{From (c)} \\[4pt]
+		      4.\; & \neg r \lor \neg w
+		           &                    & \text{Resolve 1 and 2 on $u$}                   \\
+		      5.\; & \neg w \lor \neg w
+		           &                    & \text{Resolve 3 and 4 on $r$}                   \\
+		      6.\; & \neg w
+		           &                    & \text{Idempotent law on 5}
+	      \end{align*}
+
+	      Therefore we conclude that \textbf{Alice does not get wet}.
+
+	      %------------------------------------------------------------
+	      \newpage
+	\item Consider the premises:
+	      \begin{align*}
+		      \text{(a)}\; & (p \lor q) \land (\neg p \rightarrow \neg q), \\
+		      \text{(b)}\; & p \rightarrow r.
+	      \end{align*}
+	      Use known rules of inference to show that they imply the conclusion $r \lor t$.
+	      Use logical equivalences where necessary.
+
+	      \textbf{Proof.}
+	      \begin{align*}
+		      1.\;  & (p \lor q) \land (\neg p \rightarrow \neg q)     &                                             & \text{Premise}                               \\
+		      2.\;  & p \lor q                                         &                                             & \text{From 1 by simplification}              \\
+		      3.\;  & \neg p \rightarrow \neg q                        &                                             & \text{From 1 by simplification}              \\[4pt]
+		      4.\;  & \neg p \rightarrow \neg q \equiv q \rightarrow p
+		            &                                                  & \text{Contrapositive / logical equivalence}                                                \\
+		      5.\;  & q \rightarrow p \equiv \neg q \lor p
+		            &                                                  & \text{Implication equivalence}                                                             \\[4pt]
+		      6.\;  & p \lor q                                         &                                             & \text{From 2}                                \\
+		      7.\;  & \neg q \lor p                                    &                                             & \text{From 5}                                \\
+		      8.\;  & p \lor p                                         &                                             & \text{Resolution on 6 and 7 (eliminate $q$)} \\
+		      9.\;  & p                                                &                                             & \text{Idempotent law on 8}                   \\[4pt]
+		      10.\; & p \rightarrow r                                  &                                             & \text{Premise (b)}                           \\
+		      11.\; & r                                                &                                             & \text{From 9 and 10 by modus ponens}         \\
+		      12.\; & r \lor t                                         &                                             & \text{From 11 by addition}
+	      \end{align*}
+
+	      Hence the premises imply the conclusion $r \lor t$.
+
+	      %------------------------------------------------------------
+	\item Consider the premises:
+	      \begin{align*}
+		      \text{(a)}\; & (p \rightarrow q) \land (r \rightarrow s), \\
+		      \text{(b)}\; & p,                                         \\
+		      \text{(c)}\; & \neg s.
+	      \end{align*}
+	      Use rules of inference and logical equivalences to show that they imply $q \land \neg r$.
+
+	      \textbf{Proof.}
+	      \begin{align*}
+		      1.\; & (p \rightarrow q) \land (r \rightarrow s) &  & \text{Premise}                       \\
+		      2.\; & p \rightarrow q                           &  & \text{From 1 by simplification}      \\
+		      3.\; & r \rightarrow s                           &  & \text{From 1 by simplification}      \\
+		      4.\; & p                                         &  & \text{Premise (b)}                   \\
+		      5.\; & \neg s                                    &  & \text{Premise (c)}                   \\[4pt]
+		      6.\; & q                                         &  & \text{From 2 and 4 by modus ponens}  \\
+		      7.\; & \neg r                                    &  & \text{From 3 and 5 by modus tollens} \\
+		      8.\; & q \land \neg r                            &  & \text{From 6 and 7 by conjunction}
+	      \end{align*}
+
+	      Thus the premises imply $q \land \neg r$.
+
+	      %------------------------------------------------------------
+	\item For each of the arguments (a–d) below, determine whether the premises imply the
+	      conclusion. For valid arguments, justify using predicates and rules of inference.
+	      For invalid arguments, explain why (for example, by giving a counterexample).
+
+	      \begin{enumerate}[label=(\alph*)]
+
+		      \item \emph{``Every student in this class passed the first class test'' and
+			            ``Alice is a student in this class'' imply the conclusion
+			            ``Alice passed the first class test''.}
+
+		            \textbf{Predicates.}
+		            Domain: all people.
+		            \[
+			            S(x): x \text{ is a student in this class},\qquad
+			            P(x): x \text{ passed the first class test}.
+		            \]
+
+		            \textbf{Formal argument.}
+		            \begin{align*}
+			            1.\; & \forall x\,(S(x) \rightarrow P(x))          &                                          & \text{Premise} \\
+			            2.\; & S(\text{Alice})                             &                                          & \text{Premise} \\
+			            3.\; & S(\text{Alice}) \rightarrow P(\text{Alice})
+			                 &                                             & \text{From 1 by universal instantiation}                  \\
+			            4.\; & P(\text{Alice})
+			                 &                                             & \text{From 2 and 3 by modus ponens}
+		            \end{align*}
+
+		            So the argument is \textbf{valid}.
+
+		      \item \emph{``No juniors were on campus on the weekend'' and
+			            ``Some ICT students are not juniors'' imply the conclusion
+			            ``Some ICT students were on campus on the weekend''.}
+
+		            \textbf{Predicates.}
+		            Domain: all ICT students.
+		            \[
+			            J(x): x \text{ is a junior},\qquad
+			            C(x): x \text{ was on campus on the weekend}.
+		            \]
+
+		            \textbf{Formal premises.}
+		            \begin{align*}
+			            1.\; & \forall x\,(J(x) \rightarrow \neg C(x))
+			                 &                                         & \text{No juniors were on campus.}         \\
+			            2.\; & \exists x\,(\neg J(x))
+			                 &                                         & \text{Some ICT students are not juniors.}
+		            \end{align*}
+
+		            The desired conclusion is
+		            \[
+			            3.\; \exists x\, C(x).
+		            \]
+
+		            There is no rule of inference that lets us deduce $C(x)$ (being on campus)
+		            merely from $\neg J(x)$ (not being a junior).  For instance, both premises
+		            are true in a situation where \emph{no} students were on campus at the weekend.
+		            In that case the conclusion is false.
+
+		            Hence the argument is \textbf{not valid}.
+
+		            \newpage
+		      \item \emph{All parrots like fruit. My pet bird is not a parrot.
+			            Therefore, my pet bird does not like fruit.}
+
+		            \textbf{Predicates.}
+		            Domain: all birds.
+		            \[
+			            P(x): x \text{ is a parrot},\qquad
+			            F(x): x \text{ likes fruit}.
+		            \]
+
+		            \textbf{Formal premises.}
+		            \begin{align*}
+			            1.\; & \forall x\,(P(x) \rightarrow F(x)) &  & \text{All parrots like fruit}                 \\
+			            2.\; & \neg P(b)                          &  & \text{$b$ is my pet bird and is not a parrot}
+		            \end{align*}
+
+		            Desired conclusion: $\neg F(b)$.
+
+		            But from $P(x) \rightarrow F(x)$ and $\neg P(b)$ we cannot infer $\neg F(b)$;
+		            this would be the fallacy of \emph{denying the antecedent}.  It is entirely
+		            possible that $b$ likes fruit even though it is not a parrot.
+
+		            Therefore this argument is \textbf{not valid}.
+
+		      \item \emph{Everyone who eats granola every day is healthy.
+			            Linda is not healthy. Therefore, Linda does not eat granola every day.}
+
+		            \textbf{Predicates.}
+		            Domain: all people.
+		            \[
+			            G(x): x \text{ eats granola every day},\qquad
+			            H(x): x \text{ is healthy}.
+		            \]
+
+		            \textbf{Formal argument.}
+		            \begin{align*}
+			            1.\; & \forall x\,(G(x) \rightarrow H(x))
+			                 &                                             & \text{Premise}                           \\
+			            2.\; & \neg H(\text{Linda})
+			                 &                                             & \text{Premise}                           \\
+			            3.\; & G(\text{Linda}) \rightarrow H(\text{Linda})
+			                 &                                             & \text{From 1 by universal instantiation} \\
+			            4.\; & \neg G(\text{Linda})
+			                 &                                             & \text{From 2 and 3 by modus tollens}
+		            \end{align*}
+
+		            Thus the argument is \textbf{valid}.
+
+	      \end{enumerate}
+
+	      %------------------------------------------------------------
+	      \newpage
+	\item Provided below is a formal proof that supposedly shows that if
+	      $\exists x\,P(x) \land \exists x\,Q(x)$ is true, then $\exists x\,(P(x) \land Q(x))$ is true.
+	      This implication is actually \emph{not} valid.
+
+	      For each step in the argument, state whether the step is valid or not.  If it is not valid,
+	      briefly explain why.
+
+	      \medskip
+
+	      \begin{tabular}{r l l}
+		      1. & $\exists x\,P(x) \land \exists x\,Q(x)$ & Premise                             \\
+		      2. & $\forall x\,P(x)$                       & Simplification from (1)             \\
+		      3. & $P(c)$                                  & Universal instantiation from (2)    \\
+		      4. & $Q(x)$                                  & Simplification from (1)             \\
+		      5. & $Q(c)$                                  & Existential generalisation from (4) \\
+		      6. & $P(c) \land Q(c)$                       & Simplification from (3) and (5)     \\
+		      7. & $\exists x\,(P(x) \land Q(x))$          & Existential generalisation from (6)
+	      \end{tabular}
+
+	      \medskip
+
+	      \textbf{Step-by-step analysis.}
+
+	      \begin{itemize}
+		      \item \textbf{Step 1.} This is just the premise, so it is \textbf{fine}.
+
+		      \item \textbf{Step 2.} \emph{Invalid.}
+		            From $\exists x\,P(x) \land \exists x\,Q(x)$ we may use simplification to obtain
+		            $\exists x\,P(x)$ or $\exists x\,Q(x)$, but \emph{not} $\forall x\,P(x)$.
+		            The quantifier has been incorrectly changed from existential to universal.
+
+		      \item \textbf{Step 3.} \emph{Invalid as used here.}
+		            The rule that fits $\exists x\,P(x)$ is \emph{existential instantiation},
+		            not universal instantiation.  Properly, from $\exists x\,P(x)$ we may infer $P(c)$
+		            for some fresh constant $c$, but only if line 2 were $\exists x\,P(x)$.
+		            As written, it is using the wrong rule on an incorrectly obtained line.
+
+		      \item \textbf{Step 4.} \emph{Invalid.}
+		            Again, simplification from line 1 gives $\exists x\,Q(x)$, not $Q(x)$
+		            with a free variable.  The expression $Q(x)$ would say that \emph{every}
+		            element satisfies $Q$, which is much stronger than the premise.
+
+		      \item \textbf{Step 5.} \emph{Invalid.}
+		            Existential generalisation goes from a statement about a specific element,
+		            such as $Q(c)$, to $\exists x\,Q(x)$, not the other way round.
+		            Here the direction of the rule is reversed.
+
+		      \item \textbf{Step 6.} \emph{Invalid.}
+		            Even if we had correctly derived $P(c_{1})$ from $\exists x\,P(x)$
+		            and $Q(c_{2})$ from $\exists x\,Q(x)$, the constants $c_{1}$ and $c_{2}$
+		            need not be the same individual.  We cannot simply combine them into
+		            $P(c) \land Q(c)$ with a single constant.
+
+		      \item \textbf{Step 7.} \emph{Invalid as a consequence of earlier errors.}
+		            From a correctly obtained $P(c) \land Q(c)$ it would be valid to infer
+		            $\exists x\,(P(x) \land Q(x))$ by existential generalisation.  However,
+		            since step 6 is not justified, this final step does not yield a valid
+		            conclusion for the original premises.
+	      \end{itemize}
+
+	      \medskip
+	      Overall, the argument fails because $\exists x\,P(x)$ and $\exists x\,Q(x)$
+	      may be satisfied by \emph{different} elements; there need not be a single
+	      element that makes both $P$ and $Q$ true.
+
+\end{enumerate}
+
+\end{document}

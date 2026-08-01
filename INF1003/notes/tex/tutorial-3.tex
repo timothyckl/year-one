@@ -1,0 +1,450 @@
+\documentclass[12pt]{scrartcl}
+
+\usepackage{amsmath,amssymb}
+\usepackage{fullpage}
+\usepackage{enumitem}
+\usepackage{hyperref}
+
+\setlength{\parindent}{0pt}
+
+\begin{document}
+
+\begin{center}
+	\hrule
+	\vspace{0.4cm}
+	{\textbf{\large INF1003 Tutorial 3}}\\[0.2cm]
+\end{center}
+
+\textbf{Name:} Timothy Chia\hspace{\fill} \textbf{Topic:} Combinatorics\\
+\textbf{Student ID:} 2501530 \hspace{\fill} \textbf{Due Date:} 21st September 2025, 10:00 PM\\
+
+\hrule
+
+\begin{enumerate}[label=\textbf{\arabic*.}]
+
+	%------------------------------------------------------------
+	\item How many ways can a photographer in a wedding arrange 5 people in a row from a group of 10
+	      people, where the bride and the groom are among these 10 people, if
+	      \begin{enumerate}[label=(\alph*)]
+		      \item the bride must be in the picture?
+		      \item both the bride and groom must be in the picture?
+		      \item exactly one of the bride or the groom is in the picture?
+	      \end{enumerate}
+
+	      \textbf{Solution.}
+
+	      In all cases we are forming an ordered line of 5 distinct people.
+
+	      \begin{enumerate}[label=(\alph*)]
+
+		      \item \emph{The bride must be in the picture.}
+
+		            Fix the bride to be included. We then need to choose 4 more people from the remaining 9.
+
+		            \[
+			            \binom{9}{4} \text{ ways to choose the other 4 people.}
+		            \]
+
+		            Once 5 people are chosen, we can arrange them in a row in \(5!\) ways. Hence
+		            \[
+			            \binom{9}{4} \cdot 5!
+			            = 126 \cdot 120
+			            = 15120.
+		            \]
+
+		      \item \emph{Both bride and groom must be in the picture.}
+
+		            Fix both bride and groom to be included. We then choose 3 more people from the other 8.
+
+		            \[
+			            \binom{8}{3} \text{ ways to choose the remaining 3 people.}
+		            \]
+
+		            Arrange the 5 chosen people in \(5!\) ways:
+		            \[
+			            \binom{8}{3} \cdot 5!
+			            = 56 \cdot 120
+			            = 6720.
+		            \]
+
+		      \item \emph{Exactly one of bride or groom is in the picture.}
+
+		            There are two symmetric cases:
+
+		            \begin{itemize}
+			            \item Case 1: Bride in, groom out.
+			            \item Case 2: Groom in, bride out.
+		            \end{itemize}
+
+		            Consider Case 1: include the bride, exclude the groom. We then choose 4 more from the remaining 8 people:
+		            \[
+			            \binom{8}{4} \text{ ways to choose the other 4 people.}
+		            \]
+		            Arrange 5 people in \(5!\) ways, giving
+		            \[
+			            \binom{8}{4} \cdot 5!.
+		            \]
+
+		            Case 2 gives the same number of arrangements, so the total is
+		            \[
+			            2 \times \binom{8}{4} \cdot 5!
+			            = 2 \times 70 \times 120
+			            = 16800.
+		            \]
+
+	      \end{enumerate}
+
+	      \vspace{0.4cm}
+
+	      %------------------------------------------------------------
+	\item A bit string is a string of bits, where each bit can take a value of either 0 or 1. How many bit
+	      strings of length 10
+	      \begin{enumerate}[label=(\alph*)]
+		      \item start with 1 and end with 1?
+		      \item contain exactly four 1s?
+		      \item contain at most four 1s?
+		      \item contain at least four 1s?
+	      \end{enumerate}
+
+	      \textbf{Solution.}
+
+	      \begin{enumerate}[label=(\alph*)]
+
+		      \item \emph{Start with 1 and end with 1.}
+
+		            Positions 1 and 10 are fixed as 1. The remaining 8 positions (2–9) can be any bits.
+
+		            Each of those 8 positions has 2 choices (0 or 1), so
+		            \[
+			            2^8 = 256
+		            \]
+		            such bit strings.
+
+		      \item \emph{Contain exactly four 1s.}
+
+		            We need to choose which 4 of the 10 positions contain 1s. The remaining 6 automatically become 0s.
+
+		            \[
+			            \binom{10}{4} = 210.
+		            \]
+
+		      \item \emph{Contain at most four 1s.}
+
+		            This means the number of 1s is 0, 1, 2, 3 or 4. Sum over these cases:
+		            \[
+			            \sum_{k=0}^{4} \binom{10}{k}
+			            = \binom{10}{0} + \binom{10}{1} + \binom{10}{2} + \binom{10}{3} + \binom{10}{4}.
+		            \]
+		            Compute:
+		            \[
+			            1 + 10 + 45 + 120 + 210 = 386.
+		            \]
+
+		      \item \emph{Contain at least four 1s.}
+
+		            This means the number of 1s is 4, 5, \dots, 10. One way is to sum directly:
+		            \[
+			            \sum_{k=4}^{10} \binom{10}{k}.
+		            \]
+		            Alternatively, use the complement: “at least four 1s’’ is the complement of “at most three 1s’’.
+		            Total bit strings of length 10:
+		            \[
+			            2^{10} = 1024.
+		            \]
+		            At most three 1s:
+		            \[
+			            \sum_{k=0}^{3} \binom{10}{k}
+			            = \binom{10}{0} + \binom{10}{1} + \binom{10}{2} + \binom{10}{3}
+			            = 1 + 10 + 45 + 120 = 176.
+		            \]
+		            Hence
+		            \[
+			            \text{at least four 1s} = 1024 - 176 = 848.
+		            \]
+
+	      \end{enumerate}
+
+	      \vspace{0.4cm}
+
+	      %------------------------------------------------------------
+	\item How many permutations of the letters ABCDEFG contain
+	      \begin{enumerate}[label=(\alph*)]
+		      \item the string BCD?
+		      \item the string CFEA?
+		      \item the strings BA and GF?
+		      \item the strings ABC and DE?
+		      \item the strings ABC and CDEF?
+		      \item the strings CBA and BED?
+	      \end{enumerate}
+
+	      \textbf{Solution.}
+
+	      In all parts, there are 7 distinct letters in total.
+
+	      \begin{enumerate}[label=(\alph*)]
+
+		      \item \emph{Contain the string BCD.}
+
+		            Treat the block \(\text{BCD}\) as a single “super–letter’’. Then we have the objects
+		            \[
+			            [\text{BCD}], A, E, F, G
+		            \]
+		            which makes 5 objects. These can be arranged in
+		            \[
+			            5! = 120
+		            \]
+		            permutations.
+
+		      \item \emph{Contain the string CFEA.}
+
+		            Treat \(\text{CFEA}\) as one block. The remaining letters are \(B, D, G\), so the objects are
+		            \[
+			            [\text{CFEA}], B, D, G,
+		            \]
+		            again 4 objects total, arrangeable in
+		            \[
+			            4! = 24
+		            \]
+		            permutations.
+
+		      \item \emph{Contain the strings BA and GF.}
+
+		            Here BA must appear as consecutive letters (B then A), and GF must appear as consecutive letters (G then F). The blocks are
+		            \[
+			            [\text{BA}],\ [\text{GF}],
+		            \]
+		            and the remaining letters are \(C, D, E\). So we have 5 objects:
+		            \[
+			            [\text{BA}], [\text{GF}], C, D, E.
+		            \]
+		            These can be arranged in
+		            \[
+			            5! = 120
+		            \]
+		            ways.
+
+		      \item \emph{Contain the strings ABC and DE.}
+
+		            Blocks:
+		            \[
+			            [\text{ABC}],\ [\text{DE}]
+		            \]
+		            and remaining letters \(F, G\). So we have 4 objects in total:
+		            \[
+			            [\text{ABC}], [\text{DE}], F, G,
+		            \]
+		            permuted in
+		            \[
+			            4! = 24
+		            \]
+		            ways.
+
+		      \item \emph{Contain the strings ABC and CDEF.}
+
+		            For both strings ABC and CDEF to appear, the letters \(A,B,C,D,E,F\) must form the consecutive block
+		            \[
+			            \text{ABCDEF},
+		            \]
+		            because
+		            \begin{itemize}
+			            \item ABC occupies positions \(1,2,3\) of this block;
+			            \item CDEF occupies positions \(3,4,5,6\) of this block.
+		            \end{itemize}
+		            So we need the 6–letter string \(\text{ABCDEF}\) to appear as a substring in a permutation of 7 letters.
+
+		            There are only two possible positions for a block of length 6 in a string of length 7:
+		            \begin{itemize}
+			            \item Positions 1–6: \(\text{ABCDEF}G = \text{ABCDEFG}\),
+			            \item Positions 2–7: \(G\text{ABCDEF} = \text{GABCDEF}\).
+		            \end{itemize}
+
+		            Thus there are
+		            \[
+			            2
+		            \]
+		            such permutations.
+
+		      \item \emph{Contain the strings CBA and BED.}
+
+		            In the string CBA, the letter B must have C immediately to its left and A immediately to its right.
+		            In the string BED, the letter B must have E immediately to its left and D immediately to its right.
+
+		            A single letter B cannot simultaneously have two different left neighbours (C and E) and two different right neighbours (A and D). Hence it is impossible for both patterns CBA and BED to occur in the same permutation.
+
+		            Therefore, the number of permutations is
+		            \[
+			            0.
+		            \]
+
+	      \end{enumerate}
+
+	      \vspace{0.4cm}
+
+	      %------------------------------------------------------------
+	\item How many ways are there for eight men and five women to stand in a line so that no two women
+	      stand next to each other?
+
+	      \textbf{Solution.}
+
+	      First arrange the 8 men in a line. This can be done in
+	      \[
+		      8!
+	      \]
+	      ways.
+
+	      Once the men are fixed, there are 9 “gaps’’ where women can stand without being adjacent to each other:
+	      \[
+		      \_\, M\, \_\, M\, \_\, M\, \_\, M\, \_\, M\, \_\, M\, \_\, M\, \_\, M\, \_
+	      \]
+	      There are 9 such gaps (before the first man, between each pair of men, and after the last man).
+
+	      We need to choose 5 of these 9 gaps to place the 5 women, with at most one woman per gap (otherwise two women would be adjacent). There are
+	      \[
+		      \binom{9}{5}
+	      \]
+	      ways to choose which gaps will be used.
+
+	      Finally, arrange the 5 distinct women among the chosen gaps in
+	      \[
+		      5!
+	      \]
+	      ways.
+
+	      Total number of valid arrangements:
+	      \[
+		      8! \cdot \binom{9}{5} \cdot 5!
+		      = 609638400.
+	      \]
+
+	      \vspace{0.4cm}
+
+	      %------------------------------------------------------------
+	\item Suppose that a department contains 10 men and 15 women. How many ways are there to form
+	      a committee with eight members, if it must have the same number of men and women?
+
+	      \textbf{Solution.}
+
+	      A committee of 8 members with an equal number of men and women must have 4 men and 4 women.
+
+	      \begin{itemize}
+		      \item Choose 4 men from 10: \(\binom{10}{4}\) ways.
+		      \item Choose 4 women from 15: \(\binom{15}{4}\) ways.
+	      \end{itemize}
+
+	      Thus the total number of committees is
+	      \[
+		      \binom{10}{4} \binom{15}{4}
+		      = 210 \times 1365
+		      = 286650.
+	      \]
+
+	      \vspace{0.4cm}
+
+	      %------------------------------------------------------------
+	\item A test has integer scores from 0 to 100. How many students must take the test in order to guarantee that at least seven students get the same score. State clearly what the “pigeons’’ and “pigeonholes’’ are.
+
+	      \textbf{Solution.}
+
+	      The possible scores are integers \(0,1,2,\dots,100\), giving
+	      \[
+		      101
+	      \]
+	      distinct scores.
+
+	      \begin{itemize}
+		      \item \textbf{Pigeonholes:} the 101 possible scores.
+		      \item \textbf{Pigeons:} the students taking the test.
+	      \end{itemize}
+
+	      If each score is obtained by \emph{at most} 6 students, then the total number of students could be as large as
+	      \[
+		      6 \times 101 = 606
+	      \]
+	      without having any score achieved by 7 or more students.
+
+	      Therefore, with 606 students it is still possible that no score has 7 students.
+
+	      As soon as we have one more student (i.e.\ 607 students), by the pigeonhole principle at least one score must be assigned to at least
+	      \[
+		      \left\lceil \frac{607}{101} \right\rceil = 7
+	      \]
+	      students.
+
+	      Hence, we must have at least
+	      \[
+		      607
+	      \]
+	      students to guarantee that at least seven students get the same score.
+
+	      \vspace{0.4cm}
+
+	      %------------------------------------------------------------
+	\item
+	      \begin{enumerate}[label=(\alph*)]
+		      \item Show that if five integers are selected from the first eight positive integers, there must be a
+		            pair of these integers with a sum equal to 9. State clearly what the “pigeons’’ and “pigeonholes’’ are.
+		      \item Is the conclusion in Part (a) true if four integers are selected rather than five?
+	      \end{enumerate}
+
+	      \textbf{Solution.}
+
+	      \begin{enumerate}[label=(\alph*)]
+
+		      \item The first eight positive integers are
+		            \[
+			            1,2,3,4,5,6,7,8.
+		            \]
+		            Consider the following 4 pairs that each sum to 9:
+		            \[
+			            (1,8),\ (2,7),\ (3,6),\ (4,5).
+		            \]
+
+		            \begin{itemize}
+			            \item \textbf{Pigeonholes:} the 4 pairs \((1,8), (2,7), (3,6), (4,5)\).
+			            \item \textbf{Pigeons:} the 5 selected integers.
+		            \end{itemize}
+
+		            Each selected integer can be placed into exactly one pigeonhole: for example, 1 and 8 both go into the hole \((1,8)\), 2 and 7 go into \((2,7)\), etc.
+
+		            We have 5 pigeons and 4 pigeonholes. By the pigeonhole principle, at least one pigeonhole must contain at least two of the chosen integers. That means we have chosen both numbers from one of the pairs, and thus we have a pair of integers whose sum is 9.
+
+		      \item If only 4 integers are selected, the conclusion need not hold. For example, choose
+		            \[
+			            \{1,2,3,4\}.
+		            \]
+		            No pair here sums to 9. So the statement is \emph{false} if four integers are selected instead of five.
+
+	      \end{enumerate}
+
+	      \vspace{0.4cm}
+
+	      %------------------------------------------------------------
+	\item There are 51 houses on a street. Their addresses are between 1000 and 1099 (both inclusive).
+	      Show that there are at least two houses with consecutive addresses. State clearly what the “pigeons’’ and “pigeonholes’’ are.
+
+	      \textbf{Solution.}
+
+	      We are told:
+
+	      \begin{itemize}
+		      \item House addresses are integers from 1000 to 1099, inclusive.
+		      \item There are 51 houses on this street.
+	      \end{itemize}
+
+	      Consider the 50 disjoint pairs of consecutive addresses:
+	      \[
+		      (1000,1001),\ (1002,1003),\ \dots,\ (1098,1099).
+	      \]
+
+	      \begin{itemize}
+		      \item \textbf{Pigeonholes:} these 50 pairs of consecutive addresses.
+		      \item \textbf{Pigeons:} the 51 houses.
+	      \end{itemize}
+
+	      Each house has an address between 1000 and 1099, so it belongs to exactly one of these pairs (pigeonholes). We have 51 houses (pigeons) and only 50 pairs (pigeonholes).
+
+	      By the pigeonhole principle, at least one pair must contain at least two houses. That means there exist two houses on the street whose addresses are consecutive integers.
+
+\end{enumerate}
+
+\end{document}

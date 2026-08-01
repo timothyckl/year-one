@@ -1,0 +1,18 @@
+---
+title: "Resources"
+---
+
+# Learning Materials
+
+- [Quarto](https://quarto.org/)
+- [R for Data Science](https://r4ds.hadley.nz/) by G. Grolemund and H. Wickham
+- [ggplot2: Elegant Graphics for Data Analysis](https://ggplot2-book.org/) by H. Wickham et al.
+- [R Graphics Cookbook](https://www.r-graph-gallery.com/) by W. Chang
+- [DataCamp](https://www.datacamp.com/) tutorials
+
+# Software and Tools
+
+- Quarto Markdown
+- R
+- RStudio
+- Git/GitHub (Windows and MacOS)

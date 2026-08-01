@@ -1,0 +1,110 @@
+# =========================
+# OS FILES
+# =========================
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# =========================
+# EDITOR / IDE FILES
+# =========================
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+*.swp
+*.swo
+*~
+
+# =========================
+# ENVIRONMENT / SECRETS
+# =========================
+.env
+.env.*
+config.local.php
+config/database.local.php
+config.php
+
+# Example sensitive config patterns
+config/*secret*.php
+config/*private*.php
+
+# =========================
+# DEPENDENCIES (Composer)
+# =========================
+vendor/
+
+# Keep composer.lock for apps 
+# composer.lock
+
+# =========================
+# LOG FILES
+# =========================
+*.log
+logs/
+php_errors.log
+apache_error.log
+
+# =========================
+# CACHE / TEMP FILES
+# =========================
+cache/
+tmp/
+temp/
+*.cache
+
+# =========================
+# USER UPLOADS
+# =========================
+uploads/*
+public/uploads/*
+files/*
+media/*
+
+# Keep directory structure
+!uploads/.gitkeep
+!public/uploads/.gitkeep
+
+# =========================
+# DATABASE FILES / DUMPS
+# =========================
+# note: sql/schema.sql is intentionally tracked — see sql/ directory
+*.sqlite
+*.sqlite3
+database/
+db/
+dump/
+backups/
+
+# =========================
+# BUILD FILES 
+# =========================
+dist/
+build/
+
+# =========================
+# APACHE LOCAL FILES
+# =========================
+.htaccess.local
+.htpasswd
+apache.conf.local
+
+# =========================
+# TEST / COVERAGE
+# =========================
+coverage/
+.phpunit.result.cache
+
+# =========================
+# CLAUDE AGENT MEMORY
+# may contain sensitive context captured from prior sessions
+# =========================
+.claude/agent-memory/
+
+# =========================
+# MISC
+# =========================
+*.bak
+*.old
+*.orig
+*.tmp

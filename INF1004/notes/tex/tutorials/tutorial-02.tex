@@ -1,0 +1,582 @@
+\documentclass[12pt]{scrartcl}
+
+\usepackage{amsmath,amssymb}
+\usepackage{fullpage}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage[inline]{enumitem}
+\usepackage{tabularx}
+\usepackage{array}
+
+\newcolumntype{Y}{>{\centering\arraybackslash}X}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+
+\setlist[enumerate,1]{label=\alph*), itemjoin=\hspace{1.2em}, itemjoin*=\hspace{1.2em}}
+
+\usetikzlibrary{calc}
+
+\setlength{\parindent}{0pt}
+
+\begin{document}
+
+\begin{center}
+	\hrule
+	\vspace{0.4cm}
+	{\textbf{\large Tutorial 02}}\\ [0.2cm]
+    INF1004 Mathematics II
+	
+\end{center}
+
+\textbf{Name:} Timothy Chia \hspace{\fill} \textbf{Date:} - \\
+
+\hrule
+
+\begin{enumerate}[label=\textbf{\arabic*.}]
+
+\item A spam filter is designed by looking at commonly occurring phrases in spam. Suppose that 80\% of email is spam.
+In 10\% of the spam emails, the phrase ``free money'' is used, whereas the phrase ``free money'' is used in only 1\%
+of non-spam emails. A new email has just arrived, which does mention ``free money''. What is the probability that it is spam?
+
+\medskip
+
+\textbf{Solution.}
+Let $S$ be the event that an email is spam, and let $F$ be the event that an email contains the phrase
+\textit{``free money''}.
+
+We are given
+\[
+P(S)=0.8,\qquad P(F\mid S)=0.1,\qquad P\big(F\mid S^{c}\big)=0.01,
+\]
+so that $P(S^{c})=1-0.8=0.2$.
+
+We want $P(S\mid F)$, so we first compute $P(F)$ using the Law of Total Probability:
+\begin{align*}
+P(F)
+&=P(F\cap S)+P\big(F\cap S^{c}\big)\\
+&=P(F\mid S)P(S)+P\big(F\mid S^{c}\big)P(S^{c})\\
+&=0.1(0.8)+0.01(0.2)\\
+&=0.08+0.002\\
+&=0.082.
+\end{align*}
+\emph{Note:} We cannot use $P(F\cap S)=P(F)P(S)$ as that would assume independence, which is not given.
+
+Now apply Bayes' Theorem to compute $P(S\mid F)$ in terms of $P(F \mid S)$:
+\begin{align*}
+P(S\mid F)
+&=\frac{P(F\mid S)P(S)}{P(F)}\\
+&=\frac{0.1(0.8)}{0.082}\\
+&\approx 0.976.
+\end{align*}
+
+Therefore, the probability the email is spam given that it contains \textit{``free money''} is approximately
+$0.976$ (about $97.6\%$).
+
+
+%------------------------------------------------------------
+\newpage
+\item A sample of people, who commute regularly from a town in Surrey into London, were asked for an estimate of the time
+taken on their most recent journey. The replies are summarised in the given table.
+
+\medskip
+
+\begin{center}
+\setlength{\tabcolsep}{10pt}
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{c|c}
+\textbf{Time in minutes} & \textbf{Frequency}\\
+\hline
+35 to 45  & 12\\
+45 to 55  & 54\\
+55 to 65  & 68\\
+65 to 85  & 41\\
+85 to 105 & 23\\
+\end{tabular}
+\end{center}
+
+\begin{enumerate}[label=(\alph*)]
+\item Calculate the estimate of the mean and the standard deviation of these times.
+\item What is the median?
+\item What is the mode?
+\end{enumerate}
+
+\medskip
+
+\textbf{Solution.}
+
+\begin{enumerate}[label=(\alph*)]
+\item For grouped data, we estimate using class midpoints. The class midpoints are
+\[
+40,\ 50,\ 60,\ 75,\ 95
+\]
+with corresponding frequencies
+\[
+12,\ 54,\ 68,\ 41,\ 23,
+\]
+so the total sample size is $n=198$.
+
+\medskip
+
+\textbf{Estimated mean.}
+\begin{align*}
+\bar{x}
+&=\frac{\sum f_i x_i}{\sum f_i}\\
+&=\frac{12(40)+54(50)+68(60)+41(75)+23(95)}{198}\\
+&=\frac{12520}{198}\\
+&\approx 63.23\text{ minutes.}
+\end{align*}
+
+\medskip
+
+\textbf{Estimated standard deviation.}
+First compute
+\[
+\sum f_i x_i^2
+=12(40^2)+54(50^2)+68(60^2)+41(75^2)+23(95^2)
+=837200.
+\]
+Then
+\begin{align*}
+s
+&\approx \sqrt{\frac{\sum f_i x_i^2}{n}-\bar{x}^{\,2}}\\
+&=\sqrt{\frac{837200}{198}-(63.23)^2}\\
+&\approx \sqrt{4228.28-3998.33}\\
+&\approx \sqrt{229.95}\\
+&\approx 15.16\text{ minutes.}
+\end{align*}
+
+\item \textbf{Median.}
+Compute cumulative frequencies:
+\[
+12,\ 66,\ 134,\ 175,\ 198.
+\]
+Since $n=198$, the median position is $n/2=99$, which lies in the class $55$ to $65$.
+
+Let $L=55$ be the lower class boundary, $w=10$ the class width, $c_f=66$ the cumulative frequency before the median class, and $f_m=68$ the frequency of the median class. Then
+\begin{align*}
+\text{Median}
+&= L+\left(\frac{\frac{n}{2}-c_f}{f_m}\right)w\\
+&=55+\left(\frac{99-66}{68}\right)10\\
+&=55+\frac{33}{68}\cdot 10\\
+&\approx 59.85\text{ minutes.}
+\end{align*}
+
+\item \textbf{Mode.}
+The modal class is $55$ to $65$ (highest frequency $f_1=68$). Let $L=55$, $w=10$, $f_0=54$ (frequency of the class before), and $f_2=41$ (frequency of the class after). Using the grouped-data mode formula,
+\begin{align*}
+\text{Mode}
+&=L+\left(\frac{f_1-f_0}{2f_1-f_0-f_2}\right)w\\
+&=55+\left(\frac{68-54}{2(68)-54-41}\right)10\\
+&=55+\left(\frac{14}{41}\right)10\\
+&\approx 58.41\text{ minutes.}
+\end{align*}
+\end{enumerate}
+
+%------------------------------------------------------------
+\newpage
+\item Maurice works at home. At 2 pm he decides to take a break to buy a copy of the \emph{Chronicle} newspaper.
+There are three nearby newsagents: Arif, Bob and Carol. However, by 2 pm they may have sold all their \emph{Chronicles} and so have none available.
+The independent probabilities that they have a \emph{Chronicle} available at 2 pm are: Arif 0.4, Bob 0.7, Carol 0.25.
+
+\begin{enumerate}[label=(\alph*)]
+\item Find the probability that none of the three newsagents have the \emph{Chronicles} at 2 pm.
+\item Maurice decides to visit the newsagents in turn until he obtains a \emph{Chronicle} or until he has visited all three.
+He tosses a fair coin. If it lands heads he will visit the three newsagents in the order Bob, Arif, Carol.
+If it lands tail, he will visit them in order Carol, Arif, Bob.
+Find the probability that he will obtain a \emph{Chronicle} from Arif.
+\end{enumerate}
+
+\medskip
+
+\textbf{Solution.}
+Let $A$, $B$, and $C$ be the events that \emph{Arif}, \emph{Bob}, and \emph{Carol} respectively have a copy of the
+\textit{Chronicle} available at 2 pm. We are given
+\[
+P(A)=0.4,\qquad P(B)=0.7,\qquad P(C)=0.25,
+\]
+and the events are independent. Hence their complements are
+\[
+P(A^c)=0.6,\qquad P(B^c)=0.3,\qquad P(C^c)=0.75,
+\]
+and are also independent.
+
+\begin{enumerate}[label=(\alph*)]
+\item The probability that none of the three newsagents have the \textit{Chronicle} at 2 pm is
+\begin{align*}
+P(A^c\cap B^c\cap C^c)
+&=P(A^c)\,P(B^c)\,P(C^c)\\
+&=(0.6)(0.3)(0.75)\\
+&=0.135.
+\end{align*}
+
+\item Let $H$ be the event that the coin lands heads, and $T$ be the event that the coin lands tails.
+Then $P(H)=P(T)=0.5$.
+
+\medskip
+
+If $H$ occurs, the visiting order is $B \to A \to C$. Maurice obtains the \textit{Chronicle} from Arif
+exactly when Bob does \emph{not} have it and Arif \emph{does} have it, i.e.\ $B^c\cap A$:
+\begin{align*}
+    P(\text{get from Arif}\mid H) & = P(B^c\cap A) \\
+    & = P(B^c)P(A) \\
+    & =(0.3)(0.4) \\ 
+    & =0.12.
+\end{align*}
+\medskip
+If $T$ occurs, the visiting order is $C \to A \to B$. He obtains the \textit{Chronicle} from Arif
+exactly when Carol does \emph{not} have it and Arif \emph{does} have it, i.e.\ $C^c\cap A$:
+\begin{align*}
+    P(\text{get from Arif}\mid T) & = P(C^c\cap A) \\
+    & = P(C^c)P(A) \\
+    & =(0.75)(0.4) \\
+    & = 0.30.
+\end{align*}
+
+Therefore, by the Law of Total Probability,
+\begin{align*}
+P(\text{get from Arif})
+&=P(\text{get from Arif}\mid H)P(H)+P(\text{get from Arif}\mid T)P(T)\\
+&=(0.12)(0.5)+(0.30)(0.5)\\
+&=0.06+0.15\\
+&=0.21.
+\end{align*}
+\end{enumerate}
+
+
+%------------------------------------------------------------
+\newpage
+\item The following table summarises the number of late arrivals of all students who attend a certain school on 5 mornings of particular week.
+(Show your steps for all of the following.)
+
+\medskip
+
+\begin{center}
+\setlength{\tabcolsep}{14pt}
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{c|c}
+\textbf{Number of late arrivals} & \textbf{Number of pupils}\\
+\hline
+0 & 275\\
+1 & 111\\
+2 & 33\\
+3 & 12\\
+4 & 13\\
+5 & 16\\
+\end{tabular}
+\end{center}
+
+\medskip
+
+\begin{enumerate}[label=(\alph*)]
+\item Let random variable $X=$ number of late arrivals. Is the random variable discrete or continuous?
+\item Draw the probability distribution for $X$. Calculate the mean and the standard deviation of the data in the table.
+\item Calculate the expected value.
+\end{enumerate}
+
+\medskip
+
+\textbf{Solution.}
+
+\begin{enumerate}[label=(\alph*)]
+\item $X$ is \textbf{discrete} because it counts the number of late arrivals (it can only take integer values $0,1,2,\dots$).
+
+\item The total number of pupils is
+\[
+n = 275+111+33+12+13+16 = 460.
+\]
+Hence the probability distribution of $X$ is:
+
+\textbf{Solution.}
+
+\begin{enumerate}[label=(\alph*)]
+\item $X$ is \textbf{discrete} because it counts the number of late arrivals (it can only take integer values $0,1,2,\dots$).
+
+\item The total number of pupils is
+\[
+n = 275+111+33+12+13+16 = 460.
+\]
+Hence the probability distribution of $X$ is:
+
+\begin{center}
+\renewcommand{\arraystretch}{2.0}
+\setlength{\tabcolsep}{10pt}
+\begin{tabular}{c|cccccc}
+$x$ & 0 & 1 & 2 & 3 & 4 & 5 \\
+\hline
+$P(X=x)$
+& $\displaystyle \frac{275}{460}$
+& $\displaystyle \frac{111}{460}$
+& $\displaystyle \frac{33}{460}$
+& $\displaystyle \frac{12}{460}$
+& $\displaystyle \frac{13}{460}$
+& $\displaystyle \frac{16}{460}$ \\
+\end{tabular}
+\end{center}
+
+
+\medskip
+
+\textbf{Mean.}
+\begin{align*}
+\mu = E(X)
+&=\sum_x xP(X=x)\\
+&=\frac{0(275)+1(111)+2(33)+3(12)+4(13)+5(16)}{460}\\
+&=\frac{345}{460}\\
+&=0.75.
+\end{align*}
+
+\medskip
+
+\textbf{Standard deviation.}
+First compute
+\begin{align*}
+E(X^2)
+&=\sum_x x^2P(X=x)\\
+&=\frac{0^2(275)+1^2(111)+2^2(33)+3^2(12)+4^2(13)+5^2(16)}{460}\\
+&=\frac{959}{460}.
+\end{align*}
+Then
+\begin{align*}
+\mathrm{Var}(X)
+&=E(X^2)-\big(E(X)\big)^2\\
+&=\frac{959}{460}-(0.75)^2\\
+&\approx 1.5223,
+\end{align*}
+so the standard deviation is
+\[
+\sigma=\sqrt{\mathrm{Var}(X)}\approx \sqrt{1.5223}\approx 1.234.
+\]
+
+\item The expected value is
+\[
+E(X)=0.75,
+\]
+i.e.\ the expected number of late arrivals is $0.75$.
+\end{enumerate}
+
+\medskip
+
+\textbf{Mean.}
+\begin{align*}
+\mu = E(X)
+&=\sum_x xP(X=x)\\
+&=\frac{0(275)+1(111)+2(33)+3(12)+4(13)+5(16)}{460}\\
+&=\frac{345}{460}\\
+&=0.75.
+\end{align*}
+
+\medskip
+
+\textbf{Standard deviation.}
+First compute
+\begin{align*}
+E(X^2)
+&=\sum_x x^2P(X=x)\\
+&=\frac{0^2(275)+1^2(111)+2^2(33)+3^2(12)+4^2(13)+5^2(16)}{460}\\
+&=\frac{959}{460}.
+\end{align*}
+Then
+\begin{align*}
+\mathrm{Var}(X)
+&=E(X^2)-\big(E(X)\big)^2\\
+&=\frac{959}{460}-(0.75)^2\\
+&\approx 1.5223,
+\end{align*}
+so the standard deviation is
+\[
+\sigma=\sqrt{\mathrm{Var}(X)}\approx \sqrt{1.5223}\approx 1.234.
+\]
+
+\item The expected value is
+\[
+E(X)=0.75,
+\]
+i.e.\ the expected number of late arrivals is $0.75$.
+\end{enumerate}
+
+
+%------------------------------------------------------------
+\newpage
+\item Terrence walks to school every morning. The probability that he arrives late is 0.15 and independent of whether he arrives late on any other morning.
+For a week, in which he decides to walk to school on five mornings, find:
+
+\begin{enumerate}[label=(\alph*)]
+\item Probability he arrives late on two or fewer mornings.
+\item Probability he arrives late on three or more mornings.
+\item Find the mean and standard deviation of the number of mornings on which he arrives late.
+\end{enumerate}
+
+\medskip
+
+\textbf{Solution.}
+Let $X$ be the number of mornings (out of 5) that Terrence arrives late.
+Since the probability of being late on any morning is $p=0.15$ and mornings are independent,
+\[
+X \sim \mathrm{Bin}(n=5,\,p=0.15).
+\]
+
+\begin{enumerate}[label=(\alph*)]
+\item
+\begin{align*}
+P(X\le 2)
+&=\sum_{k=0}^{2}\binom{5}{k}(0.15)^k(0.85)^{5-k}\\
+&=\binom{5}{0}(0.85)^5+\binom{5}{1}(0.15)(0.85)^4+\binom{5}{2}(0.15)^2(0.85)^3\\
+&\approx 0.973388125.
+\end{align*}
+
+\item
+\begin{align*}
+P(X\ge 3)
+&=\sum_{k=3}^{5}\binom{5}{k}(0.15)^k(0.85)^{5-k}\\
+&=1-P(X\le 2)\\
+&\approx 1-0.973388125\\
+&\approx 0.026611875.
+\end{align*}
+
+\item For a binomial random variable, the mean and variance are
+\[
+E(X)=np,\qquad \mathrm{Var}(X)=np(1-p).
+\]
+Hence
+\begin{align*}
+    E(X) & = 5(0.15) \\ 
+         & =0.75
+\end{align*}
+and
+\begin{align*}
+    \sigma & = \sqrt{\mathrm{Var}(X)}\\
+           & =\sqrt{5(0.15)(0.85)}\\
+           & =\sqrt{0.6375}\\
+           & \approx 0.798.
+\end{align*}
+\end{enumerate}
+
+%------------------------------------------------------------
+\newpage
+\item Bob is a student who travels to and from university by bus. He believes that the probability of having to wait more than six minutes to catch a bus is 0.4
+and is independent of the time of day and direction of travel.
+
+\begin{enumerate}[label=(\alph*)]
+\item Assuming Bob's beliefs are correct, calculate values for the mean and standard deviation of the number of times he has to wait more than six minutes to catch a bus
+in a week when he catches 10 buses.
+\item During a thirteen-week period, the number of times (out of 10) he had to wait more than six minutes to catch a bus were as follows:
+\[
+4,\,8,\,8,\,9,\,3,\,2,\,2,\,7,\,0,\,1,\,5,\,2,\,0
+\]
+\begin{enumerate}[label=\roman*.]
+\item Calculate the mean and standard deviation of this data.
+\item Does the answer in (b)i.\ support Bob's beliefs that the probability of having to wait more than six minutes to catch a bus is constant at 0.4 regardless of any factors?
+\end{enumerate}
+\end{enumerate}
+
+\medskip
+
+\textbf{Solution.}
+
+\begin{enumerate}[label=(\alph*)]
+\item Let $X$ be the number of times (out of 10 bus journeys) that Bob has to wait more than 6 minutes.
+Assuming Bob's belief is correct and each journey is independent with probability $p=0.4$,
+\[
+X \sim \mathrm{Bin}(n=10,\,p=0.4).
+\]
+Hence,
+\[
+E(X)=np=10(0.4)=4,
+\]
+and
+\[
+\mathrm{Var}(X)=np(1-p)=10(0.4)(0.6)=2.4,
+\qquad
+\text{so } \sigma=\sqrt{2.4}\approx 1.55.
+\]
+
+\item
+During the 13-week period, the observed values (out of 10) are
+\[
+4,\,8,\,8,\,9,\,3,\,2,\,2,\,7,\,0,\,1,\,5,\,2,\,0.
+\]
+
+\begin{enumerate}[label=\roman*.]
+\item The mean is
+\[
+\bar{x}=\frac{4+8+8+9+3+2+2+7+0+1+5+2+0}{13}
+=\frac{51}{13}\approx 3.923.
+\]
+The (sample) standard deviation is
+\[
+s=\sqrt{\frac{1}{n-1}\sum_{i=1}^{n}(x_i-\bar{x})^2}.
+\]
+Here,
+\[
+\sum_{i=1}^{13}(x_i-\bar{x})^2=\frac{1572}{13},
+\]
+so
+\[
+s=\sqrt{\frac{1}{12}\cdot \frac{1572}{13}}
+=\sqrt{\frac{131}{13}}
+\approx 3.17.
+\]
+
+\item Under Bob's model, the expected mean is $4$ and the standard deviation is approximately $1.55$.
+The observed mean $\bar{x}\approx 3.923$ is close to $4$, which is broadly consistent with $p\approx 0.4$
+(\(\hat{p}=\bar{x}/10\approx 0.392\)). However, the observed standard deviation ($\approx 3.17$) is much larger
+than the binomial model's standard deviation ($\approx 1.55$). This suggests the probability may not be constant
+from week to week (or the independence assumption may not hold), so the data does \emph{not} strongly support
+a constant $p=0.4$ model.
+\end{enumerate}
+\end{enumerate}
+
+%------------------------------------------------------------
+\newpage
+\item A shop sells two types of bath cubes: relaxing and invigorating. The owner of a hotel buys 50 cubes from this shop.
+For each cube, there is independently a probability of 0.4 that it will be relaxing.
+
+\begin{enumerate}[label=(\alph*)]
+\item Find the probability that more than 90\% of the 50 cubes will be relaxing cubes.
+\item The 50 cubes included 22 relaxing cubes. Give a reason, whether or not a binomial distribution will provide an appropriate model for the random variable $R$, in each of the following cases:
+\begin{enumerate}[label=\roman*.]
+\item A guest at the hotel randomly selects one of the 50 cubes. If it is not a relaxing cube, he replaces it and again selects a cube at random.
+He continues this procedure until he obtains a relaxing cube. The random variable $R$ denotes the number of cubes he selects until he obtains a relaxing cube.
+\item The owner randomly selects 20 of the 50 cubes and places them in a bowl. The random variable $R$ denotes the number of relaxing cubes placed in the bowl; each being evaluated as one trial.
+\end{enumerate}
+\end{enumerate}
+
+\medskip
+
+\textbf{Solution.}
+
+Let $X$ be the number of relaxing bath cubes among the 50 purchased. Since each cube is relaxing independently with probability $0.4$,
+\[
+X \sim \mathrm{Bin}(n=50,\,p=0.4).
+\]
+
+\begin{enumerate}[label=(\alph*)]
+\item “More than $90\%$ of 50” means more than $45$, i.e.\ at least $46$ relaxing cubes. Hence
+\begin{align*}
+P(X>0.9\times 50)
+&=P(X\ge 46)\\
+&=\sum_{k=46}^{50}\binom{50}{k}(0.4)^k(0.6)^{50-k}\\
+&\approx 1.57\times 10^{-14}.
+\end{align*}
+So the probability is essentially $0$ (extremely unlikely).
+
+\item The 50 cubes included 22 relaxing cubes.
+
+\begin{enumerate}[label=\roman*.]
+\item \textbf{Not binomial.} Here $R$ is the number of selections \emph{until the first relaxing cube is obtained}.
+This is not a fixed number of trials, so a binomial model is not appropriate.  
+Since the cube is replaced each time a non-relaxing cube is selected, each trial has the same success probability
+\[
+p=\frac{22}{50}=0.44,
+\]
+and trials may be treated as independent. Therefore, $R$ is more suitably modelled by a \textbf{geometric distribution} with parameter $p=0.44$.
+
+\item \textbf{Not binomial.} The owner selects 20 cubes from the 50 \emph{without replacement}. The probability of selecting a relaxing cube changes from draw to draw, so the trials are not independent and do not have a constant success probability. A binomial model is therefore not appropriate; the correct model is \textbf{hypergeometric} with $N=50$, $K=22$, and sample size $n=20$.
+\end{enumerate}
+\end{enumerate}
+
+
+\end{enumerate}
+
+\end{document}

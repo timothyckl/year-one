@@ -1,0 +1,565 @@
+/* ============================================================
+   talentbridge — main stylesheet
+   uses css custom properties for theming and bootstrap overrides
+   ============================================================ */
+
+/* ------------------------------------------------------------
+   brand colour palette and typography tokens
+   ------------------------------------------------------------ */
+:root {
+    --tb-primary:        #1b4f72;   /* deep navy — main brand colour */
+    --tb-primary-hover:  #154160;   /* darkened for hover states */
+    --tb-accent:         #2e86c1;   /* bright blue — ctas and links */
+    --tb-accent-hover:   #2471a3;   /* darkened accent for hover */
+    --tb-light-bg:       #eaf4fd;   /* pale blue — section backgrounds */
+    --tb-hero-start:     #1b4f72;   /* hero gradient start */
+    --tb-hero-end:       #2e86c1;   /* hero gradient end */
+    --tb-text-primary:   #1a1a2e;   /* near-black body text */
+    --tb-text-muted:     #5d6d7e;   /* secondary/caption text */
+    --tb-border:         #d5e8f5;   /* subtle blue-tinted borders */
+    --tb-success:        #1a7a4a;   /* accessible green (4.5:1 on white) */
+    --tb-danger:         #c0392b;   /* accessible red */
+    --tb-warning:        #b7770d;   /* accessible amber */
+
+    /* typography */
+    --tb-font-base:   'Segoe UI', system-ui, -apple-system, sans-serif;
+    --tb-font-size:   1rem;
+    --tb-line-height: 1.6;
+
+    /* spacing rhythm */
+    --tb-section-py: 4.5rem;
+}
+
+/* ------------------------------------------------------------
+   global resets and base styles
+   ------------------------------------------------------------ */
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+body {
+    font-family:  var(--tb-font-base);
+    font-size:    var(--tb-font-size);
+    line-height:  var(--tb-line-height);
+    color:        var(--tb-text-primary);
+    background:   #ffffff;
+    min-height:   100vh;
+    display:      flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1 0 auto;
+}
+
+a {
+    color: var(--tb-accent);
+    text-decoration: none;
+}
+
+a:hover,
+a:focus {
+    color: var(--tb-accent-hover);
+    text-decoration: underline;
+}
+
+/* visible focus ring for keyboard navigation (wcag 2.1 2.4.7) */
+:focus-visible {
+    outline: 3px solid var(--tb-accent);
+    outline-offset: 2px;
+}
+
+/* ------------------------------------------------------------
+   bootstrap overrides — primary colour
+   ------------------------------------------------------------ */
+.btn-primary {
+    background-color: var(--tb-accent);
+    border-color:     var(--tb-accent);
+    color:            #ffffff;
+    font-weight:      600;
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+    background-color: var(--tb-accent-hover);
+    border-color:     var(--tb-accent-hover);
+    color:            #ffffff;
+}
+
+.btn-outline-primary {
+    border-color: var(--tb-accent);
+    color:        var(--tb-accent);
+}
+
+.btn-outline-primary:hover,
+.btn-outline-primary:focus {
+    background-color: var(--tb-accent);
+    border-color:     var(--tb-accent);
+    color:            #ffffff;
+}
+
+.text-primary {
+    color: var(--tb-accent) !important;
+}
+
+.bg-primary {
+    background-color: var(--tb-primary) !important;
+}
+
+/* badge overrides */
+.badge.bg-primary {
+    background-color: var(--tb-accent) !important;
+}
+
+/* ------------------------------------------------------------
+   navigation
+   ------------------------------------------------------------ */
+.navbar-brand {
+    font-size:   1.4rem;
+    font-weight: 700;
+    color:       #ffffff !important;
+    letter-spacing: -0.3px;
+}
+
+.navbar-brand span {
+    color: #93c6f0;
+}
+
+.tb-navbar {
+    background-color: var(--tb-primary);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.tb-navbar .nav-link {
+    color:       rgba(255, 255, 255, 0.88) !important;
+    font-weight: 500;
+    padding:     0.5rem 0.9rem;
+    border-radius: 4px;
+    transition: background 0.15s ease, color 0.15s ease;
+}
+
+.tb-navbar .nav-link:hover,
+.tb-navbar .nav-link:focus {
+    color:            #ffffff !important;
+    background-color: rgba(255, 255, 255, 0.12);
+    text-decoration:  none;
+}
+
+.tb-navbar .nav-link.active {
+    color:            #ffffff !important;
+    background-color: rgba(255, 255, 255, 0.18);
+}
+
+/* navbar cta buttons */
+.tb-navbar .btn-nav-cta {
+    background-color: var(--tb-accent);
+    border:           none;
+    color:            #ffffff;
+    font-weight:      600;
+    padding:          0.4rem 1rem;
+    border-radius:    4px;
+    transition:       background 0.15s ease;
+}
+
+.tb-navbar .btn-nav-cta:hover,
+.tb-navbar .btn-nav-cta:focus {
+    background-color: var(--tb-accent-hover);
+    color:            #ffffff;
+    text-decoration:  none;
+}
+
+/* ------------------------------------------------------------
+   hero section
+   ------------------------------------------------------------ */
+.tb-hero {
+    background: linear-gradient(135deg, var(--tb-hero-start) 0%, var(--tb-hero-end) 100%);
+    color:    #ffffff;
+    padding:  5rem 0 4rem;
+}
+
+.tb-hero h1 {
+    font-size:   2.8rem;
+    font-weight: 800;
+    line-height: 1.2;
+}
+
+.tb-hero p.lead {
+    font-size: 1.2rem;
+    opacity:   0.92;
+    max-width: 540px;
+}
+
+.tb-hero .btn-hero-primary {
+    background-color: #ffffff;
+    color:            var(--tb-primary);
+    font-weight:      700;
+    padding:          0.75rem 2rem;
+    border-radius:    6px;
+    border:           2px solid transparent;
+    transition:       all 0.2s ease;
+}
+
+.tb-hero .btn-hero-primary:hover,
+.tb-hero .btn-hero-primary:focus {
+    background-color: transparent;
+    border-color:     #ffffff;
+    color:            #ffffff;
+}
+
+.tb-hero .btn-hero-secondary {
+    background-color: transparent;
+    color:            #ffffff;
+    font-weight:      600;
+    padding:          0.75rem 2rem;
+    border-radius:    6px;
+    border:           2px solid rgba(255, 255, 255, 0.7);
+    transition:       all 0.2s ease;
+}
+
+.tb-hero .btn-hero-secondary:hover,
+.tb-hero .btn-hero-secondary:focus {
+    background-color: rgba(255, 255, 255, 0.12);
+    border-color:     #ffffff;
+    color:            #ffffff;
+}
+
+/* ------------------------------------------------------------
+   section headings and dividers
+   ------------------------------------------------------------ */
+.tb-section {
+    padding: var(--tb-section-py) 0;
+}
+
+.tb-section-alt {
+    background-color: var(--tb-light-bg);
+}
+
+.tb-section-title {
+    font-size:   1.9rem;
+    font-weight: 700;
+    color:       var(--tb-primary);
+    margin-bottom: 0.4rem;
+}
+
+.tb-section-subtitle {
+    color:     var(--tb-text-muted);
+    font-size: 1.05rem;
+}
+
+.tb-divider {
+    width:            3rem;
+    height:           4px;
+    background:       var(--tb-accent);
+    border-radius:    2px;
+    margin:           0.6rem 0 2rem;
+}
+
+/* ------------------------------------------------------------
+   job cards
+   ------------------------------------------------------------ */
+.tb-job-card {
+    border:        1px solid var(--tb-border);
+    border-radius: 10px;
+    transition:    transform 0.18s ease, box-shadow 0.18s ease;
+    background:    #ffffff;
+    height:        100%;
+}
+
+.tb-job-card:hover {
+    transform:  translateY(-4px);
+    box-shadow: 0 8px 24px rgba(27, 79, 114, 0.12);
+}
+
+.tb-job-card .card-title {
+    font-weight: 700;
+    color:       var(--tb-primary);
+    font-size:   1.05rem;
+}
+
+.tb-job-card .company-name {
+    color:       var(--tb-accent);
+    font-weight: 600;
+    font-size:   0.9rem;
+}
+
+.tb-job-card .card-meta {
+    font-size: 0.85rem;
+    color:     var(--tb-text-muted);
+}
+
+.tb-job-card .card-meta i {
+    width: 1rem;
+}
+
+/* job type badges */
+.badge-type {
+    font-size:    0.75rem;
+    font-weight:  600;
+    padding:      0.3em 0.7em;
+    border-radius: 20px;
+}
+
+.badge-full-time   { background-color: #d1ecf1; color: #0c5460; }
+.badge-part-time   { background-color: #d4edda; color: #155724; }
+.badge-contract    { background-color: #fff3cd; color: #6d5100; }  /* darkened for 4.5:1 contrast */
+.badge-internship  { background-color: #f8d7da; color: #721c24; }
+.badge-remote      { background-color: #e2d9f3; color: #432874; }
+
+/* application status badges */
+.badge-pending     { background-color: #e9ecef; color: #495057; }
+.badge-reviewed    { background-color: #cce5ff; color: #004085; }
+.badge-shortlisted { background-color: #d4edda; color: #155724; }
+.badge-rejected    { background-color: #f8d7da; color: #721c24; }
+
+/* ------------------------------------------------------------
+   forms
+   ------------------------------------------------------------ */
+.form-control:focus,
+.form-select:focus {
+    border-color: var(--tb-accent);
+    box-shadow:   0 0 0 0.2rem rgba(46, 134, 193, 0.25);
+}
+
+.form-label {
+    font-weight: 500;
+    color:       var(--tb-text-primary);
+}
+
+/* inline validation error text */
+.field-error {
+    color:     var(--tb-danger);
+    font-size: 0.85rem;
+    margin-top: 0.25rem;
+}
+
+/* character counter */
+.char-count {
+    font-size: 0.82rem;
+    color:     var(--tb-text-muted);
+    text-align: right;
+}
+
+.char-count.count-ok     { color: var(--tb-success); }
+.char-count.count-warn   { color: var(--tb-warning); }
+.char-count.count-danger { color: var(--tb-danger);  font-weight: 600; }
+
+/* ------------------------------------------------------------
+   cards and panels (generic)
+   ------------------------------------------------------------ */
+.tb-card {
+    border:        1px solid var(--tb-border);
+    border-radius: 10px;
+    background:    #ffffff;
+    padding:       2rem;
+}
+
+/* stat cards for admin dashboard */
+.stat-card {
+    border-radius: 12px;
+    padding:       1.5rem;
+    color:         #ffffff;
+    position:      relative;
+    overflow:      hidden;
+}
+
+.stat-card .stat-number {
+    font-size:   2.4rem;
+    font-weight: 800;
+    line-height: 1;
+}
+
+.stat-card .stat-label {
+    font-size: 0.9rem;
+    opacity:   0.88;
+    margin-top: 0.25rem;
+}
+
+.stat-card-blue   { background: linear-gradient(135deg, #1b4f72, #2e86c1); }
+.stat-card-green  { background: linear-gradient(135deg, #1a7a4a, #27ae60); }
+.stat-card-purple { background: linear-gradient(135deg, #6c3483, #9b59b6); }
+.stat-card-orange { background: linear-gradient(135deg, #935116, #e67e22); }
+
+/* ------------------------------------------------------------
+   about page — team cards
+   ------------------------------------------------------------ */
+.team-card {
+    text-align:    center;
+    padding:       2rem 1rem;
+    border:        1px solid var(--tb-border);
+    border-radius: 10px;
+    background:    #ffffff;
+    transition:    box-shadow 0.18s ease;
+    
+}
+
+.team-card:hover {
+    box-shadow: 0 6px 20px rgba(27, 79, 114, 0.1);
+}
+
+.team-avatar {
+    width:         80px;
+    height:        80px;
+    border-radius: 50%;
+    background:    var(--tb-light-bg);
+    display:       flex;
+    align-items:   center;
+    justify-content: center;
+    margin:        0 auto 1rem;
+    font-size:     1.8rem;
+    font-weight:   700;
+    color:         var(--tb-primary);
+    border:        3px solid var(--tb-border);
+}
+
+.team-card h5 {
+    font-weight: 700;
+    color:       var(--tb-primary);
+    margin-bottom: 0.2rem;
+}
+
+.team-card .team-role {
+    color:     var(--tb-accent);
+    font-size: 0.88rem;
+    font-weight: 600;
+}
+
+/* ------------------------------------------------------------
+   admin dashboard charts
+   ------------------------------------------------------------ */
+
+.nav-tabs .nav-link {
+    color: #6c757d;
+    border: none;
+    border-bottom: 3px solid transparent;
+}
+
+.nav-tabs .nav-link.active {
+    color: var(--tb-primary);
+    background: transparent;
+    border-bottom: 3px solid var(--tb-primary);
+}
+
+.nav-tabs .nav-link:hover {
+    border-color: transparent transparent #dee2e6 transparent;
+}
+
+/* ------------------------------------------------------------
+   footer
+   ------------------------------------------------------------ */
+.tb-footer {
+    background-color: var(--tb-primary);
+    color:            rgba(255, 255, 255, 0.8);
+    padding:          2.5rem 0 1.5rem;
+    margin-top:       auto;
+}
+
+.tb-footer a {
+    color:     rgba(255, 255, 255, 0.88);  /* increased from 0.7 for 4.5:1 contrast */
+    font-size: 0.9rem;
+}
+
+.tb-footer a:hover {
+    color: #ffffff;
+    text-decoration: none;
+}
+
+.tb-footer .footer-brand {
+    font-size:   1.2rem;
+    font-weight: 700;
+    color:       #ffffff;
+}
+
+.tb-footer .footer-brand span {
+    color: #93c6f0;
+}
+
+.tb-footer hr {
+    border-color: rgba(255, 255, 255, 0.15);
+}
+
+.tb-footer small {
+    color: rgba(255, 255, 255, 0.80);  /* increased from 0.55 for 4.5:1 contrast */
+}
+
+.tb-footer .btn-outline-light:hover {
+    background-color: #ffffff;
+    color:            var(--tb-primary);  /* dark navy text on white button */
+}
+
+/* ------------------------------------------------------------
+   flash messages (alerts)
+   ------------------------------------------------------------ */
+.tb-flash {
+    border-radius: 8px;
+    font-weight:   500;
+}
+
+/* ------------------------------------------------------------
+   filter bar (jobs.php)
+   ------------------------------------------------------------ */
+.tb-filter-bar {
+    background:    var(--tb-light-bg);
+    border:        1px solid var(--tb-border);
+    border-radius: 10px;
+    padding:       1.5rem;
+    margin-bottom: 2rem;
+}
+
+/* ------------------------------------------------------------
+   responsive utilities
+   ------------------------------------------------------------ */
+@media (max-width: 767.98px) {
+    .tb-hero h1 {
+        font-size: 2rem;
+    }
+
+    .tb-hero p.lead {
+        font-size: 1rem;
+    }
+
+    .tb-section {
+        padding: 3rem 0;
+    }
+}
+
+/* job description body text on the detail page */
+.job-description {
+    line-height: 1.7;
+    color: var(--tb-text-primary);
+}
+
+.custom-legend-container {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.custom-legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.25rem 0.75rem;
+    border: 1px solid #dee2e6;
+    border-radius: 1rem; /* pill shape */
+    font-size: 0.875rem;
+    background-color: #f8f9fa;
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+.custom-legend-item:hover {
+    background-color: #e9ecef;
+}
+
+.custom-legend-item.disabled {
+    opacity: 0.6;
+    background-color: transparent;
+    text-decoration: line-through;
+}
+
+.custom-legend-color {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    display: inline-block;
+}

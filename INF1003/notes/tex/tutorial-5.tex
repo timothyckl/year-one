@@ -1,0 +1,448 @@
+\documentclass[12pt]{scrartcl}
+
+\usepackage{amsmath,amssymb}
+\usepackage{fullpage}
+\usepackage{enumitem}
+\usepackage{hyperref}
+
+\setlength{\parindent}{0pt}
+
+\begin{document}
+
+\begin{center}
+    \hrule
+    \vspace{0.4cm}
+    {\textbf{\large INF1003 Tutorial 5}}\\[0.2cm]
+\end{center}
+
+\textbf{Name:} Timothy Chia\hspace{\fill} \textbf{Topic:} Predicate Logic\\
+\textbf{Student ID:} 2501530 \hspace{\fill} \textbf{Due Date:} 5/10/2025 10:00PM\\
+
+\hrule
+
+\begin{enumerate}[label=\textbf{\arabic*.}]
+
+%------------------------------------------------------------
+\item 
+Let $\mathrm{Prime}(n)$ be the predicate ``$n$ is a prime number'' and $\mathrm{In}(n,a,b)$ be the
+predicate $a \leq n \leq b$, where $n,a,b$ range over all integers.
+For each statement below, determine whether it is \emph{True}, \emph{False}, or \emph{Neither},
+and give a brief explanation.
+
+\begin{enumerate}[label=(\alph*)]
+
+    \item $\neg \mathrm{Prime}(10) \lor \mathrm{In}(10,5,20)$.
+
+    \textbf{Solution.}
+    \begin{itemize}
+        \item $10$ is not prime, so $\mathrm{Prime}(10)$ is false and $\neg \mathrm{Prime}(10)$ is true.
+        \item $10$ lies between $5$ and $20$, so $\mathrm{In}(10,5,20)$ is also true.
+        \item The whole statement is $T \lor T$, which is true.
+    \end{itemize}
+    Hence the statement is \textbf{True}.
+
+    \item $\exists n\, \mathrm{Prime}(n)$.
+
+    \textbf{Solution.}
+    There are many prime integers (for example, $2$, $3$, $5$, \dots).  
+    Choosing $n=2$ gives $\mathrm{Prime}(2)$ true, so the existential statement is satisfied.  
+    Therefore this statement is \textbf{True}.
+
+    \item $\exists n\, \neg \mathrm{Prime}(n)$.
+
+    \textbf{Solution.}
+    There are integers that are not prime, for example $1$, $4$, $6$, \dots.  
+    Taking $n=4$ gives $\neg \mathrm{Prime}(4)$ true.  
+    So the existential statement holds and is \textbf{True}.
+
+    \item $\forall n\, \mathrm{Prime}(n)$.
+
+    \textbf{Solution.}
+    This says every integer is prime.  
+    But $4$ (or $1$, or $10$, etc.) is not prime, so there is a counterexample.
+    Because at least one $n$ makes $\mathrm{Prime}(n)$ false, the universal statement is false.  
+    Hence it is \textbf{False}.
+
+    \item $\forall n\, \neg \mathrm{Prime}(n)$.
+
+    \textbf{Solution.}
+    This says no integer is prime.  
+    However $2$ is prime, so for $n=2$ we have $\neg \mathrm{Prime}(2)$ false.
+    Thus the universal statement fails and is \textbf{False}.
+
+    \item $\neg \forall n\, \mathrm{Prime}(n)$.
+
+    \textbf{Solution.}
+    Using a standard equivalence:
+    \[
+        \neg \forall n\, \mathrm{Prime}(n) \equiv \exists n\, \neg \mathrm{Prime}(n).
+    \]
+    In part (c) we saw that $\exists n\, \neg \mathrm{Prime}(n)$ is true (e.g.\ $n=4$).
+    Therefore this statement is \textbf{True}.
+
+    \item $\forall n\, (\mathrm{In}(n,1,3) \rightarrow \mathrm{Prime}(n))$.
+
+    \textbf{Solution.}
+    The antecedent $\mathrm{In}(n,1,3)$ is true exactly when $n=1,2,$ or $3$.  
+    We check these cases:
+    \begin{itemize}
+        \item $n=1$: $\mathrm{In}(1,1,3)$ is true, but $1$ is not prime, so $\mathrm{Prime}(1)$ is false.
+              Hence the implication is $T \rightarrow F$, which is false.
+    \end{itemize}
+    Because the universal quantifier requires the implication to hold for \emph{every} $n$,
+    the single counterexample $n=1$ makes the whole statement \textbf{False}.
+
+    \item $\forall n\, (\mathrm{In}(n,8,10) \rightarrow \mathrm{Prime}(n))$.
+
+    \textbf{Solution.}
+    Here $\mathrm{In}(n,8,10)$ is true for $n=8,9,10$.
+    \begin{itemize}
+        \item $n=9$: $\mathrm{In}(9,8,10)$ is true, but $9$ is not prime ($9=3\cdot 3$),
+              so $\mathrm{Prime}(9)$ is false.
+              The implication is therefore $T \rightarrow F$, which is false.
+    \end{itemize}
+    Hence the universal statement is \textbf{False}.
+
+    \item $\forall n\,(\mathrm{In}(n,a,b) \rightarrow \neg \mathrm{Prime}(n))$, where $a$ and $b$
+          are integers smaller than $10$.
+
+    \textbf{Solution.}
+    Here $a$ and $b$ are fixed integers less than $10$, but we are \emph{not} told which ones.
+    \begin{itemize}
+        \item If the interval $[a,b]$ happens to contain a prime (for example $[2,4]$),
+              then the statement is false (because some $n$ in $[a,b]$ will have $\mathrm{Prime}(n)$ true).
+        \item If $[a,b]$ is chosen to contain no primes (for example $[1,1]$ or $[8,9]$),
+              then the statement is true.
+    \end{itemize}
+    Since the truth value depends on the particular (unspecified) values of $a$ and $b$,
+    we cannot classify it as always true or always false.  
+    Therefore the answer is \textbf{Neither}.
+
+    \item $\exists n\, \bigl(\mathrm{Prime}(n) \rightarrow \mathrm{In}(n,30,40)\bigr)$.
+
+    \textbf{Solution.}
+    First interpret the formula carefully:
+    \[
+        \exists n\, (\mathrm{Prime}(n) \rightarrow \mathrm{In}(n,30,40)).
+    \]
+    For a \emph{fixed} integer $n$, the implication $\mathrm{Prime}(n) \rightarrow \mathrm{In}(n,30,40)$
+    is false only when $\mathrm{Prime}(n)$ is true and $\mathrm{In}(n,30,40)$ is false;
+    in all other cases it is true.
+    \begin{itemize}
+        \item Take $n=1$. Then $\mathrm{Prime}(1)$ is false and so the implication is
+              $F \rightarrow \mathrm{In}(1,30,40)$, which is true regardless of the consequent.
+    \end{itemize}
+    Thus there exists at least one integer $n$ (for example $n=1$) making the implication true,
+    so the existential statement holds.  
+    Therefore it is \textbf{True}.
+\end{enumerate}
+
+%------------------------------------------------------------
+\item 
+Let $\mathrm{BB}(x)$ be the statement ``$x$ plays basketball every week'', where the domain of $x$
+is all ICT students. Express each logical formula in English.
+
+\begin{enumerate}[label=(\alph*)]
+
+    \item $\exists x\, \mathrm{BB}(x)$.
+
+    \textbf{Solution.}
+    There is at least one ICT student who plays basketball every week.
+
+    \item $\forall x\, \mathrm{BB}(x)$.
+
+    \textbf{Solution.}
+    Every ICT student plays basketball every week.
+
+    \item $\neg \forall x\, \mathrm{BB}(x)$.
+
+    \textbf{Solution.}
+    First note that
+    \[
+        \neg \forall x\, \mathrm{BB}(x) \equiv \exists x\, \neg \mathrm{BB}(x).
+    \]
+    So in English: Not every ICT student plays basketball every week.
+
+    \item $\exists x\, \neg \mathrm{BB}(x)$.
+
+    \textbf{Solution.}
+    There is an ICT student who does not play basketball every week.
+
+\end{enumerate}
+
+%------------------------------------------------------------
+\item 
+For each statement, do the following:
+\begin{itemize}
+    \item[(I)] Express it using quantified logical expressions.
+    \item[(II)] Form the negation, pushing all negations directly onto predicates (not onto quantifiers).
+    \item[(III)] Express the negated statement in English.
+\end{itemize}
+
+\begin{enumerate}[label=(\alph*)]
+
+    \item No rabbit knows calculus.
+
+    \textbf{Solution.}
+    Let the domain be all rabbits, and let $K(x)$ mean ``$x$ knows calculus''.
+
+    \textbf{(I)} Original statement:
+    \[
+        \forall x\, \neg K(x)
+    \]
+    (equivalently $\neg \exists x\, K(x)$).
+
+    \textbf{(II)} Negation:
+    \[
+        \neg \forall x\, \neg K(x) \equiv \exists x\, \neg\neg K(x) \equiv \exists x\, K(x).
+    \]
+
+    \textbf{(III)} English: There is a rabbit that knows calculus.
+
+    \item There is a bird that can talk.
+
+    \textbf{Solution.}
+    Let the domain be all birds and $T(x)$ mean ``$x$ can talk''.
+
+    \textbf{(I)} Original statement:
+    \[
+        \exists x\, T(x).
+    \]
+
+    \textbf{(II)} Negation:
+    \[
+        \neg \exists x\, T(x) \equiv \forall x\, \neg T(x).
+    \]
+
+    \textbf{(III)} English: No bird can talk (equivalently: all birds cannot talk).
+
+    \item There is no one in this class who knows French and Russian.
+
+    \textbf{Solution.}
+    Let the domain be all people in this class.  
+    Let $F(x)$ mean ``$x$ knows French'' and $R(x)$ mean ``$x$ knows Russian''.
+
+    \textbf{(I)} Original statement:
+    \[
+        \neg \exists x\, (F(x) \land R(x))
+        \quad\text{or equivalently}\quad
+        \forall x\, \neg(F(x) \land R(x)).
+    \]
+
+    \textbf{(II)} Negation:
+    \[
+        \neg \neg \exists x\, (F(x) \land R(x))
+        \equiv
+        \exists x\, (F(x) \land R(x)).
+    \]
+
+    \textbf{(III)} English: There is someone in this class who knows both French and Russian.
+
+    \item Everyone in this class is a Marvel fan.
+
+    \textbf{Solution.}
+    Let the domain be all people in this class, and let $M(x)$ mean ``$x$ is a Marvel fan''.
+
+    \textbf{(I)} Original statement:
+    \[
+        \forall x\, M(x).
+    \]
+
+    \textbf{(II)} Negation:
+    \[
+        \neg \forall x\, M(x) \equiv \exists x\, \neg M(x).
+    \]
+
+    \textbf{(III)} English: There is someone in this class who is not a Marvel fan.
+
+\end{enumerate}
+
+%------------------------------------------------------------
+\item 
+Express each of the following statements using predicates and quantifiers.
+Clearly define all predicates and variables.
+
+\begin{enumerate}[label=(\alph*)]
+
+    \item There is a student who has taken more than $21$ credit hours in a semester and
+          received all A's.
+
+    \textbf{Solution.}
+    Let the domain of $x$ be all students, and the domain of $y$ be all modules.
+    \begin{itemize}
+        \item $\mathrm{Credits}(x,y)$: student $x$ has taken more than $y$ credit hours
+              in a semester.
+        \item $A(x,y)$: student $x$ received grade A in module $y$.
+    \end{itemize}
+    The statement ``received all A's'' can be modelled as ``for every module $y$,
+    student $x$ received A in $y$''.
+    \[
+        \exists x\,\bigl(\mathrm{Credits}(x,21) \land \forall y\, A(x,y)\bigr).
+    \]
+
+    \item A passenger on an airline qualifies as an ``Elite Flyer'' if the passenger flies
+          more than $25000$ miles in a year or takes more than $25$ flights during that year.
+
+    \textbf{Solution.}
+    Let the domain of $x$ be all airline passengers.
+    \begin{itemize}
+        \item $\mathrm{Miles}(x,y)$: passenger $x$ flies more than $y$ miles in a year.
+        \item $\mathrm{Flights}(x,y)$: passenger $x$ takes more than $y$ flights in a year.
+        \item $\mathrm{Elite}(x)$: passenger $x$ qualifies as an Elite Flyer.
+    \end{itemize}
+    The rule ``qualifies as an Elite Flyer if \dots'' becomes an implication for all passengers:
+    \[
+        \forall x\,\bigl((\mathrm{Miles}(x,25000) \lor \mathrm{Flights}(x,25))
+        \rightarrow \mathrm{Elite}(x)\bigr).
+    \]
+
+    \item A man qualifies for the marathon if his best previous time is less than $3$ hours
+          and a woman qualifies for the marathon if her best previous time is less than
+          $3.5$ hours.
+
+    \textbf{Solution.}
+    Let the domain of $x$ be all people.
+    \begin{itemize}
+        \item $M(x)$: $x$ is a man.
+        \item $W(x)$: $x$ is a woman.
+        \item $Q(x)$: $x$ qualifies for the marathon.
+        \item $\mathrm{Best}(x,t)$: the best previous time of $x$ is less than $t$ hours.
+    \end{itemize}
+    We can encode both conditions in a single formula:
+    \[
+        \forall x\,\bigl((M(x) \land \mathrm{Best}(x,3)) 
+                \lor (W(x) \land \mathrm{Best}(x,3.5))
+                \rightarrow Q(x)\bigr).
+    \]
+    (Equivalently, we could have written two separate implications, one for men and one for women.)
+
+\end{enumerate}
+
+%------------------------------------------------------------
+\item 
+Use the following predicates:
+\[
+    L(x): \text{$x$ has a laptop},\quad
+    D(x): \text{$x$ has a desktop computer},\quad
+    M(x): \text{$x$ uses macOS},\quad
+    W(x): \text{$x$ uses Windows}.
+\]
+Domain~1 is ``students in this class''.  
+Domain~2 is ``all people in the world''.  
+You may also use an additional predicate
+\[
+    S(x): \text{$x$ is a student in this class}
+\]
+when working in Domain~2.
+
+For each statement, give an expression in both domains.
+
+\begin{enumerate}[label=(\alph*)]
+
+    \item Some students have both a laptop and a desktop computer.
+
+    \textbf{Solution.}
+    \begin{itemize}
+        \item \textbf{Domain 1 (students in this class):}
+              \[
+                \exists x\, (L(x) \land D(x)).
+              \]
+              Here the domain already consists of students, so we do not need $S(x)$.
+
+        \item \textbf{Domain 2 (all people in the world):}
+              We must restrict to those who are students in this class:
+              \[
+                \exists x\, (S(x) \land L(x) \land D(x)).
+              \]
+    \end{itemize}
+
+    \item All students who use macOS have a laptop.
+
+    \textbf{Solution.}
+    \begin{itemize}
+        \item \textbf{Domain 1:}
+              \[
+                \forall x\, (M(x) \rightarrow L(x)).
+              \]
+              Every (class) student using macOS has a laptop.
+
+        \item \textbf{Domain 2:}
+              We again restrict to students in this class:
+              \[
+                \forall x\, ((S(x) \land M(x)) \rightarrow L(x)).
+              \]
+    \end{itemize}
+
+    \item Every student uses either macOS, Windows, or both.
+
+    \textbf{Solution.}
+    \begin{itemize}
+        \item \textbf{Domain 1:}
+              \[
+                \forall x\, (M(x) \lor W(x)).
+              \]
+              (All students in this class use macOS, Windows, or both.)
+
+        \item \textbf{Domain 2:}
+              We restrict the universal quantifier to students in this class:
+              \[
+                \forall x\, (S(x) \rightarrow (M(x) \lor W(x))).
+              \]
+    \end{itemize}
+
+\end{enumerate}
+
+%------------------------------------------------------------
+\item[\textbf{6.}] \textbf{[OPTIONAL]}  
+Translate each logical statement into a clear English sentence.
+The domain of every variable is the set of all real numbers.
+
+\begin{enumerate}[label=(\alph*)]
+
+    \item $\forall x\, \exists y\, (x < y)$.
+
+    \textbf{Solution.}
+    For every real number $x$, there is a real number $y$ that is larger than $x$.  
+    (Every real number has a larger real number.)
+
+    \item $\forall x\, \forall y\, (((x \ge 0) \land (y \ge 0)) \rightarrow (xy \ge 0))$.
+
+    \textbf{Solution.}
+    For all real numbers $x$ and $y$, if both $x$ and $y$ are non-negative,
+    then their product $xy$ is also non-negative.
+
+    \item $\forall x\, \forall y\, \exists z\, (x + y = z)$.
+
+    \textbf{Solution.}
+    For any two real numbers $x$ and $y$, there exists a real number $z$ equal to their sum.  
+    (The sum of any two real numbers is a real number.)
+
+\end{enumerate}
+
+%------------------------------------------------------------
+\item[\textbf{7.}] \textbf{[OPTIONAL]}  
+Let $F(x,y)$ be the predicate ``$x$ and $y$ are friends'', where $x$ and $y$ range over all
+students in SIT. Translate each statement into clear English (avoid using the symbols $x$ and $y$
+in your English sentences).
+
+\begin{enumerate}[label=(\alph*)]
+
+    \item $\forall x\, \exists y\, \bigl( F(x,y) \land \forall z\, ((y \ne z) \rightarrow \neg F(x,z)) \bigr)$.
+
+    \textbf{Solution.}
+    For every student, there is some student who is their friend, and they have no other friends.
+    In words: \emph{Every student in SIT has exactly one friend.}
+
+    \item $\exists x\, \forall y\, \forall z\,
+           \bigl((F(x,y) \land F(x,z) \land (y \ne z)) \rightarrow \neg F(y,z)\bigr)$.
+
+    \textbf{Solution.}
+    There is at least one student such that whenever two different students are both friends
+    with that person, those two students are not friends with each other.
+    In words: \emph{There is a student whose friends are not friends with one another.}
+
+\end{enumerate}
+
+\end{enumerate}
+
+\end{document}

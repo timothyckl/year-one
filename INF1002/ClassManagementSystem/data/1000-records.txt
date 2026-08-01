@@ -1,0 +1,1005 @@
+Database Name: Student Records
+Authors: P1-08
+
+Table Name: StudentRecords-1000
+ID	Name	Programme	Mark
+2500000	Xiao Ling	Computer Science	18.35
+2500001	Rachel Goh	Software Engineering	78.41
+2500002	Clara Lim	Digital Supply Chain	33.73
+2500003	Zi Hao	Computer Science	10.16
+2500004	Yi Xuan	CS	39.59
+2500005	Shaun Lee	Computer Science	13.96
+2500006	Amirah Binte Rahman	CS	67.43
+2500007	Sarah Lim	CS	15.69
+2500008	Hui Min	Computer Science	85.71
+2500009	Evelyn Soh	CS	12.12
+2500010	Wei Ning	Computer Science	64.58
+2500011	Felix Tan	Software Engineering	77.78
+2500012	Terence Goh	CS	92.32
+2500013	Benjamin Koh	Computer Science	82.40
+2500014	Clara Lim	Digital Supply Chain	7.79
+2500015	Geraldine Ng	Computer Science	89.75
+2500016	Hui Min	Digital Supply Chain	66.46
+2500017	Zhi Yuan	Computer Science	48.96
+2500018	Nicole Chua	Digital Supply Chain	18.27
+2500019	Shaun Lee	CS	58.29
+2500020	Harith Zulkifli	Software Engineering	89.21
+2500021	Shaun Lee	Computer Science	70.36
+2500022	Yi Xuan	Digital Supply Chain	11.47
+2500023	Jia Wei	Digital Supply Chain	45.90
+2500024	Yi Xuan	Software Engineering	91.74
+2500025	Xin Rui	Computer Science	87.50
+2500026	Geraldine Ng	CS	86.33
+2500027	Marcus Yeo	Software Engineering	42.85
+2500028	Geraldine Ng	CS	51.17
+2500029	Zi Hao	CS	73.56
+2500030	Sarah Lim	Computer Science	23.78
+2500031	Amirah Binte Rahman	Computer Science	35.33
+2500032	Xin Rui	CS	5.88
+2500033	Marcus Yeo	Software Engineering	56.10
+2500034	Isaac Teo	CS	90.39
+2500035	Clara Lim	CS	68.59
+2500036	Joshua Chen	Computer Science	31.81
+2500037	Terence Goh	Software Engineering	58.67
+2500038	Megan Toh	Digital Supply Chain	93.79
+2500039	Evelyn Soh	Digital Supply Chain	12.86
+2500040	Marcus Yeo	CS	19.89
+2500041	Megan Toh	Computer Science	34.11
+2500042	Rachel Goh	CS	2.05
+2500043	Evelyn Soh	Software Engineering	54.82
+2500044	Darren Tan	Digital Supply Chain	12.32
+2500045	Megan Toh	CS	31.13
+2500046	Daniel Ong	Computer Science	21.35
+2500047	Alicia Tan	Computer Science	95.97
+2500048	Isaac Teo	Digital Supply Chain	52.11
+2500049	Terence Goh	Computer Science	34.78
+2500050	Nurul Aisyah	Digital Supply Chain	69.54
+2500051	Rachel Goh	Digital Supply Chain	66.39
+2500052	Nicole Chua	Computer Science	88.37
+2500053	Darren Tan	Computer Science	97.64
+2500054	Geraldine Ng	CS	1.23
+2500055	Jia Wei	Computer Science	26.62
+2500056	Isaac Teo	Digital Supply Chain	34.43
+2500057	Isaac Teo	CS	65.64
+2500058	Joshua Chen	CS	24.16
+2500059	Daniel Ong	Software Engineering	34.09
+2500060	Megan Toh	CS	51.81
+2500061	Sarah Lim	CS	52.40
+2500062	Isaac Teo	Digital Supply Chain	84.61
+2500063	Joshua Chen	Software Engineering	8.81
+2500064	Wei Ning	Digital Supply Chain	10.50
+2500065	Nurul Aisyah	Computer Science	28.19
+2500066	Xiao Ling	Computer Science	97.95
+2500067	Benjamin Koh	Computer Science	9.24
+2500068	Nicole Chua	Computer Science	92.01
+2500069	Terence Goh	Digital Supply Chain	22.13
+2500070	Wei Ning	Software Engineering	43.77
+2500071	Xin Rui	CS	98.98
+2500072	Chee Seng	Digital Supply Chain	25.14
+2500073	Jia Wei	Digital Supply Chain	55.31
+2500074	Jia Wei	Digital Supply Chain	15.08
+2500075	Jia Wei	Software Engineering	40.65
+2500076	Megan Toh	CS	13.95
+2500077	Amirah Binte Rahman	Computer Science	77.51
+2500078	Alicia Tan	Software Engineering	64.09
+2500079	Nicole Chua	CS	1.04
+2500080	Jia Wei	Software Engineering	86.04
+2500081	Syafiq Hassan	Software Engineering	34.45
+2500082	Wei Ning	Computer Science	61.75
+2500083	Daniel Ong	CS	18.24
+2500084	Xin Rui	Software Engineering	0.12
+2500085	Yi Xuan	Computer Science	1.22
+2500086	Daniel Ong	CS	63.06
+2500087	Alicia Tan	Software Engineering	56.28
+2500088	Chee Seng	Computer Science	43.08
+2500089	Evelyn Soh	CS	98.24
+2500090	Chee Seng	Software Engineering	68.31
+2500091	Daniel Ong	CS	70.89
+2500092	Megan Toh	Computer Science	68.82
+2500093	Sarah Lim	CS	24.16
+2500094	Zi Hao	Digital Supply Chain	6.79
+2500095	Daniel Ong	CS	70.10
+2500096	Zi Hao	Software Engineering	9.70
+2500097	Sarah Lim	CS	16.20
+2500098	Xin Rui	CS	4.37
+2500099	Xiao Ling	Software Engineering	18.30
+2500100	Zi Hao	CS	20.42
+2500101	Yi Xuan	Software Engineering	22.25
+2500102	Joshua Chen	Software Engineering	63.62
+2500103	Amirah Binte Rahman	Software Engineering	42.19
+2500104	Benjamin Koh	Software Engineering	14.02
+2500105	Harith Zulkifli	Computer Science	33.91
+2500106	Yi Xuan	Software Engineering	9.62
+2500107	Geraldine Ng	Software Engineering	1.92
+2500108	Clara Lim	Software Engineering	43.33
+2500109	Hui Min	Digital Supply Chain	89.28
+2500110	Geraldine Ng	Computer Science	80.22
+2500111	Darren Tan	Computer Science	68.92
+2500112	Terence Goh	Computer Science	13.20
+2500113	Hui Min	CS	35.59
+2500114	Terence Goh	Software Engineering	49.33
+2500115	Marcus Yeo	Digital Supply Chain	1.18
+2500116	Clara Lim	CS	23.39
+2500117	Nurul Aisyah	Software Engineering	36.06
+2500118	Hui Min	Computer Science	87.00
+2500119	Xiao Ling	CS	18.95
+2500120	Chee Seng	CS	51.92
+2500121	Evelyn Soh	Digital Supply Chain	34.44
+2500122	Alicia Tan	Software Engineering	58.20
+2500123	Terence Goh	CS	17.74
+2500124	Zi Hao	Digital Supply Chain	99.15
+2500125	Sarah Lim	Software Engineering	33.83
+2500126	Terence Goh	Software Engineering	19.43
+2500127	Evelyn Soh	CS	98.34
+2500128	Xiao Ling	CS	78.56
+2500129	Geraldine Ng	Digital Supply Chain	77.61
+2500130	Jia Wei	Computer Science	72.59
+2500131	Felix Tan	Digital Supply Chain	71.24
+2500132	Nicole Chua	CS	96.77
+2500133	Yi Xuan	Digital Supply Chain	81.14
+2500134	Sarah Lim	Computer Science	66.28
+2500135	Chee Seng	Software Engineering	62.19
+2500136	Syafiq Hassan	Digital Supply Chain	49.67
+2500137	Nurul Aisyah	CS	28.70
+2500138	Yi Xuan	Software Engineering	18.96
+2500139	Yi Xuan	Computer Science	67.81
+2500140	Joshua Chen	Computer Science	27.39
+2500141	Hui Min	CS	13.44
+2500142	Amirah Binte Rahman	Computer Science	68.01
+2500143	Isaac Teo	Digital Supply Chain	42.80
+2500144	Sarah Lim	Software Engineering	88.25
+2500145	Zhi Yuan	CS	85.50
+2500146	Marcus Yeo	Software Engineering	6.18
+2500147	Geraldine Ng	CS	87.44
+2500148	Jia Wei	CS	69.97
+2500149	Harith Zulkifli	CS	24.95
+2500150	Nurul Aisyah	Digital Supply Chain	9.24
+2500151	Amirah Binte Rahman	Software Engineering	79.02
+2500152	Xin Rui	Software Engineering	39.88
+2500153	Wei Ning	Computer Science	77.16
+2500154	Nicole Chua	CS	47.92
+2500155	Wei Ning	CS	8.05
+2500156	Nurul Aisyah	Computer Science	66.37
+2500157	Joshua Chen	Software Engineering	19.25
+2500158	Clara Lim	Digital Supply Chain	11.30
+2500159	Joshua Chen	Digital Supply Chain	6.08
+2500160	Rachel Goh	Digital Supply Chain	3.49
+2500161	Chee Seng	CS	37.81
+2500162	Clara Lim	Computer Science	20.01
+2500163	Chee Seng	CS	25.49
+2500164	Geraldine Ng	Software Engineering	57.45
+2500165	Hui Min	Digital Supply Chain	11.19
+2500166	Alicia Tan	Digital Supply Chain	88.65
+2500167	Zi Hao	CS	16.17
+2500168	Rachel Goh	Software Engineering	93.92
+2500169	Joshua Chen	Computer Science	40.53
+2500170	Zhi Yuan	Software Engineering	76.28
+2500171	Syafiq Hassan	Software Engineering	54.71
+2500172	Megan Toh	Digital Supply Chain	22.14
+2500173	Darren Tan	Software Engineering	92.08
+2500174	Jia Wei	Software Engineering	94.71
+2500175	Yi Xuan	Computer Science	14.99
+2500176	Terence Goh	CS	7.29
+2500177	Hui Min	Computer Science	29.21
+2500178	Evelyn Soh	Digital Supply Chain	96.69
+2500179	Benjamin Koh	Digital Supply Chain	61.86
+2500180	Hui Min	Digital Supply Chain	13.96
+2500181	Rachel Goh	Computer Science	34.25
+2500182	Geraldine Ng	CS	69.50
+2500183	Joshua Chen	Digital Supply Chain	37.66
+2500184	Joshua Chen	Computer Science	32.98
+2500185	Sarah Lim	Digital Supply Chain	25.87
+2500186	Joshua Chen	Computer Science	16.60
+2500187	Wei Ning	Software Engineering	41.37
+2500188	Joshua Chen	CS	11.60
+2500189	Megan Toh	CS	84.48
+2500190	Darren Tan	Software Engineering	14.01
+2500191	Amirah Binte Rahman	Digital Supply Chain	76.55
+2500192	Wei Ning	Computer Science	30.34
+2500193	Sarah Lim	Software Engineering	21.87
+2500194	Xiao Ling	Digital Supply Chain	44.59
+2500195	Shaun Lee	Computer Science	55.84
+2500196	Nurul Aisyah	Software Engineering	38.37
+2500197	Harith Zulkifli	Computer Science	2.02
+2500198	Zhi Yuan	Digital Supply Chain	60.43
+2500199	Wei Ning	CS	70.15
+2500200	Nurul Aisyah	Digital Supply Chain	75.14
+2500201	Chee Seng	Computer Science	33.00
+2500202	Zi Hao	CS	59.78
+2500203	Geraldine Ng	Software Engineering	58.71
+2500204	Nurul Aisyah	Computer Science	48.77
+2500205	Terence Goh	Digital Supply Chain	42.53
+2500206	Jia Wei	CS	24.58
+2500207	Marcus Yeo	CS	69.33
+2500208	Darren Tan	Digital Supply Chain	36.76
+2500209	Zhi Yuan	Digital Supply Chain	6.29
+2500210	Isaac Teo	Computer Science	23.98
+2500211	Isaac Teo	CS	53.20
+2500212	Harith Zulkifli	Digital Supply Chain	59.04
+2500213	Geraldine Ng	CS	21.71
+2500214	Marcus Yeo	CS	84.67
+2500215	Zi Hao	CS	10.62
+2500216	Evelyn Soh	Digital Supply Chain	34.90
+2500217	Isaac Teo	Digital Supply Chain	46.49
+2500218	Darren Tan	Computer Science	35.14
+2500219	Geraldine Ng	Computer Science	79.81
+2500220	Wei Ning	CS	46.56
+2500221	Sarah Lim	Computer Science	92.33
+2500222	Zi Hao	Digital Supply Chain	22.08
+2500223	Geraldine Ng	Software Engineering	80.09
+2500224	Zi Hao	Software Engineering	89.77
+2500225	Rachel Goh	Computer Science	12.74
+2500226	Alicia Tan	Software Engineering	50.38
+2500227	Daniel Ong	CS	65.44
+2500228	Geraldine Ng	CS	64.77
+2500229	Xin Rui	Digital Supply Chain	32.71
+2500230	Daniel Ong	CS	91.31
+2500231	Hui Min	Computer Science	57.02
+2500232	Isaac Teo	Computer Science	64.34
+2500233	Terence Goh	Digital Supply Chain	95.47
+2500234	Darren Tan	Digital Supply Chain	81.40
+2500235	Benjamin Koh	Computer Science	5.86
+2500236	Terence Goh	Digital Supply Chain	23.51
+2500237	Zhi Yuan	Digital Supply Chain	78.36
+2500238	Sarah Lim	Software Engineering	12.81
+2500239	Terence Goh	CS	58.78
+2500240	Wei Ning	Computer Science	65.27
+2500241	Darren Tan	Digital Supply Chain	54.42
+2500242	Zhi Yuan	CS	58.35
+2500243	Daniel Ong	Computer Science	45.08
+2500244	Amirah Binte Rahman	CS	34.81
+2500245	Syafiq Hassan	Software Engineering	61.36
+2500246	Xiao Ling	Computer Science	0.90
+2500247	Jia Wei	Software Engineering	55.95
+2500248	Terence Goh	CS	70.60
+2500249	Nicole Chua	Digital Supply Chain	86.12
+2500250	Harith Zulkifli	Computer Science	47.71
+2500251	Benjamin Koh	Software Engineering	51.97
+2500252	Syafiq Hassan	Computer Science	91.37
+2500253	Nurul Aisyah	Digital Supply Chain	66.31
+2500254	Felix Tan	CS	56.40
+2500255	Daniel Ong	Computer Science	72.81
+2500256	Nurul Aisyah	Digital Supply Chain	30.10
+2500257	Amirah Binte Rahman	Digital Supply Chain	72.83
+2500258	Nicole Chua	Computer Science	92.31
+2500259	Zi Hao	Computer Science	1.79
+2500260	Shaun Lee	CS	85.34
+2500261	Evelyn Soh	Digital Supply Chain	48.00
+2500262	Terence Goh	CS	66.92
+2500263	Nurul Aisyah	CS	22.46
+2500264	Nurul Aisyah	Digital Supply Chain	36.68
+2500265	Alicia Tan	Software Engineering	57.97
+2500266	Jia Wei	Computer Science	74.76
+2500267	Alicia Tan	CS	16.21
+2500268	Nicole Chua	Software Engineering	93.32
+2500269	Sarah Lim	Software Engineering	34.32
+2500270	Isaac Teo	Software Engineering	56.33
+2500271	Geraldine Ng	CS	22.58
+2500272	Geraldine Ng	Computer Science	75.10
+2500273	Zi Hao	Digital Supply Chain	32.70
+2500274	Daniel Ong	Software Engineering	94.61
+2500275	Marcus Yeo	CS	31.42
+2500276	Hui Min	Software Engineering	0.60
+2500277	Felix Tan	Software Engineering	16.94
+2500278	Marcus Yeo	CS	21.43
+2500279	Jia Wei	CS	17.30
+2500280	Zi Hao	Digital Supply Chain	29.29
+2500281	Megan Toh	Software Engineering	53.61
+2500282	Nicole Chua	Digital Supply Chain	36.62
+2500283	Marcus Yeo	Software Engineering	50.10
+2500284	Jia Wei	Digital Supply Chain	13.58
+2500285	Joshua Chen	CS	59.84
+2500286	Nicole Chua	Computer Science	10.00
+2500287	Daniel Ong	CS	58.76
+2500288	Daniel Ong	Computer Science	43.12
+2500289	Benjamin Koh	Digital Supply Chain	57.36
+2500290	Isaac Teo	Digital Supply Chain	77.68
+2500291	Evelyn Soh	CS	52.54
+2500292	Geraldine Ng	Digital Supply Chain	95.68
+2500293	Terence Goh	Digital Supply Chain	30.04
+2500294	Joshua Chen	CS	35.14
+2500295	Benjamin Koh	CS	89.11
+2500296	Zhi Yuan	Software Engineering	28.72
+2500297	Jia Wei	Computer Science	91.25
+2500298	Joshua Chen	Digital Supply Chain	49.60
+2500299	Isaac Teo	Software Engineering	0.04
+2500300	Alicia Tan	CS	51.54
+2500301	Jia Wei	Computer Science	69.81
+2500302	Daniel Ong	Software Engineering	44.01
+2500303	Syafiq Hassan	Digital Supply Chain	5.98
+2500304	Hui Min	Computer Science	60.47
+2500305	Zhi Yuan	Software Engineering	2.22
+2500306	Zi Hao	Computer Science	53.87
+2500307	Rachel Goh	Digital Supply Chain	17.39
+2500308	Wei Ning	Software Engineering	9.70
+2500309	Hui Min	Digital Supply Chain	94.30
+2500310	Syafiq Hassan	CS	76.65
+2500311	Yi Xuan	Software Engineering	44.05
+2500312	Harith Zulkifli	Digital Supply Chain	24.83
+2500313	Joshua Chen	Digital Supply Chain	44.80
+2500314	Yi Xuan	Digital Supply Chain	34.48
+2500315	Syafiq Hassan	Computer Science	41.29
+2500316	Darren Tan	CS	14.36
+2500317	Wei Ning	Digital Supply Chain	36.66
+2500318	Harith Zulkifli	Computer Science	84.13
+2500319	Xin Rui	Digital Supply Chain	41.19
+2500320	Megan Toh	Digital Supply Chain	99.49
+2500321	Geraldine Ng	CS	64.10
+2500322	Isaac Teo	Software Engineering	32.34
+2500323	Rachel Goh	Software Engineering	91.54
+2500324	Nicole Chua	Computer Science	80.85
+2500325	Chee Seng	Software Engineering	22.51
+2500326	Felix Tan	CS	91.62
+2500327	Megan Toh	CS	55.47
+2500328	Amirah Binte Rahman	Digital Supply Chain	21.65
+2500329	Joshua Chen	CS	63.49
+2500330	Zi Hao	Computer Science	95.32
+2500331	Zhi Yuan	CS	74.83
+2500332	Sarah Lim	Digital Supply Chain	29.84
+2500333	Geraldine Ng	CS	55.27
+2500334	Megan Toh	CS	90.58
+2500335	Syafiq Hassan	Computer Science	97.54
+2500336	Yi Xuan	Software Engineering	82.50
+2500337	Marcus Yeo	Computer Science	3.14
+2500338	Daniel Ong	Software Engineering	32.81
+2500339	Darren Tan	CS	16.16
+2500340	Daniel Ong	Digital Supply Chain	14.53
+2500341	Hui Min	Digital Supply Chain	75.49
+2500342	Yi Xuan	Digital Supply Chain	90.74
+2500343	Alicia Tan	CS	4.41
+2500344	Isaac Teo	Digital Supply Chain	58.63
+2500345	Nurul Aisyah	CS	73.71
+2500346	Isaac Teo	Digital Supply Chain	43.69
+2500347	Zi Hao	Digital Supply Chain	13.37
+2500348	Wei Ning	CS	8.98
+2500349	Felix Tan	Digital Supply Chain	3.40
+2500350	Daniel Ong	Digital Supply Chain	22.02
+2500351	Hui Min	CS	4.00
+2500352	Marcus Yeo	Computer Science	80.70
+2500353	Chee Seng	Software Engineering	24.05
+2500354	Zi Hao	Computer Science	55.47
+2500355	Hui Min	CS	90.57
+2500356	Darren Tan	Software Engineering	23.88
+2500357	Amirah Binte Rahman	Digital Supply Chain	39.21
+2500358	Felix Tan	Computer Science	61.43
+2500359	Harith Zulkifli	Software Engineering	15.01
+2500360	Zhi Yuan	CS	66.10
+2500361	Chee Seng	CS	77.68
+2500362	Isaac Teo	Computer Science	64.20
+2500363	Joshua Chen	Computer Science	45.54
+2500364	Alicia Tan	CS	6.62
+2500365	Wei Ning	Digital Supply Chain	84.84
+2500366	Darren Tan	Digital Supply Chain	26.05
+2500367	Felix Tan	Software Engineering	65.87
+2500368	Amirah Binte Rahman	CS	96.22
+2500369	Terence Goh	Software Engineering	23.72
+2500370	Chee Seng	Computer Science	4.05
+2500371	Chee Seng	Digital Supply Chain	52.67
+2500372	Yi Xuan	Software Engineering	27.46
+2500373	Daniel Ong	CS	76.97
+2500374	Joshua Chen	Software Engineering	84.79
+2500375	Hui Min	Software Engineering	7.90
+2500376	Felix Tan	Computer Science	80.29
+2500377	Felix Tan	Digital Supply Chain	60.36
+2500378	Xin Rui	CS	64.27
+2500379	Syafiq Hassan	CS	72.32
+2500380	Rachel Goh	Computer Science	11.76
+2500381	Felix Tan	Digital Supply Chain	14.85
+2500382	Amirah Binte Rahman	Computer Science	14.96
+2500383	Evelyn Soh	Digital Supply Chain	34.21
+2500384	Joshua Chen	Computer Science	73.18
+2500385	Chee Seng	CS	68.39
+2500386	Wei Ning	CS	95.52
+2500387	Harith Zulkifli	Digital Supply Chain	53.03
+2500388	Megan Toh	Software Engineering	42.72
+2500389	Daniel Ong	CS	93.64
+2500390	Evelyn Soh	Software Engineering	72.46
+2500391	Nurul Aisyah	Digital Supply Chain	59.98
+2500392	Shaun Lee	Digital Supply Chain	1.88
+2500393	Nicole Chua	Software Engineering	62.90
+2500394	Alicia Tan	Computer Science	21.13
+2500395	Evelyn Soh	Computer Science	2.27
+2500396	Xin Rui	Computer Science	77.62
+2500397	Terence Goh	Computer Science	15.83
+2500398	Felix Tan	Digital Supply Chain	20.48
+2500399	Syafiq Hassan	CS	61.59
+2500400	Joshua Chen	CS	78.82
+2500401	Syafiq Hassan	Software Engineering	68.47
+2500402	Joshua Chen	Software Engineering	91.30
+2500403	Clara Lim	Digital Supply Chain	17.03
+2500404	Megan Toh	Digital Supply Chain	2.03
+2500405	Xin Rui	Software Engineering	90.51
+2500406	Geraldine Ng	CS	47.47
+2500407	Zi Hao	Computer Science	53.01
+2500408	Amirah Binte Rahman	Software Engineering	96.53
+2500409	Xin Rui	Computer Science	74.05
+2500410	Geraldine Ng	Computer Science	1.77
+2500411	Alicia Tan	CS	26.18
+2500412	Darren Tan	Digital Supply Chain	77.30
+2500413	Marcus Yeo	Computer Science	66.26
+2500414	Benjamin Koh	Software Engineering	65.52
+2500415	Alicia Tan	Digital Supply Chain	60.20
+2500416	Marcus Yeo	Software Engineering	84.36
+2500417	Isaac Teo	Software Engineering	66.40
+2500418	Joshua Chen	Software Engineering	28.38
+2500419	Zhi Yuan	Digital Supply Chain	8.37
+2500420	Joshua Chen	Software Engineering	80.54
+2500421	Geraldine Ng	Digital Supply Chain	87.98
+2500422	Yi Xuan	Software Engineering	1.06
+2500423	Joshua Chen	Digital Supply Chain	38.19
+2500424	Evelyn Soh	Software Engineering	78.57
+2500425	Yi Xuan	CS	29.36
+2500426	Joshua Chen	Software Engineering	42.33
+2500427	Zhi Yuan	Digital Supply Chain	92.50
+2500428	Megan Toh	Digital Supply Chain	52.64
+2500429	Wei Ning	CS	23.38
+2500430	Zhi Yuan	Computer Science	50.92
+2500431	Benjamin Koh	Software Engineering	2.74
+2500432	Alicia Tan	Digital Supply Chain	39.38
+2500433	Zi Hao	CS	91.37
+2500434	Clara Lim	CS	95.57
+2500435	Zi Hao	Digital Supply Chain	98.47
+2500436	Benjamin Koh	Digital Supply Chain	22.28
+2500437	Felix Tan	Computer Science	28.54
+2500438	Evelyn Soh	CS	60.36
+2500439	Marcus Yeo	CS	96.33
+2500440	Alicia Tan	Digital Supply Chain	77.38
+2500441	Wei Ning	Digital Supply Chain	87.74
+2500442	Yi Xuan	CS	15.56
+2500443	Zhi Yuan	Computer Science	52.49
+2500444	Nicole Chua	CS	41.98
+2500445	Benjamin Koh	Digital Supply Chain	15.00
+2500446	Nurul Aisyah	Software Engineering	75.94
+2500447	Marcus Yeo	Software Engineering	76.73
+2500448	Xiao Ling	Computer Science	66.14
+2500449	Shaun Lee	CS	14.39
+2500450	Evelyn Soh	Digital Supply Chain	20.32
+2500451	Clara Lim	CS	90.91
+2500452	Jia Wei	Digital Supply Chain	56.67
+2500453	Shaun Lee	CS	44.77
+2500454	Joshua Chen	Digital Supply Chain	94.84
+2500455	Nurul Aisyah	CS	60.12
+2500456	Xiao Ling	Software Engineering	80.63
+2500457	Daniel Ong	Software Engineering	46.61
+2500458	Zhi Yuan	Software Engineering	21.25
+2500459	Benjamin Koh	Software Engineering	57.47
+2500460	Zi Hao	Computer Science	86.31
+2500461	Clara Lim	Computer Science	88.66
+2500462	Darren Tan	CS	18.87
+2500463	Megan Toh	Software Engineering	23.04
+2500464	Megan Toh	CS	65.87
+2500465	Darren Tan	Digital Supply Chain	71.45
+2500466	Megan Toh	Software Engineering	11.97
+2500467	Nicole Chua	CS	86.73
+2500468	Shaun Lee	Computer Science	22.86
+2500469	Benjamin Koh	Computer Science	63.71
+2500470	Zhi Yuan	Digital Supply Chain	20.39
+2500471	Isaac Teo	Software Engineering	18.66
+2500472	Chee Seng	Digital Supply Chain	37.33
+2500473	Benjamin Koh	Computer Science	43.45
+2500474	Chee Seng	CS	58.26
+2500475	Xin Rui	Digital Supply Chain	7.22
+2500476	Chee Seng	Software Engineering	43.52
+2500477	Megan Toh	CS	63.36
+2500478	Sarah Lim	Software Engineering	35.71
+2500479	Syafiq Hassan	CS	50.44
+2500480	Darren Tan	Computer Science	33.76
+2500481	Felix Tan	CS	3.86
+2500482	Geraldine Ng	CS	86.10
+2500483	Daniel Ong	Digital Supply Chain	95.97
+2500484	Rachel Goh	Software Engineering	58.27
+2500485	Syafiq Hassan	Computer Science	6.33
+2500486	Harith Zulkifli	Software Engineering	87.78
+2500487	Felix Tan	CS	30.75
+2500488	Darren Tan	Digital Supply Chain	60.06
+2500489	Nicole Chua	Digital Supply Chain	30.26
+2500490	Syafiq Hassan	CS	74.93
+2500491	Yi Xuan	Software Engineering	7.92
+2500492	Wei Ning	Digital Supply Chain	44.09
+2500493	Amirah Binte Rahman	Computer Science	22.99
+2500494	Terence Goh	CS	75.14
+2500495	Isaac Teo	Computer Science	81.50
+2500496	Evelyn Soh	Software Engineering	21.79
+2500497	Yi Xuan	CS	50.64
+2500498	Isaac Teo	CS	87.95
+2500499	Jia Wei	Digital Supply Chain	57.41
+2500500	Nicole Chua	Digital Supply Chain	42.16
+2500501	Amirah Binte Rahman	Digital Supply Chain	11.55
+2500502	Benjamin Koh	Computer Science	91.54
+2500503	Amirah Binte Rahman	Software Engineering	69.15
+2500504	Benjamin Koh	Digital Supply Chain	26.23
+2500505	Jia Wei	Computer Science	35.93
+2500506	Clara Lim	Software Engineering	75.33
+2500507	Alicia Tan	Computer Science	74.75
+2500508	Wei Ning	Digital Supply Chain	34.82
+2500509	Chee Seng	Software Engineering	38.71
+2500510	Yi Xuan	CS	47.51
+2500511	Evelyn Soh	Digital Supply Chain	28.05
+2500512	Rachel Goh	Computer Science	54.91
+2500513	Evelyn Soh	Software Engineering	12.60
+2500514	Megan Toh	Computer Science	27.18
+2500515	Joshua Chen	Digital Supply Chain	48.81
+2500516	Evelyn Soh	Computer Science	95.35
+2500517	Zhi Yuan	Computer Science	44.40
+2500518	Megan Toh	Digital Supply Chain	33.35
+2500519	Zhi Yuan	Computer Science	58.44
+2500520	Rachel Goh	Software Engineering	55.48
+2500521	Isaac Teo	CS	81.93
+2500522	Daniel Ong	Software Engineering	88.06
+2500523	Syafiq Hassan	Software Engineering	47.42
+2500524	Evelyn Soh	Software Engineering	92.58
+2500525	Xin Rui	Computer Science	96.00
+2500526	Xiao Ling	Software Engineering	42.78
+2500527	Marcus Yeo	Digital Supply Chain	66.17
+2500528	Yi Xuan	Computer Science	18.60
+2500529	Xiao Ling	Software Engineering	50.37
+2500530	Chee Seng	CS	43.60
+2500531	Zhi Yuan	Computer Science	46.53
+2500532	Jia Wei	Software Engineering	67.01
+2500533	Xin Rui	CS	91.32
+2500534	Nicole Chua	Computer Science	86.08
+2500535	Nurul Aisyah	Digital Supply Chain	89.54
+2500536	Zhi Yuan	Computer Science	51.40
+2500537	Xin Rui	CS	24.22
+2500538	Benjamin Koh	CS	86.65
+2500539	Wei Ning	CS	38.67
+2500540	Hui Min	Computer Science	48.42
+2500541	Marcus Yeo	Digital Supply Chain	24.16
+2500542	Hui Min	Software Engineering	39.17
+2500543	Zhi Yuan	Computer Science	30.08
+2500544	Marcus Yeo	Software Engineering	50.21
+2500545	Marcus Yeo	CS	47.29
+2500546	Alicia Tan	CS	49.60
+2500547	Nicole Chua	Software Engineering	93.89
+2500548	Daniel Ong	Software Engineering	51.53
+2500549	Xin Rui	Digital Supply Chain	22.56
+2500550	Zhi Yuan	Computer Science	91.18
+2500551	Zhi Yuan	Software Engineering	28.48
+2500552	Zi Hao	Computer Science	22.58
+2500553	Amirah Binte Rahman	Software Engineering	95.49
+2500554	Alicia Tan	CS	28.58
+2500555	Nicole Chua	CS	9.07
+2500556	Sarah Lim	Digital Supply Chain	98.45
+2500557	Benjamin Koh	CS	89.61
+2500558	Nurul Aisyah	Digital Supply Chain	2.15
+2500559	Xiao Ling	Software Engineering	67.71
+2500560	Nicole Chua	Computer Science	28.68
+2500561	Nurul Aisyah	CS	25.16
+2500562	Terence Goh	Digital Supply Chain	58.25
+2500563	Benjamin Koh	Software Engineering	82.64
+2500564	Xin Rui	Software Engineering	10.41
+2500565	Harith Zulkifli	CS	67.26
+2500566	Zi Hao	Digital Supply Chain	20.36
+2500567	Marcus Yeo	Computer Science	56.45
+2500568	Chee Seng	Computer Science	42.36
+2500569	Nurul Aisyah	Computer Science	80.89
+2500570	Marcus Yeo	Software Engineering	46.01
+2500571	Isaac Teo	Software Engineering	92.11
+2500572	Jia Wei	Software Engineering	67.79
+2500573	Evelyn Soh	Digital Supply Chain	30.80
+2500574	Benjamin Koh	Computer Science	68.08
+2500575	Syafiq Hassan	CS	72.76
+2500576	Chee Seng	Software Engineering	56.40
+2500577	Daniel Ong	Digital Supply Chain	9.41
+2500578	Joshua Chen	Digital Supply Chain	26.29
+2500579	Chee Seng	Computer Science	76.35
+2500580	Benjamin Koh	CS	25.37
+2500581	Yi Xuan	Software Engineering	4.60
+2500582	Rachel Goh	Digital Supply Chain	65.99
+2500583	Xin Rui	Software Engineering	87.30
+2500584	Felix Tan	Computer Science	96.87
+2500585	Xiao Ling	Computer Science	93.17
+2500586	Marcus Yeo	Digital Supply Chain	62.07
+2500587	Syafiq Hassan	CS	26.23
+2500588	Nurul Aisyah	Digital Supply Chain	80.66
+2500589	Hui Min	CS	43.17
+2500590	Nicole Chua	Digital Supply Chain	25.35
+2500591	Yi Xuan	Computer Science	35.26
+2500592	Terence Goh	Computer Science	95.88
+2500593	Shaun Lee	CS	98.00
+2500594	Wei Ning	Software Engineering	53.93
+2500595	Nurul Aisyah	Computer Science	67.84
+2500596	Amirah Binte Rahman	Digital Supply Chain	72.63
+2500597	Wei Ning	Software Engineering	6.23
+2500598	Benjamin Koh	CS	88.35
+2500599	Harith Zulkifli	Digital Supply Chain	54.01
+2500600	Syafiq Hassan	CS	78.67
+2500601	Sarah Lim	CS	62.75
+2500602	Alicia Tan	Software Engineering	8.12
+2500603	Alicia Tan	Computer Science	97.94
+2500604	Nurul Aisyah	Software Engineering	19.95
+2500605	Harith Zulkifli	Software Engineering	93.42
+2500606	Xin Rui	CS	25.26
+2500607	Evelyn Soh	Digital Supply Chain	46.73
+2500608	Clara Lim	Digital Supply Chain	34.75
+2500609	Hui Min	Computer Science	47.73
+2500610	Megan Toh	Digital Supply Chain	18.44
+2500611	Zi Hao	Software Engineering	55.23
+2500612	Hui Min	Computer Science	57.39
+2500613	Amirah Binte Rahman	Computer Science	60.05
+2500614	Jia Wei	CS	27.63
+2500615	Isaac Teo	Software Engineering	79.86
+2500616	Yi Xuan	Software Engineering	85.04
+2500617	Yi Xuan	CS	64.84
+2500618	Joshua Chen	Software Engineering	78.64
+2500619	Shaun Lee	CS	62.03
+2500620	Alicia Tan	Software Engineering	51.95
+2500621	Nicole Chua	CS	52.94
+2500622	Chee Seng	Software Engineering	63.03
+2500623	Syafiq Hassan	CS	83.03
+2500624	Megan Toh	Software Engineering	71.47
+2500625	Alicia Tan	CS	87.15
+2500626	Darren Tan	Computer Science	71.22
+2500627	Wei Ning	Digital Supply Chain	10.70
+2500628	Rachel Goh	CS	9.98
+2500629	Xiao Ling	Digital Supply Chain	84.08
+2500630	Isaac Teo	Computer Science	56.11
+2500631	Felix Tan	Computer Science	72.77
+2500632	Megan Toh	CS	26.44
+2500633	Zi Hao	CS	6.64
+2500634	Benjamin Koh	Digital Supply Chain	32.04
+2500635	Amirah Binte Rahman	Digital Supply Chain	39.54
+2500636	Nurul Aisyah	Software Engineering	11.27
+2500637	Marcus Yeo	Software Engineering	89.88
+2500638	Rachel Goh	CS	59.89
+2500639	Yi Xuan	Computer Science	43.53
+2500640	Megan Toh	Digital Supply Chain	45.15
+2500641	Daniel Ong	Digital Supply Chain	24.22
+2500642	Megan Toh	Digital Supply Chain	89.23
+2500643	Joshua Chen	Digital Supply Chain	2.02
+2500644	Clara Lim	Digital Supply Chain	50.18
+2500645	Daniel Ong	Computer Science	81.88
+2500646	Hui Min	Computer Science	32.40
+2500647	Felix Tan	Digital Supply Chain	33.40
+2500648	Terence Goh	Software Engineering	8.40
+2500649	Daniel Ong	CS	45.32
+2500650	Benjamin Koh	CS	14.53
+2500651	Chee Seng	CS	43.83
+2500652	Nicole Chua	Software Engineering	86.62
+2500653	Yi Xuan	Digital Supply Chain	68.29
+2500654	Clara Lim	Computer Science	16.97
+2500655	Jia Wei	Software Engineering	72.60
+2500656	Hui Min	Computer Science	91.99
+2500657	Jia Wei	Digital Supply Chain	82.64
+2500658	Felix Tan	Computer Science	98.70
+2500659	Zi Hao	Computer Science	7.96
+2500660	Amirah Binte Rahman	Computer Science	83.92
+2500661	Xin Rui	Software Engineering	4.55
+2500662	Nicole Chua	CS	19.12
+2500663	Felix Tan	Digital Supply Chain	95.33
+2500664	Geraldine Ng	Computer Science	40.47
+2500665	Marcus Yeo	Digital Supply Chain	41.47
+2500666	Megan Toh	Digital Supply Chain	7.26
+2500667	Jia Wei	Computer Science	4.62
+2500668	Syafiq Hassan	Software Engineering	69.90
+2500669	Felix Tan	Computer Science	54.37
+2500670	Hui Min	Digital Supply Chain	54.71
+2500671	Harith Zulkifli	Digital Supply Chain	36.25
+2500672	Rachel Goh	Software Engineering	91.40
+2500673	Nurul Aisyah	CS	69.60
+2500674	Geraldine Ng	Digital Supply Chain	11.44
+2500675	Megan Toh	CS	43.28
+2500676	Harith Zulkifli	CS	37.26
+2500677	Benjamin Koh	CS	83.82
+2500678	Isaac Teo	Software Engineering	36.41
+2500679	Xiao Ling	Digital Supply Chain	36.17
+2500680	Nurul Aisyah	Software Engineering	62.10
+2500681	Clara Lim	Digital Supply Chain	6.51
+2500682	Clara Lim	CS	96.28
+2500683	Terence Goh	Computer Science	67.87
+2500684	Felix Tan	Digital Supply Chain	92.68
+2500685	Marcus Yeo	CS	13.18
+2500686	Benjamin Koh	Software Engineering	10.97
+2500687	Felix Tan	CS	19.64
+2500688	Clara Lim	Digital Supply Chain	10.73
+2500689	Amirah Binte Rahman	Software Engineering	93.49
+2500690	Xiao Ling	Digital Supply Chain	36.96
+2500691	Darren Tan	Software Engineering	56.95
+2500692	Chee Seng	Computer Science	21.92
+2500693	Darren Tan	CS	81.11
+2500694	Hui Min	Software Engineering	71.60
+2500695	Felix Tan	CS	98.72
+2500696	Benjamin Koh	Computer Science	63.12
+2500697	Marcus Yeo	CS	70.50
+2500698	Felix Tan	CS	87.43
+2500699	Darren Tan	Digital Supply Chain	92.25
+2500700	Chee Seng	Software Engineering	62.02
+2500701	Isaac Teo	Software Engineering	15.93
+2500702	Joshua Chen	Software Engineering	84.65
+2500703	Isaac Teo	Computer Science	0.68
+2500704	Xin Rui	Digital Supply Chain	41.20
+2500705	Yi Xuan	Computer Science	97.99
+2500706	Hui Min	Digital Supply Chain	41.71
+2500707	Syafiq Hassan	Computer Science	22.97
+2500708	Alicia Tan	CS	1.15
+2500709	Benjamin Koh	Software Engineering	82.62
+2500710	Nurul Aisyah	Digital Supply Chain	64.59
+2500711	Evelyn Soh	CS	16.51
+2500712	Terence Goh	CS	76.32
+2500713	Wei Ning	Digital Supply Chain	50.83
+2500714	Megan Toh	CS	16.23
+2500715	Geraldine Ng	Software Engineering	65.90
+2500716	Isaac Teo	Digital Supply Chain	4.54
+2500717	Geraldine Ng	Digital Supply Chain	62.37
+2500718	Marcus Yeo	CS	2.10
+2500719	Sarah Lim	Digital Supply Chain	16.27
+2500720	Syafiq Hassan	CS	63.17
+2500721	Xiao Ling	Computer Science	10.80
+2500722	Marcus Yeo	Digital Supply Chain	5.74
+2500723	Wei Ning	Software Engineering	93.13
+2500724	Xin Rui	Digital Supply Chain	55.17
+2500725	Darren Tan	Computer Science	75.47
+2500726	Felix Tan	Software Engineering	86.41
+2500727	Darren Tan	CS	31.34
+2500728	Geraldine Ng	Computer Science	68.24
+2500729	Syafiq Hassan	Computer Science	75.47
+2500730	Megan Toh	Computer Science	2.66
+2500731	Syafiq Hassan	Software Engineering	26.58
+2500732	Shaun Lee	CS	48.25
+2500733	Daniel Ong	Software Engineering	3.64
+2500734	Shaun Lee	Software Engineering	7.54
+2500735	Evelyn Soh	Software Engineering	88.94
+2500736	Isaac Teo	Software Engineering	45.96
+2500737	Nurul Aisyah	Software Engineering	21.11
+2500738	Marcus Yeo	Digital Supply Chain	49.12
+2500739	Sarah Lim	Computer Science	25.54
+2500740	Hui Min	Computer Science	40.89
+2500741	Sarah Lim	Software Engineering	61.87
+2500742	Geraldine Ng	Computer Science	53.53
+2500743	Isaac Teo	CS	66.59
+2500744	Daniel Ong	Computer Science	38.50
+2500745	Hui Min	Software Engineering	34.10
+2500746	Benjamin Koh	Digital Supply Chain	70.27
+2500747	Marcus Yeo	Computer Science	60.18
+2500748	Alicia Tan	CS	98.59
+2500749	Amirah Binte Rahman	CS	21.10
+2500750	Joshua Chen	Software Engineering	86.11
+2500751	Darren Tan	CS	0.38
+2500752	Daniel Ong	CS	48.28
+2500753	Megan Toh	CS	33.66
+2500754	Joshua Chen	Digital Supply Chain	77.87
+2500755	Zhi Yuan	Software Engineering	25.09
+2500756	Shaun Lee	Computer Science	22.09
+2500757	Harith Zulkifli	Software Engineering	13.18
+2500758	Rachel Goh	Digital Supply Chain	51.04
+2500759	Marcus Yeo	Software Engineering	36.42
+2500760	Geraldine Ng	CS	29.10
+2500761	Marcus Yeo	CS	0.82
+2500762	Geraldine Ng	CS	89.75
+2500763	Shaun Lee	CS	6.66
+2500764	Benjamin Koh	Digital Supply Chain	3.31
+2500765	Nicole Chua	Software Engineering	22.22
+2500766	Geraldine Ng	CS	92.49
+2500767	Yi Xuan	Software Engineering	15.59
+2500768	Hui Min	Digital Supply Chain	97.66
+2500769	Amirah Binte Rahman	Computer Science	93.54
+2500770	Syafiq Hassan	Computer Science	24.63
+2500771	Hui Min	Computer Science	89.51
+2500772	Daniel Ong	CS	38.42
+2500773	Evelyn Soh	Software Engineering	65.59
+2500774	Terence Goh	Digital Supply Chain	61.44
+2500775	Amirah Binte Rahman	CS	36.16
+2500776	Amirah Binte Rahman	Software Engineering	41.22
+2500777	Wei Ning	Software Engineering	85.68
+2500778	Evelyn Soh	Software Engineering	92.11
+2500779	Evelyn Soh	Digital Supply Chain	70.72
+2500780	Terence Goh	Digital Supply Chain	72.73
+2500781	Benjamin Koh	Digital Supply Chain	38.06
+2500782	Harith Zulkifli	Digital Supply Chain	85.96
+2500783	Nicole Chua	Software Engineering	48.90
+2500784	Xiao Ling	Digital Supply Chain	17.35
+2500785	Evelyn Soh	Digital Supply Chain	72.32
+2500786	Benjamin Koh	Software Engineering	32.07
+2500787	Rachel Goh	Software Engineering	95.75
+2500788	Amirah Binte Rahman	CS	23.22
+2500789	Joshua Chen	CS	54.79
+2500790	Alicia Tan	Computer Science	21.81
+2500791	Clara Lim	Digital Supply Chain	82.80
+2500792	Isaac Teo	Software Engineering	42.30
+2500793	Terence Goh	Software Engineering	48.66
+2500794	Zi Hao	Digital Supply Chain	77.20
+2500795	Isaac Teo	CS	54.11
+2500796	Clara Lim	Computer Science	56.64
+2500797	Felix Tan	CS	55.90
+2500798	Felix Tan	Computer Science	69.89
+2500799	Rachel Goh	Computer Science	33.37
+2500800	Sarah Lim	Digital Supply Chain	83.61
+2500801	Zhi Yuan	Software Engineering	47.51
+2500802	Chee Seng	Computer Science	19.15
+2500803	Jia Wei	Digital Supply Chain	37.15
+2500804	Isaac Teo	Computer Science	25.98
+2500805	Hui Min	CS	97.62
+2500806	Nurul Aisyah	Digital Supply Chain	2.00
+2500807	Evelyn Soh	Computer Science	11.58
+2500808	Benjamin Koh	Software Engineering	66.29
+2500809	Isaac Teo	Computer Science	42.51
+2500810	Hui Min	Digital Supply Chain	78.05
+2500811	Xin Rui	Digital Supply Chain	85.65
+2500812	Sarah Lim	Computer Science	66.22
+2500813	Rachel Goh	Computer Science	27.08
+2500814	Syafiq Hassan	Computer Science	38.88
+2500815	Megan Toh	Software Engineering	34.54
+2500816	Benjamin Koh	Computer Science	29.70
+2500817	Alicia Tan	Software Engineering	40.21
+2500818	Harith Zulkifli	CS	36.87
+2500819	Joshua Chen	Computer Science	14.68
+2500820	Harith Zulkifli	CS	73.53
+2500821	Syafiq Hassan	Software Engineering	57.52
+2500822	Benjamin Koh	Digital Supply Chain	38.59
+2500823	Evelyn Soh	Software Engineering	41.05
+2500824	Geraldine Ng	CS	79.72
+2500825	Terence Goh	Software Engineering	53.82
+2500826	Felix Tan	Software Engineering	48.73
+2500827	Geraldine Ng	Software Engineering	91.29
+2500828	Rachel Goh	Software Engineering	47.35
+2500829	Nicole Chua	Software Engineering	83.98
+2500830	Yi Xuan	Digital Supply Chain	92.96
+2500831	Xin Rui	Computer Science	14.97
+2500832	Yi Xuan	Digital Supply Chain	33.38
+2500833	Yi Xuan	Digital Supply Chain	21.93
+2500834	Hui Min	Computer Science	18.22
+2500835	Zi Hao	Software Engineering	41.10
+2500836	Amirah Binte Rahman	Computer Science	38.18
+2500837	Alicia Tan	Digital Supply Chain	37.79
+2500838	Felix Tan	Software Engineering	58.17
+2500839	Marcus Yeo	CS	93.38
+2500840	Shaun Lee	Computer Science	71.62
+2500841	Joshua Chen	Software Engineering	91.71
+2500842	Terence Goh	Computer Science	58.57
+2500843	Nurul Aisyah	Digital Supply Chain	77.85
+2500844	Jia Wei	CS	84.13
+2500845	Chee Seng	Computer Science	70.71
+2500846	Xiao Ling	Digital Supply Chain	5.63
+2500847	Joshua Chen	Digital Supply Chain	69.80
+2500848	Daniel Ong	CS	13.35
+2500849	Amirah Binte Rahman	CS	32.64
+2500850	Syafiq Hassan	Computer Science	22.53
+2500851	Zhi Yuan	Digital Supply Chain	13.72
+2500852	Geraldine Ng	Computer Science	7.72
+2500853	Xin Rui	Digital Supply Chain	68.72
+2500854	Geraldine Ng	Computer Science	3.32
+2500855	Daniel Ong	Software Engineering	84.59
+2500856	Geraldine Ng	Digital Supply Chain	20.16
+2500857	Terence Goh	Computer Science	44.35
+2500858	Nurul Aisyah	Software Engineering	12.58
+2500859	Evelyn Soh	CS	66.03
+2500860	Xin Rui	Computer Science	6.31
+2500861	Amirah Binte Rahman	Software Engineering	37.36
+2500862	Marcus Yeo	CS	27.64
+2500863	Chee Seng	CS	76.55
+2500864	Marcus Yeo	Computer Science	34.96
+2500865	Joshua Chen	Software Engineering	37.11
+2500866	Jia Wei	Digital Supply Chain	29.60
+2500867	Wei Ning	Digital Supply Chain	39.21
+2500868	Joshua Chen	Computer Science	97.15
+2500869	Yi Xuan	Digital Supply Chain	21.48
+2500870	Isaac Teo	Computer Science	56.96
+2500871	Zhi Yuan	Computer Science	9.86
+2500872	Joshua Chen	CS	3.70
+2500873	Felix Tan	Computer Science	80.51
+2500874	Terence Goh	Digital Supply Chain	33.20
+2500875	Chee Seng	Software Engineering	54.78
+2500876	Terence Goh	Computer Science	9.07
+2500877	Hui Min	CS	47.37
+2500878	Terence Goh	Computer Science	78.32
+2500879	Zhi Yuan	CS	98.02
+2500880	Isaac Teo	Computer Science	18.32
+2500881	Yi Xuan	CS	9.42
+2500882	Amirah Binte Rahman	CS	50.31
+2500883	Clara Lim	Digital Supply Chain	23.77
+2500884	Zi Hao	CS	51.66
+2500885	Joshua Chen	Digital Supply Chain	66.88
+2500886	Syafiq Hassan	Digital Supply Chain	46.43
+2500887	Syafiq Hassan	Computer Science	1.61
+2500888	Nurul Aisyah	Digital Supply Chain	36.18
+2500889	Clara Lim	CS	6.66
+2500890	Evelyn Soh	Computer Science	9.95
+2500891	Harith Zulkifli	Software Engineering	92.06
+2500892	Chee Seng	Digital Supply Chain	29.44
+2500893	Chee Seng	Computer Science	13.43
+2500894	Isaac Teo	CS	68.39
+2500895	Sarah Lim	CS	35.55
+2500896	Amirah Binte Rahman	CS	8.52
+2500897	Xin Rui	Digital Supply Chain	49.94
+2500898	Nurul Aisyah	Computer Science	21.01
+2500899	Darren Tan	Digital Supply Chain	30.38
+2500900	Rachel Goh	Digital Supply Chain	50.93
+2500901	Megan Toh	CS	44.18
+2500902	Yi Xuan	CS	56.43
+2500903	Xiao Ling	Software Engineering	36.04
+2500904	Felix Tan	CS	17.11
+2500905	Xin Rui	Software Engineering	15.81
+2500906	Yi Xuan	Software Engineering	33.08
+2500907	Amirah Binte Rahman	Software Engineering	15.51
+2500908	Isaac Teo	Computer Science	24.12
+2500909	Alicia Tan	Computer Science	30.86
+2500910	Zi Hao	Software Engineering	47.53
+2500911	Daniel Ong	CS	74.66
+2500912	Felix Tan	CS	40.52
+2500913	Xin Rui	CS	57.83
+2500914	Sarah Lim	Computer Science	52.43
+2500915	Marcus Yeo	Computer Science	34.07
+2500916	Darren Tan	Digital Supply Chain	65.42
+2500917	Chee Seng	Software Engineering	54.34
+2500918	Geraldine Ng	Computer Science	27.62
+2500919	Daniel Ong	Computer Science	75.77
+2500920	Isaac Teo	Digital Supply Chain	81.85
+2500921	Felix Tan	Computer Science	48.55
+2500922	Benjamin Koh	Software Engineering	98.53
+2500923	Yi Xuan	Digital Supply Chain	41.17
+2500924	Hui Min	Computer Science	46.50
+2500925	Benjamin Koh	Computer Science	85.00
+2500926	Syafiq Hassan	Digital Supply Chain	26.15
+2500927	Felix Tan	Digital Supply Chain	32.02
+2500928	Chee Seng	Computer Science	29.08
+2500929	Geraldine Ng	Software Engineering	70.24
+2500930	Marcus Yeo	CS	85.87
+2500931	Syafiq Hassan	Computer Science	11.53
+2500932	Xiao Ling	Software Engineering	18.62
+2500933	Nurul Aisyah	Digital Supply Chain	87.10
+2500934	Benjamin Koh	Digital Supply Chain	11.16
+2500935	Alicia Tan	CS	16.47
+2500936	Daniel Ong	Software Engineering	32.94
+2500937	Yi Xuan	Digital Supply Chain	98.66
+2500938	Zhi Yuan	Software Engineering	37.65
+2500939	Daniel Ong	Computer Science	37.89
+2500940	Yi Xuan	Software Engineering	41.22
+2500941	Marcus Yeo	Digital Supply Chain	63.47
+2500942	Shaun Lee	Software Engineering	78.08
+2500943	Wei Ning	Digital Supply Chain	77.45
+2500944	Geraldine Ng	CS	43.70
+2500945	Hui Min	CS	58.43
+2500946	Clara Lim	Computer Science	68.20
+2500947	Yi Xuan	Digital Supply Chain	87.55
+2500948	Jia Wei	Software Engineering	37.11
+2500949	Jia Wei	Computer Science	74.26
+2500950	Zhi Yuan	Computer Science	29.93
+2500951	Benjamin Koh	Digital Supply Chain	23.98
+2500952	Syafiq Hassan	CS	13.21
+2500953	Terence Goh	Software Engineering	16.79
+2500954	Yi Xuan	CS	40.00
+2500955	Joshua Chen	Computer Science	97.25
+2500956	Harith Zulkifli	CS	93.54
+2500957	Joshua Chen	Computer Science	56.99
+2500958	Chee Seng	CS	82.77
+2500959	Shaun Lee	Software Engineering	80.04
+2500960	Daniel Ong	Computer Science	17.91
+2500961	Zi Hao	Computer Science	17.70
+2500962	Sarah Lim	Digital Supply Chain	78.46
+2500963	Megan Toh	Digital Supply Chain	64.11
+2500964	Marcus Yeo	Computer Science	22.63
+2500965	Jia Wei	CS	40.14
+2500966	Harith Zulkifli	Computer Science	81.78
+2500967	Evelyn Soh	CS	60.83
+2500968	Hui Min	Digital Supply Chain	88.26
+2500969	Chee Seng	Computer Science	62.85
+2500970	Clara Lim	CS	75.06
+2500971	Xin Rui	Computer Science	75.81
+2500972	Syafiq Hassan	Digital Supply Chain	26.58
+2500973	Benjamin Koh	CS	76.87
+2500974	Harith Zulkifli	CS	53.11
+2500975	Shaun Lee	Computer Science	62.86
+2500976	Clara Lim	CS	48.83
+2500977	Xin Rui	CS	11.70
+2500978	Zi Hao	CS	78.62
+2500979	Benjamin Koh	Digital Supply Chain	81.87
+2500980	Terence Goh	Computer Science	98.46
+2500981	Wei Ning	Digital Supply Chain	47.71
+2500982	Megan Toh	Computer Science	21.48
+2500983	Hui Min	Computer Science	90.96
+2500984	Xiao Ling	Software Engineering	26.23
+2500985	Nurul Aisyah	Software Engineering	61.97
+2500986	Chee Seng	Computer Science	45.83
+2500987	Rachel Goh	Software Engineering	43.45
+2500988	Alicia Tan	Digital Supply Chain	36.86
+2500989	Shaun Lee	CS	4.29
+2500990	Chee Seng	Computer Science	65.74
+2500991	Nicole Chua	Digital Supply Chain	83.06
+2500992	Clara Lim	Digital Supply Chain	39.75
+2500993	Zhi Yuan	Digital Supply Chain	28.11
+2500994	Joshua Chen	Software Engineering	78.37
+2500995	Syafiq Hassan	Computer Science	68.69
+2500996	Nicole Chua	Digital Supply Chain	80.61
+2500997	Zi Hao	Software Engineering	89.86
+2500998	Xiao Ling	Computer Science	22.09
+2500999	Jia Wei	Software Engineering	65.30

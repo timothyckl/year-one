@@ -1,0 +1,432 @@
+\documentclass[12pt]{scrartcl}
+
+\usepackage{amsmath,amssymb}
+\usepackage{fullpage}
+\usepackage{enumitem}
+\usepackage{hyperref}
+
+\setlength{\parindent}{0pt}
+
+\begin{document}
+
+\begin{center}
+    \hrule
+    \vspace{0.4cm}
+    {\textbf{\large INF1003 Tutorial 9}}\\[0.2cm]
+\end{center}
+
+\textbf{Name:} Timothy Chia\hspace{\fill} \textbf{Topic:} Functions\\
+\textbf{Student ID:} 2501530 \hspace{\fill} \textbf{Due Date:} 9/11/2025, 10:00 PM\\
+
+\hrule
+
+\begin{enumerate}[label=\textbf{\arabic*.}]
+
+%------------------------------------------------------------
+\item Let $f_{1}(x) = x^{2} + 1$ and $f_{2}(x) = (x + 2)^{2}$. Find
+\[
+\text{(a) } f_{1} + f_{2},\quad
+\text{(b) } f_{1}f_{2},\quad
+\text{(c) } f_{1} \circ f_{2},\quad
+\text{(d) } f_{2} \circ f_{1}.
+\]
+
+\begin{enumerate}[label=(\alph*)]
+    \item The sum $(f_{1} + f_{2})(x)$:
+    \begin{align*}
+        (f_{1} + f_{2})(x)
+            &= f_{1}(x) + f_{2}(x) \\
+            &= (x^{2} + 1) + (x + 2)^{2} \\
+            &= x^{2} + 1 + (x^{2} + 4x + 4) \\
+            &= 2x^{2} + 4x + 5.
+    \end{align*}
+
+    \item The product $(f_{1}f_{2})(x)$:
+    \begin{align*}
+        (f_{1}f_{2})(x)
+            &= f_{1}(x)\,f_{2}(x) \\
+            &= (x^{2} + 1)(x + 2)^{2} \\
+            &= (x^{2} + 1)(x^{2} + 4x + 4) \\
+            &= x^{2}(x^{2} + 4x + 4) + 1\cdot(x^{2} + 4x + 4) \\
+            &= x^{4} + 4x^{3} + 4x^{2} + x^{2} + 4x + 4 \\
+            &= x^{4} + 4x^{3} + 5x^{2} + 4x + 4.
+    \end{align*}
+
+    \item The composition $(f_{1} \circ f_{2})(x)$:
+    \begin{align*}
+        (f_{1} \circ f_{2})(x)
+            &= f_{1}(f_{2}(x)) \\
+            &= f_{1}\bigl((x + 2)^{2}\bigr)
+             = \bigl((x + 2)^{2}\bigr)^{2} + 1 \\
+            &= (x + 2)^{4} + 1.
+    \end{align*}
+    Expanding:
+    \begin{align*}
+        (x + 2)^{4}
+            &= (x^{2} + 4x + 4)^{2} \\
+            &= x^{4} + 8x^{3} + 24x^{2} + 32x + 16,
+    \end{align*}
+    so
+    \[
+        (f_{1} \circ f_{2})(x)
+            = x^{4} + 8x^{3} + 24x^{2} + 32x + 17.
+    \]
+
+    \item The composition $(f_{2} \circ f_{1})(x)$:
+    \begin{align*}
+        (f_{2} \circ f_{1})(x)
+            &= f_{2}(f_{1}(x)) \\
+            &= f_{2}(x^{2} + 1)
+             = (x^{2} + 1 + 2)^{2} \\
+            &= (x^{2} + 3)^{2} \\
+            &= x^{4} + 6x^{2} + 9.
+    \end{align*}
+\end{enumerate}
+
+%------------------------------------------------------------
+\item Determine whether each of these functions from the set $\{a,b,c,d\}$ to itself is one-to-one and onto.
+
+\begin{enumerate}[label=(\alph*)]
+    \item $f(a)=b,\; f(b)=a,\; f(c)=c,\; f(d)=d$.
+
+    \textbf{Solution.}
+    Every element of the codomain $\{a,b,c,d\}$ appears exactly once as an image:
+    \[
+        f(a)=b,\; f(b)=a,\; f(c)=c,\; f(d)=d.
+    \]
+    Hence $f$ is one-to-one (no two inputs share the same output) and onto (every element of the codomain is hit).
+    So $f$ is \textbf{bijective}.
+
+    \item $f(a)=b,\; f(b)=b,\; f(c)=d,\; f(d)=c$.
+
+    \textbf{Solution.}
+    The images are $\{b,b,d,c\} = \{b,c,d\}$.
+    \begin{itemize}
+        \item Not one-to-one: $f(a)=b$ and $f(b)=b$.
+        \item Not onto: $a$ is not an image of any element.
+    \end{itemize}
+    So $f$ is \textbf{neither} one-to-one nor onto.
+
+    \item $f(a)=d,\; f(b)=b,\; f(c)=d,\; f(d)=d$.
+
+    \textbf{Solution.}
+    The images are $\{d,b,d,d\} = \{b,d\}$.
+    \begin{itemize}
+        \item Not one-to-one: $f(a)=d$ and $f(c)=d$.
+        \item Not onto: $a$ and $c$ are not images of any element.
+    \end{itemize}
+    So $f$ is \textbf{neither} one-to-one nor onto.
+\end{enumerate}
+
+%------------------------------------------------------------
+\item Determine whether $f$ is a function from $\mathbb{Z}$ to $\mathbb{R}$ in each case:
+
+\begin{enumerate}[label=(\alph*)]
+    \item $f(n) = \pm n$.
+
+    \textbf{Solution.}
+    For a fixed integer $n$, the notation $\pm n$ represents \emph{two} possible values, $n$ and $-n$.
+    Thus $f(n)$ is not uniquely determined: the rule does not assign exactly one real number to each integer $n$.
+    Therefore $f$ is \textbf{not} a function from $\mathbb{Z}$ to $\mathbb{R}$.
+
+    \item $f(n) = \sqrt{n^{2} - 1}$.
+
+    \textbf{Solution.}
+    For $n=0$ we have $n^{2}-1 = -1$ and $\sqrt{-1}$ is not a real number.
+    So $f(0)$ is not defined in $\mathbb{R}$, which means $f$ fails to assign a real value to every integer input.
+    Hence $f$ is \textbf{not} a function from $\mathbb{Z}$ to $\mathbb{R}$.
+
+    \item $f(n) = \dfrac{1}{n^{2} - 4}$.
+
+    \textbf{Solution.}
+    If $n=2$ or $n=-2$, then $n^{2}-4=0$ and $1/(n^{2}-4)$ is undefined.
+    Thus the rule does not give a real value for every integer $n$.
+    Hence $f$ is \textbf{not} a function from $\mathbb{Z}$ to $\mathbb{R}$.
+\end{enumerate}
+
+%------------------------------------------------------------
+\newpage
+\item Consider the following three assignments from the set of students in our class.
+
+\begin{enumerate}[label=(\alph*)]
+    \item A mapping from the set of all SIT students to the set of Poly Diplomas, mapping
+          each student to his/her polytechnic diploma.
+
+    \item A mapping from the set of all SIT students to a set of strings, mapping each student
+          to his/her student ID number.
+
+    \item A mapping from the set of all SIT students to the set of all first names of female
+          citizens and residents in Singapore, mapping each student to his/her mother’s first name.
+\end{enumerate}
+
+For each of these, answer:
+\begin{itemize}
+    \item[(I)] Under what conditions does the assignment \emph{fail} to be a function?
+    \item[(II)] Under what conditions can it be one-to-one?
+    \item[(III)] Under what conditions can it be onto?
+\end{itemize}
+
+\textbf{Solution.}
+
+\begin{enumerate}[label=(\alph*)]
+    \item \textbf{Student $\mapsto$ poly diploma.}
+
+    Let the codomain be the set of all possible polytechnic diplomas.
+
+    \textbf{(I) Not a function if:}
+    \begin{itemize}
+        \item Some SIT students did not come from a polytechnic route (for instance, A-level
+              or IB students), so they have no poly diploma to map to.
+        \item A student has more than one poly diploma but the rule does not specify which one
+              to choose, making the output ambiguous.
+    \end{itemize}
+    To have a well-defined function, we could restrict the domain to ``SIT students with
+    exactly one poly diploma''.
+
+    \textbf{(II) One-to-one if:}
+    \begin{itemize}
+        \item No two distinct students share the same poly diploma, i.e. at most one student
+              in SIT holds any given poly diploma.
+    \end{itemize}
+    This is logically possible but unrealistic in practice.
+
+    \textbf{(III) Onto if:}
+    \begin{itemize}
+        \item Every poly diploma in the codomain is held by at least one SIT student.
+    \end{itemize}
+    Equivalently, the codomain is chosen to be exactly the set of poly diplomas actually
+    possessed by SIT students.
+
+    \newpage
+    \item \textbf{Student $\mapsto$ student ID.}
+
+    \textbf{(I) Not a function if:}
+    \begin{itemize}
+        \item Some students have no assigned student ID.
+        \item A student has two different student IDs and the rule does not specify a unique choice.
+    \end{itemize}
+    With the usual assumption that every student has exactly one ID, the assignment is a function.
+
+    \textbf{(II) One-to-one if:}
+    \begin{itemize}
+        \item Each student ID is unique to one student (no two students share the same ID).
+    \end{itemize}
+    This is typically true by design, so under standard assumptions the function is one-to-one.
+
+    \textbf{(III) Onto if:}
+    \begin{itemize}
+        \item The codomain is chosen to be exactly the set of student IDs in use at SIT
+              (so every element of the codomain is used by some student).
+    \end{itemize}
+    If the codomain were ``all strings’’ or ``all 8-digit numbers’’, it would not be onto.
+
+    \item \textbf{Student $\mapsto$ mother’s first name.}
+
+    \textbf{(I) Not a function if:}
+    \begin{itemize}
+        \item The information about the mother’s first name is missing for some students,
+              so no output can be given.
+        \item There is ambiguity about which person counts as ``mother’’ (e.g. more than one
+              recorded mother) and the rule does not specify how to choose.
+    \end{itemize}
+    If we assume every student has exactly one recorded mother with a well-defined first name,
+    the assignment is a function.
+
+    \textbf{(II) One-to-one if:}
+    \begin{itemize}
+        \item No two students’ mothers share the same first name.
+    \end{itemize}
+    This is possible for a very small class but unlikely in reality.
+
+    \textbf{(III) Onto if:}
+    \begin{itemize}
+        \item Every female first name in the codomain is used as the mother’s first name of
+              at least one student in the class.
+    \end{itemize}
+    This would require choosing a smaller codomain, such as ``the set of mothers’ first names
+    actually appearing in our class’’, rather than all possible female names in Singapore.
+\end{enumerate}
+
+%------------------------------------------------------------
+\newpage
+\item Determine whether each of these functions from $\mathbb{Z}$ to $\mathbb{Z}$ is one-to-one
+and onto.
+
+\begin{enumerate}[label=(\alph*)]
+    \item $f(n) = n - 1$.
+
+    \textbf{Solution.}
+    For injectivity, assume $f(n_{1}) = f(n_{2})$:
+    \[
+        n_{1} - 1 = n_{2} - 1 \Rightarrow n_{1} = n_{2}.
+    \]
+    Hence $f$ is one-to-one.
+
+    For surjectivity, let $m \in \mathbb{Z}$ be arbitrary. Choose $n = m + 1$.
+    Then $f(n) = (m + 1) - 1 = m$. So every integer has a preimage.
+    Hence $f$ is onto.
+
+    Therefore $f$ is \textbf{bijective}.
+
+    \item $f(n) = n^{2} + 1$.
+
+    \textbf{Solution.}
+    \begin{itemize}
+        \item Not one-to-one: $f(1) = 1^{2} + 1 = 2$ and $f(-1) = (-1)^{2} + 1 = 2$.
+        \item Not onto: $0$ is not in the range, since $n^{2}+1 \ge 1$ for all $n \in \mathbb{Z}$.
+    \end{itemize}
+    So $f$ is \textbf{neither} one-to-one nor onto.
+
+    \item $f(n) = n^{3}$.
+
+    \textbf{Solution.}
+    For injectivity, suppose $f(n_{1}) = f(n_{2})$:
+    \[
+        n_{1}^{3} = n_{2}^{3} \Rightarrow n_{1} = n_{2}
+    \]
+    (over integers, the cube function is strictly increasing).
+
+    For surjectivity, take any integer $m$. Setting $n = \sqrt[3]{m}$ gives $n \in \mathbb{Z}$ and
+    $f(n) = m$.  For integers this just says: for each $m$ there is a unique integer $n$ with $n^{3}=m$.
+
+    Thus $f$ is \textbf{bijective}.
+
+    \item $f(n) = \left\lceil \dfrac{n}{2} \right\rceil$.
+
+    \textbf{Solution.}
+    \begin{itemize}
+        \item Not one-to-one: for example
+              \[
+                  f(1) = \left\lceil \frac{1}{2} \right\rceil = 1,\quad
+                  f(2) = \left\lceil \frac{2}{2} \right\rceil = 1,
+              \]
+              so $f(1) = f(2)$ with $1 \ne 2$.
+        \item Onto: let $m \in \mathbb{Z}$ be arbitrary and choose $n = 2m$.
+              Then
+              \[
+                  f(n) = \left\lceil \frac{2m}{2} \right\rceil = \left\lceil m \right\rceil = m.
+              \]
+              So every integer has a preimage.
+    \end{itemize}
+    Therefore $f$ is \textbf{onto but not one-to-one}.
+
+    \item $f(n) = \lfloor n \rfloor$.
+
+    \textbf{Solution.}
+    For any integer $n$, $\lfloor n \rfloor = n$, so $f$ is the identity function on $\mathbb{Z}$.
+    Hence it is clearly one-to-one and onto.
+
+    Therefore $f$ is \textbf{bijective}.
+\end{enumerate}
+
+%------------------------------------------------------------
+\item Determine whether each of these functions from $\mathbb{R}$ to $\mathbb{R}$ is bijective.
+
+\begin{enumerate}[label=(\alph*)]
+    \item $f(x) = 2x + 1$.
+
+    \textbf{Solution.}
+    For injectivity, assume $f(x_{1}) = f(x_{2})$:
+    \[
+        2x_{1} + 1 = 2x_{2} + 1 \Rightarrow x_{1} = x_{2}.
+    \]
+    For surjectivity, let $y \in \mathbb{R}$ be arbitrary. Then
+    \[
+        y = 2x + 1 \Rightarrow x = \frac{y - 1}{2} \in \mathbb{R},
+    \]
+    so there is an $x$ such that $f(x) = y$.
+    Thus $f$ is \textbf{bijective}.
+
+    \item $f(x) = x^{2} + 1$.
+
+    \textbf{Solution.}
+    \begin{itemize}
+        \item Not one-to-one: $f(1) = 2$ and $f(-1) = 2$.
+        \item Not onto: for example $y=0$ is not in the image, because $x^{2} + 1 \ge 1$ for all $x$.
+    \end{itemize}
+    So $f$ is \textbf{not bijective}.
+
+    \item $f(x) = x^{3}$.
+
+    \textbf{Solution.}
+    The function $x^{3}$ is strictly increasing over $\mathbb{R}$, so it is one-to-one.
+
+    For any $y \in \mathbb{R}$, take $x = \sqrt[3]{y}$; then $f(x) = y$, so $f$ is onto.
+
+    Therefore $f$ is \textbf{bijective}.
+
+    \item $f(x) = \dfrac{x^{2} + 1}{x^{2} + 2}$.
+
+    \textbf{Solution.}
+    Note that $x^{2} \ge 0$, so
+    \[
+        \frac{x^{2} + 1}{x^{2} + 2}
+        = 1 - \frac{1}{x^{2} + 2}.
+    \]
+    Since $x^{2} + 2 > 2$, we have $0 < \dfrac{1}{x^{2} + 2} < \dfrac{1}{2}$ and hence
+    \[
+        \frac{1}{2} < f(x) < 1\quad\text{for all }x \in \mathbb{R}.
+    \]
+    Therefore $f$ is not onto $\mathbb{R}$, because values such as $0$ or $2$ are never obtained.
+
+    Moreover $f(x) = f(-x)$, so $f$ is not one-to-one.
+
+    Hence $f$ is \textbf{not bijective}.
+\end{enumerate}
+
+%------------------------------------------------------------
+\item Suppose $g\colon A \to B$ and $f\colon B \to C$.
+
+\begin{enumerate}[label=(\alph*)]
+    \item If $f$ is one-to-one and $f \circ g$ is one-to-one, must $g$ also be one-to-one?
+
+    \textbf{Solution.}
+    Yes.
+
+    \textbf{Proof.}
+    Assume $f$ is one-to-one and $f \circ g$ is one-to-one.
+    Let $x_{1},x_{2} \in A$ and suppose $g(x_{1}) = g(x_{2})$.
+    Then
+    \[
+        (f \circ g)(x_{1}) = f(g(x_{1})) = f(g(x_{2})) = (f \circ g)(x_{2}).
+    \]
+    Because $f \circ g$ is one-to-one, we must have $x_{1} = x_{2}$.
+    Hence, whenever $g(x_{1}) = g(x_{2})$ we get $x_{1}=x_{2}$, so $g$ is one-to-one.
+
+    \item If $g$ is one-to-one and $f \circ g$ is one-to-one, must $f$ also be one-to-one?
+
+    \textbf{Solution.}
+    No. We give a counterexample.
+
+    Let
+    \[
+        A = \{1,2\},\quad
+        B = \{a,b,c\},\quad
+        C = \{0,1\}.
+    \]
+    Define $g\colon A \to B$ by
+    \[
+        g(1) = a,\quad g(2) = b.
+    \]
+    This $g$ is one-to-one.
+
+    Define $f\colon B \to C$ by
+    \[
+        f(a) = 0,\quad f(b) = 1,\quad f(c) = 1.
+    \]
+    Here $f$ is \emph{not} one-to-one, since $f(b) = f(c)$ but $b \ne c$.
+
+    However, the composition $f \circ g\colon A \to C$ is
+    \[
+        (f \circ g)(1) = f(a) = 0,\quad
+        (f \circ g)(2) = f(b) = 1,
+    \]
+    which is one-to-one on $A$.
+    Thus $g$ and $f \circ g$ can both be one-to-one even when $f$ is not.
+
+    Therefore, we cannot conclude that $f$ is one-to-one.
+\end{enumerate}
+
+\end{enumerate}
+
+\end{document}

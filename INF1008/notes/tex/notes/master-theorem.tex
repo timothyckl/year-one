@@ -1,0 +1,129 @@
+\documentclass[12pt]{article}
+
+\usepackage{amsmath,amssymb}
+\usepackage{fullpage}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{xcolor}
+
+\setlength{\parindent}{0pt}
+
+\lstset{
+    language=Python,
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{blue},
+    commentstyle=\color{gray},
+    stringstyle=\color{teal},
+    frame=single,
+    columns=fullflexible,
+    keepspaces=true,
+    showstringspaces=false
+}
+
+\begin{document}
+
+\begin{center}
+	\hrule
+	\vspace{0.4cm}
+	{\textbf{\large Master Theorem Simplified}}\\[0.2cm]
+	INF1008 Data Structures and Algorithms
+\end{center}
+
+\textbf{Name:} Timothy Chia\hspace{\fill} \textbf{Student ID:} 2501530\\
+
+\hrule
+
+\vspace{0.3cm}
+
+\paragraph{The Master Theorem.} Divide-and-conquer algorithms are commonly analysed using recurrence relations. A large class of such recurrences can be solved using the \textit{Master Theorem}, which provides asymptotic bounds without requiring full expansion of the recurrence.
+
+\vspace{0.2cm}
+
+\subsection*{Problem Form}
+
+The Master Theorem applies to recurrences of the form:
+\[
+	T(n) =
+	\begin{cases}
+		\Theta(1),                                      & n < c_1   \\
+		a \, T\!\left(\frac{n}{b}\right) + \Theta(n^i), & n \ge c_1
+	\end{cases}
+\]
+
+where:
+\begin{itemize}[leftmargin=1.2cm]
+	\item $a \ge 1$ is the number of subproblems,
+	\item $b > 1$ is the factor by which the input size is reduced,
+	\item $\Theta(n^i)$ represents the non-recursive work done at each level,
+	\item $c_1$ is a constant defining the base case threshold.
+\end{itemize}
+
+This recurrence models algorithms that split a problem into smaller subproblems,
+solve them recursively, and perform additional work to combine the results.
+
+\vspace{0.2cm}
+
+\subsection*{Recursion Tree Interpretation}
+
+The recurrence can be visualised as a recursion tree:
+\begin{itemize}[leftmargin=1.2cm]
+	\item The height of the tree is $\log_b n$.
+	\item Each level contains $a^k$ subproblems of size $n / b^k$.
+	\item The total work at each level depends on both the number of subproblems
+	      and the cost per subproblem.
+\end{itemize}
+
+The Master Theorem determines where the dominant contribution to the total runtime occurs: at the root, evenly across all levels, or at the leaves.
+
+\vspace{0.2cm}
+
+\subsection*{Asymptotic Cases}
+
+Let $b^i$ represent the growth rate of the non-recursive work per level.
+
+\subsubsection*{Case 1: $a > b^i$ (Leaf-Dominated)}
+
+If the number of subproblems grows faster than the work per level:
+\[
+	T(n) = \Theta\!\left(n^{\log_b a}\right)
+\]
+
+In this case, the total work increases as the recursion proceeds downward,
+and the leaves of the recursion tree dominate the overall complexity.
+
+\vspace{0.15cm}
+
+\subsubsection*{Case 2: $a = b^i$ (Balanced Contribution)}
+
+If the recursive and non-recursive work grow at the same rate:
+\[
+	T(n) = \Theta(n^i \log n)
+\]
+
+Here, each level of the recursion tree contributes an equal amount of work.
+The total runtime is the product of the work per level and the height of the tree.
+
+\vspace{0.15cm}
+
+\subsubsection*{Case 3: $a < b^i$ (Root-Dominated)}
+
+If the non-recursive work dominates:
+\[
+	T(n) = \Theta(n^i)
+\]
+
+The majority of the work is performed near the root of the recursion tree,
+and the cost of deeper recursive calls becomes negligible.
+
+\vspace{0.2cm}
+
+\subsection*{Summary}
+
+This simplified definition provides a fast and reliable method for analysing
+recurrences by comparing the growth rate of recursive calls
+($a$) against the growth rate of non-recursive work ($b^i$).
+By identifying which part of the recursion tree dominates the computation,
+the asymptotic time complexity can be determined directly.
+
+\end{document}

@@ -1,0 +1,3264 @@
+---
+title: "Two Worlds of Waste"
+subtitle: "What Singapore's Recycling Rate Hides"
+author: "Timothy Chia · Dalton Chng · Pham Anh Bao Khang · Sitt Min Naing · Ang Ben Rong"
+format:
+  revealjs:
+    theme:
+      - default
+      - assets/presentation.scss
+    slide-number: c/t
+    progress: true
+    controls: true
+    transition: slide
+    transition-speed: fast
+    background-transition: fade
+    center: false
+    width: 1600
+    height: 900
+    margin: 0.06
+    embed-resources: true
+    html-math-method: mathjax
+    title-slide-attributes:
+      data-background-image: assets/semakau-landfill-cover-panel.png
+      data-background-position: right center
+      data-background-size: 50% auto
+      data-background-repeat: no-repeat
+execute:
+  warning: false
+  message: false
+---
+
+## Presentation setup {.hidden data-visibility="hidden"}
+
+```{r}
+#| label: presentation-data-setup
+#| include: false
+
+suppressPackageStartupMessages({
+  library(dplyr)
+  library(ggplot2)
+  library(ggrepel)
+  library(gt)
+  library(htmlwidgets)
+  library(plotly)
+  library(scales)
+  library(stringr)
+  library(tidyr)
+})
+
+# Shared visual tokens and chart styling
+
+category_colours <- c(
+  "Everyday materials" = "#005EB8",
+  "Industrial/construction" = "#C45113",
+  "Organic/landscape" = "#00875A",
+  "Process/other" = "#8F3D7A"
+)
+
+effect_colours <- c(
+  "Mix effect (composition changed)" = "#D55E00",
+  "Performance effect (stream rates changed)" = "#0072B2"
+)
+
+system_colours <- c(
+  "recycling" = "#0F766E",
+  "disposal_action" = "#B4531F",
+  "neutral" = "#8D9A98"
+)
+
+source_note <-
+  "Source: MSE and NEA, Waste Management And Overall Recycling Rates, Annual, via SingStat/Data.gov.sg."
+
+slide_chart_theme <- theme_minimal(base_family = "sans", base_size = 16) +
+  theme(
+    panel.grid.minor = element_blank(),
+    panel.grid.major.y = element_line(colour = "#d7e3df", linewidth = 0.4),
+    plot.title = element_text(
+      face = "bold",
+      colour = "#17212b",
+      size = 18
+    ),
+    plot.subtitle = element_text(colour = "#607173", size = 13),
+    axis.title = element_text(face = "bold", colour = "#17212b", size = 13.5),
+    axis.text = element_text(colour = "#263238", size = 12.5),
+    legend.text = element_text(size = 11.5),
+    legend.position = "bottom",
+    plot.caption = element_text(colour = "#607173", size = 10),
+    plot.background = element_rect(fill = "white", colour = NA),
+    panel.background = element_rect(fill = "white", colour = NA)
+  )
+
+stream_categories <- tibble(
+  waste_stream = c(
+    "Construction & Demolition", "Ferrous Metal", "Non-Ferrous Metal",
+    "Used Slag", "Scrap Tyres", "Horticultural", "Wood",
+    "Paper/Cardboard", "Glass", "Food", "Textile/Leather", "Plastic",
+    "Ash And Sludge", "Others"
+  ),
+  waste_system_category = c(
+    rep("Industrial/construction", 5),
+    rep("Organic/landscape", 2),
+    rep("Everyday materials", 5),
+    rep("Process/other", 2)
+  )
+)
+
+# Source ingestion and tidy stream-year model
+
+# pipeline-step-1-start
+raw_waste <- read.csv(
+  "data/waste_management.csv",
+  check.names = FALSE,
+  na.strings = c("na", "NA", "")
+)
+# pipeline-step-1-end
+
+# pipeline-step-2-start
+block_names <- c(
+  "Total Generated", "Total Recycled", "Total Disposed", "Recycling Rate"
+)
+
+raw_tagged <- raw_waste |>
+  mutate(metric = if_else(
+    DataSeries %in% block_names,
+    DataSeries,
+    NA_character_
+  )) |>
+  fill(metric)
+# pipeline-step-2-end
+
+national_year <- raw_tagged |>
+  filter(DataSeries %in% block_names) |>
+  pivot_longer(
+    cols = matches("^[0-9]{4}$"),
+    names_to = "year",
+    values_to = "value"
+  ) |>
+  mutate(year = as.integer(year)) |>
+  select(metric = DataSeries, year, value) |>
+  pivot_wider(names_from = metric, values_from = value) |>
+  rename(
+    generated = `Total Generated`,
+    recycled = `Total Recycled`,
+    disposed = `Total Disposed`,
+    source_recycling_rate = `Recycling Rate`
+  )
+
+decade_rate_data <- national_year |>
+  filter(year %in% 2014:2024) |>
+  arrange(year)
+
+rate_event_annotations <- tibble(
+  year = c(2020, 2022, 2023, 2024),
+  source_recycling_rate = c(52, 57, 52, 50),
+  label_x = c(2019.55, 2021.65, 2022.95, 2024.55),
+  label_y = c(59.5, 68.0, 62.5, 57.0),
+  label_anchor_y = c(56.6, 65.5, 59.5, 54.0),
+  point_anchor_x = c(2019.96, 2021.98, 2023.00, 2024.06),
+  point_anchor_y = c(52.45, 57.45, 52.45, 50.45),
+  label = c(
+    "Circuit Breaker paused\nconstruction and industrial\nactivity [1]",
+    "Construction and demolition\nactivity picked up again [2]",
+    "Fewer demolition projects cut\nconstruction waste by more\nthan 40% [3]",
+    "Less demolition and steel\nsmelting reduced highly\nrecycled waste [4]"
+  )
+)
+
+decade_rate_plot <- ggplot(
+  decade_rate_data,
+  aes(x = year, y = source_recycling_rate)
+) +
+  geom_ribbon(
+    aes(ymin = 48, ymax = source_recycling_rate),
+    fill = "#e3f0ec"
+  ) +
+  geom_line(
+    colour = unname(system_colours["recycling"]),
+    linewidth = 1.15
+  ) +
+  geom_point(
+    colour = unname(system_colours["recycling"]),
+    size = 2.8
+  ) +
+  geom_point(
+    data = decade_rate_data |> filter(year == 2024),
+    colour = unname(system_colours["disposal_action"]),
+    size = 3.8
+  ) +
+  geom_segment(
+    data = rate_event_annotations,
+    aes(
+      x = label_x,
+      xend = point_anchor_x,
+      y = label_anchor_y,
+      yend = point_anchor_y
+    ),
+    inherit.aes = FALSE,
+    arrow = grid::arrow(
+      angle = 25,
+      length = grid::unit(0.09, "inches"),
+      type = "closed"
+    ),
+    colour = "#263238",
+    linewidth = 0.6
+  ) +
+  geom_label(
+    data = rate_event_annotations,
+    aes(x = label_x, y = label_y, label = label),
+    inherit.aes = FALSE,
+    colour = "#111111",
+    fill = "#ffffff",
+    fontface = "plain",
+    label.padding = grid::unit(0.14, "lines"),
+    label.r = grid::unit(0, "lines"),
+    label.size = 0.35,
+    lineheight = 0.96,
+    size = 4.6
+  ) +
+  scale_x_continuous(
+    breaks = seq(2014, 2024, 2),
+    labels = seq(2014, 2024, 2),
+    limits = c(2013.6, 2025.75),
+    expand = expansion(mult = c(0, 0))
+  ) +
+  scale_y_continuous(
+    breaks = c(50, 55, 60, 65, 70),
+    labels = function(x) paste0(x, "%")
+  ) +
+  coord_cartesian(ylim = c(46, 72), clip = "off") +
+  labs(x = NULL, y = NULL) +
+  theme_minimal(base_family = "sans", base_size = 13) +
+  theme(
+    axis.text = element_text(colour = "#465556", size = 10.5),
+    panel.grid.minor = element_blank(),
+    panel.grid.major.x = element_blank(),
+    panel.grid.major.y = element_line(
+      colour = "#dce5e2",
+      linewidth = 0.45
+    ),
+    plot.background = element_rect(fill = "white", colour = NA),
+    panel.background = element_rect(fill = "white", colour = NA),
+    plot.margin = margin(4, 8, 3, 5)
+  )
+
+# pipeline-step-3-start
+stream_year <- raw_tagged |>
+  filter(!DataSeries %in% block_names) |>
+  mutate(waste_stream = str_trim(DataSeries)) |>
+  pivot_longer(
+    cols = matches("^[0-9]{4}$"),
+    names_to = "year",
+    values_to = "value"
+  ) |>
+  mutate(year = as.integer(year)) |>
+  select(waste_stream, year, metric, value) |>
+  pivot_wider(names_from = metric, values_from = value) |>
+  rename(
+    generated = `Total Generated`,
+    recycled = `Total Recycled`,
+    disposed = `Total Disposed`,
+    source_recycling_rate = `Recycling Rate`
+  ) |>
+  left_join(stream_categories, by = "waste_stream") |>
+  mutate(
+    exact_recycling_rate = recycled / generated,
+    generated_kt = generated / 1000,
+    recycled_kt = recycled / 1000,
+    disposed_kt = disposed / 1000
+  )
+# pipeline-step-3-end
+
+# pipeline-step-4-start
+national_reference <- national_year |>
+  transmute(
+    year,
+    national_recycling_rate = source_recycling_rate,
+    national_recycled = recycled,
+    national_disposed = disposed
+  )
+
+# Priority-map fields and 2024 evidence cards
+
+priority_stream_year <- stream_year |>
+  filter(year %in% 2014:2024, !is.na(source_recycling_rate)) |>
+  left_join(national_reference, by = "year") |>
+  group_by(year) |>
+  mutate(
+    median_generated_kt = median(generated_kt),
+    recycling_rate = source_recycling_rate,
+    recycling_share = recycled / national_recycled,
+    disposal_share = disposed / national_disposed,
+    rate_gap = recycling_rate - national_recycling_rate,
+    priority_group = case_when(
+      generated_kt > median_generated_kt &
+        recycling_rate < national_recycling_rate ~
+          "High-volume, low-recycling",
+      recycling_rate < national_recycling_rate ~ "Disposal concern",
+      TRUE ~ "Higher recycling"
+    )
+  ) |>
+  ungroup()
+# pipeline-step-4-end
+
+priority_stream_year <- priority_stream_year |>
+  mutate(
+    Year = factor(year, levels = 2014:2024),
+    waste_system_category = factor(
+      waste_system_category,
+      levels = names(category_colours)
+    ),
+    jitter_id = match(
+      waste_stream,
+      sort(unique(priority_stream_year$waste_stream))
+    ),
+    generated_plot_kt = pmax(
+      0,
+      generated_kt + (((jitter_id * 37) %% 11) - 5) * 2
+    ),
+    recycling_rate_plot = pmin(
+      100,
+      pmax(
+        0,
+        recycling_rate + (((jitter_id * 53) %% 9) - 4) * 0.35
+      )
+    ),
+    chart_label = case_when(
+      waste_stream == "Construction & Demolition" ~
+        "Construction & Demolition",
+      waste_stream == "Ash And Sludge" ~ "Ash & Sludge",
+      waste_stream == "Non-Ferrous Metal" ~ "Non-ferrous metal",
+      TRUE ~ waste_stream
+    ),
+    label_colour = unname(
+      category_colours[as.character(waste_system_category)]
+    ),
+    hover_text = paste0(
+      "<b>", waste_stream, "</b><br>",
+      "Waste Stream Category: ", waste_system_category, "<br>",
+      "Generated: ", format(round(generated_kt), big.mark = ","), " kt<br>",
+      "Recycled: ", format(round(recycled_kt), big.mark = ","), " kt<br>",
+      "Disposed: ", format(round(disposed_kt), big.mark = ","), " kt<br>",
+      "Recycling rate: ", recycling_rate, "%<br>",
+      "Gap from national rate: ",
+      if_else(rate_gap > 0, "+", ""),
+      format(round(rate_gap, 1), nsmall = 1), " pp<br>",
+      "Share of national disposal: ",
+      scales::percent(disposal_share, accuracy = 0.1), "<br>",
+      "Share of national recycling: ",
+      scales::percent(recycling_share, accuracy = 0.1), "<br>",
+      "Screening group: ", priority_group
+    )
+  )
+
+priority_2024 <- priority_stream_year |>
+  filter(year == 2024)
+
+priority_card_copy <- tibble(
+  waste_stream = c("Plastic", "Paper/Cardboard", "Food"),
+  display_order = 1:3,
+  card_class = c("priority-plastic", "priority-paper", "priority-food"),
+  why_text = c(
+    "Lowest recovery, so almost all generated volume remains.",
+    "Greater volume leaves almost the same disposal as plastic.",
+    "Smaller scale, but weak recovery still leaves substantial disposed tonnage."
+  )
+)
+
+priority_card_data <- priority_2024 |>
+  inner_join(priority_card_copy, by = "waste_stream") |>
+  arrange(display_order)
+
+top_disposal_2024 <- stream_year |>
+  filter(year == 2024) |>
+  arrange(desc(disposed_kt)) |>
+  slice_head(n = 3) |>
+  pull(waste_stream)
+
+screened_streams_2024 <- priority_2024 |>
+  filter(priority_group == "High-volume, low-recycling") |>
+  arrange(desc(disposed_kt)) |>
+  pull(waste_stream)
+
+priority_card_scale_kt <- ceiling(
+  max(priority_card_data$generated_kt) / 100
+) * 100
+
+priority_card_data <- priority_card_data |>
+  mutate(
+    rank = sprintf("%02d", display_order),
+    disposed_rate = 100 - recycling_rate,
+    generated_width = generated_kt / priority_card_scale_kt * 100,
+    disposed_width = disposed_kt / priority_card_scale_kt * 100
+  )
+
+priority_card_summary <- priority_card_data |>
+  summarise(
+    disposed_kt = sum(disposed_kt),
+    disposal_share = sum(disposal_share)
+  )
+
+priority_cards_html <- vapply(
+  seq_len(nrow(priority_card_data)),
+  function(i) {
+    card <- priority_card_data[i, ]
+    rate_label <- number(card$recycling_rate, accuracy = 1)
+    disposed_rate_label <- number(card$disposed_rate, accuracy = 1)
+    generated_label <- format(
+      round(card$generated_kt),
+      big.mark = ",",
+      scientific = FALSE,
+      trim = TRUE
+    )
+    disposed_label <- format(
+      round(card$disposed_kt),
+      big.mark = ",",
+      scientific = FALSE,
+      trim = TRUE
+    )
+    scale_label <- format(
+      priority_card_scale_kt,
+      big.mark = ",",
+      scientific = FALSE,
+      trim = TRUE
+    )
+    generated_width_label <- number(card$generated_width, accuracy = 0.1)
+    disposed_width_label <- number(card$disposed_width, accuracy = 0.1)
+    disposal_share_label <- percent(card$disposal_share, accuracy = 0.1)
+
+    paste0(
+      '<div class="priority-stream ', card$card_class, '">',
+      '<span class="priority-rank">', card$rank, '</span>',
+      '<h3>', card$waste_stream, '</h3>',
+      '<div class="priority-rate-row">',
+      '<span class="priority-rate">', rate_label, '%</span>',
+      '<span class="priority-rate-label">recycling rate</span>',
+      '</div>',
+      '<div class="priority-composition" aria-label="',
+      rate_label, ' percent recycled and approximately ',
+      disposed_rate_label, ' percent disposed">',
+      '<i class="priority-recycled" style="width:', rate_label, '%"></i>',
+      '<i class="priority-disposed" style="width:',
+      disposed_rate_label, '%"></i>',
+      '</div>',
+      '<div class="priority-composition-labels">',
+      '<span>', rate_label, '% recycled</span>',
+      '<span>≈', disposed_rate_label, '% disposed</span>',
+      '</div>',
+      '<div class="priority-volume-comparison" aria-label="',
+      'Generated and disposed tonnage on a common zero to ',
+      scale_label, ' kilotonne scale">',
+      '<span class="priority-scale-label">Common scale: 0–',
+      scale_label, ' kt</span>',
+      '<div class="priority-volume-row">',
+      '<span>Generated</span><b><i style="width:',
+      generated_width_label, '%"></i></b><strong>',
+      generated_label, ' kt</strong>',
+      '</div>',
+      '<div class="priority-volume-row priority-volume-disposed">',
+      '<span>Disposed</span><b><i style="width:',
+      disposed_width_label, '%"></i></b><strong>',
+      disposed_label, ' kt</strong>',
+      '</div>',
+      '<div class="priority-share-note"><strong>',
+      disposal_share_label,
+      '</strong> of national disposal</div>',
+      '</div>',
+      '<p><strong>Why it matters:</strong> ', card$why_text, '</p>',
+      '</div>'
+    )
+  },
+  character(1)
+)
+
+priority_cards_html <- paste(priority_cards_html, collapse = "\n")
+
+priority_summary_html <- paste0(
+  '<div class="priority-total">',
+  '<span><strong>',
+  percent(priority_card_summary$disposal_share, accuracy = 0.1),
+  '</strong><small>of national disposal</small></span>',
+  '<span><strong>',
+  number(priority_card_summary$disposed_kt / 1000, accuracy = 0.01),
+  ' million tonnes</strong>',
+  '<small>still requiring incineration or landfill</small></span>',
+  '<p>They are the only streams in the high-volume, low-recycling area and ',
+  'also the three largest contributors to national disposal.</p>',
+  '</div>'
+)
+
+# Recycling-versus-disposal contribution comparison
+
+contribution_mismatch <- stream_year |>
+  filter(year == 2024) |>
+  left_join(
+    national_reference |> filter(year == 2024),
+    by = "year"
+  ) |>
+  mutate(
+    recycling_share = recycled / national_recycled,
+    disposal_share = disposed / national_disposed,
+    contribution_gap = disposal_share - recycling_share,
+    label_flag = waste_stream %in% c(
+      "Plastic",
+      "Paper/Cardboard",
+      "Food",
+      "Ferrous Metal",
+      "Construction & Demolition",
+      "Used Slag",
+      "Wood"
+    )
+  )
+
+contribution_gap_limit <- max(
+  abs(contribution_mismatch$contribution_gap),
+  na.rm = TRUE
+)
+
+disposal_recycling_plot <- ggplot(
+  contribution_mismatch,
+  aes(x = disposal_share, y = recycling_share)
+) +
+  geom_abline(
+    slope = 1,
+    intercept = 0,
+    colour = "#607173",
+    linetype = "dashed",
+    linewidth = 0.65
+  ) +
+  annotate(
+    "text",
+    x = 0.275,
+    y = 0.205,
+    label = "More disposal contribution",
+    colour = unname(system_colours["disposal_action"]),
+    fontface = "bold",
+    size = 4.2
+  ) +
+  annotate(
+    "text",
+    x = 0.135,
+    y = 0.135,
+    label = "Equal contribution to recycling and disposal",
+    angle = 24,
+    colour = "#263238",
+    fontface = "bold",
+    size = 3.35,
+    vjust = -0.60
+  ) +
+  annotate(
+    "text",
+    x = 0.065,
+    y = 0.395,
+    label = "More recycling contribution",
+    colour = unname(system_colours["recycling"]),
+    fontface = "bold",
+    size = 4.2
+  ) +
+  annotate(
+    "text",
+    x = 0.305,
+    y = 0.078,
+    label = "Plastic + paper/cardboard + food\n71.8% of national disposal",
+    colour = unname(system_colours["disposal_action"]),
+    fontface = "bold",
+    hjust = 1,
+    lineheight = 1.05,
+    size = 3.45
+  ) +
+  geom_jitter(
+    aes(fill = contribution_gap, size = generated_kt),
+    shape = 21,
+    colour = "#263238",
+    stroke = 0.45,
+    alpha = 0.96,
+    position = position_jitter(
+      width = 0.0012,
+      height = 0.0012,
+      seed = 2024
+    ),
+    show.legend = TRUE
+  ) +
+  geom_text_repel(
+    aes(label = if_else(label_flag, waste_stream, "")),
+    position = position_jitter(
+      width = 0.0012,
+      height = 0.0012,
+      seed = 2024
+    ),
+    seed = 2024,
+    box.padding = 0.28,
+    point.padding = 0.18,
+    min.segment.length = 0,
+    max.overlaps = Inf,
+    force = 0.8,
+    force_pull = 0.5,
+    segment.colour = "#879694",
+    segment.linewidth = 0.32,
+    size = 3.7,
+    colour = "#263238",
+    show.legend = FALSE
+  ) +
+  scale_fill_gradient2(
+    low = unname(system_colours["recycling"]),
+    mid = unname(system_colours["neutral"]),
+    high = unname(system_colours["disposal_action"]),
+    midpoint = 0,
+    limits = c(-contribution_gap_limit, contribution_gap_limit),
+    labels = label_percent(accuracy = 1),
+    name = "Contribution gap\n(disposal − recycling)"
+  ) +
+  scale_size_area(max_size = 11, breaks = c(300, 800, 1200)) +
+  guides(
+    fill = guide_colourbar(
+      title.position = "top",
+      barheight = grid::unit(42, "mm"),
+      barwidth = grid::unit(4.5, "mm"),
+      order = 1
+    ),
+    size = guide_legend(
+      title.position = "top",
+      order = 2,
+      override.aes = list(
+        fill = "#263238",
+        colour = "#263238",
+        alpha = 1
+      )
+    )
+  ) +
+  scale_x_continuous(
+    breaks = seq(0, 0.30, 0.10),
+    labels = label_percent(accuracy = 1)
+  ) +
+  scale_y_continuous(
+    breaks = seq(0, 0.40, 0.10),
+    labels = label_percent(accuracy = 1)
+  ) +
+  coord_cartesian(
+    xlim = c(-0.012, 0.33),
+    ylim = c(-0.015, 0.43),
+    expand = FALSE,
+    clip = "on"
+  ) +
+  labs(
+    title = NULL,
+    subtitle = NULL,
+    x = "Share of national disposed waste",
+    y = "Share of national recycled waste",
+    size = "Generated waste\n('000 tonnes)",
+    caption = NULL
+  ) +
+  slide_chart_theme +
+  theme(
+    legend.position = "right",
+    legend.box = "vertical",
+    legend.key.width = grid::unit(1.15, "lines"),
+    legend.key.height = grid::unit(0.75, "lines"),
+    legend.title = element_text(face = "bold", size = 12.5),
+    plot.margin = margin(4, 8, 8, 10)
+  )
+
+plot_to_inline_svg <- function(plot, width, height) {
+  svg_path <- tempfile(fileext = ".svg")
+
+  grDevices::svg(
+    filename = svg_path,
+    width = width,
+    height = height,
+    onefile = TRUE,
+    bg = "transparent"
+  )
+  print(plot)
+  grDevices::dev.off()
+
+  svg_lines <- readLines(svg_path, warn = FALSE)
+  unlink(svg_path)
+
+  svg_start <- grep("^<svg", svg_lines)[1]
+  stopifnot(!is.na(svg_start))
+
+  paste(svg_lines[svg_start:length(svg_lines)], collapse = "\n")
+}
+
+disposal_recycling_svg <- plot_to_inline_svg(
+  disposal_recycling_plot,
+  width = 11.5,
+  height = 5.8
+)
+
+# Persistent rate-gap heatmap
+
+p2_stream_order <- c(
+  "Non-Ferrous Metal",
+  "Ferrous Metal",
+  "Construction & Demolition",
+  "Used Slag",
+  "Scrap Tyres",
+  "Horticultural",
+  "Wood",
+  "Paper/Cardboard",
+  "Food",
+  "Ash And Sludge",
+  "Glass",
+  "Plastic",
+  "Textile/Leather"
+)
+
+p2_rate_gap <- priority_stream_year |>
+  filter(
+    year >= 2014,
+    year <= 2024,
+    waste_stream %in% p2_stream_order
+  ) |>
+  mutate(
+    waste_stream = factor(
+      waste_stream,
+      levels = rev(p2_stream_order)
+    ),
+    displayed_gap = if_else(rate_gap < -55, NA_real_, rate_gap),
+    gap_label = paste0(
+      if_else(rate_gap > 0, "+", ""),
+      round(rate_gap)
+    )
+  )
+
+p2_spearman_rho <- cor(
+  priority_2024$generated_kt,
+  priority_2024$recycling_rate,
+  method = "spearman"
+)
+
+stopifnot(
+  nrow(p2_rate_gap) == 143,
+  round(p2_spearman_rho, 3) == 0.017
+)
+
+p2_colour_for_gap <- function(gap) {
+  if (gap < -55) {
+    return("#858585")
+  }
+
+  if (gap <= 0) {
+    colour_value <- grDevices::colorRamp(
+      c("#e66a00", "#f7f4f1"),
+      space = "Lab"
+    )((gap + 55) / 55)
+  } else {
+    colour_value <- grDevices::colorRamp(
+      c("#f7f4f1", "#2f78b7"),
+      space = "Lab"
+    )(gap / 50)
+  }
+
+  grDevices::rgb(
+    colour_value[1] / 255,
+    colour_value[2] / 255,
+    colour_value[3] / 255
+  )
+}
+
+p2_rate_gap_native <- p2_rate_gap |>
+  mutate(
+    waste_stream = as.character(waste_stream),
+    heatmap_row = match(waste_stream, p2_stream_order),
+    heatmap_column = year - 2013,
+    cell_colour = vapply(rate_gap, p2_colour_for_gap, character(1)),
+    text_colour = if_else(abs(rate_gap) >= 26, "#ffffff", "#17212b")
+  ) |>
+  arrange(heatmap_row, heatmap_column)
+
+p2_heatmap_cells_html <- paste0(
+  '<span class="rate-gap-cell" style="grid-row:',
+  p2_rate_gap_native$heatmap_row,
+  ';grid-column:',
+  p2_rate_gap_native$heatmap_column,
+  ';background:',
+  p2_rate_gap_native$cell_colour,
+  ';color:',
+  p2_rate_gap_native$text_colour,
+  '">',
+  p2_rate_gap_native$gap_label,
+  '</span>',
+  collapse = "\n"
+)
+
+p2_y_labels_html <- paste0(
+  '<span class="rate-gap-y-label',
+  if_else(
+    p2_stream_order %in% c("Paper/Cardboard", "Food", "Plastic"),
+    ' rate-gap-priority-label',
+    ''
+  ),
+  '">',
+  p2_stream_order,
+  '</span>',
+  collapse = "\n"
+)
+
+p2_x_labels_html <- paste0(
+  '<span class="rate-gap-x-label">',
+  2014:2024,
+  '</span>',
+  collapse = "\n"
+)
+
+p2_native_heatmap_html <- paste0(
+  '<div class="native-rate-gap-chart">',
+  '<div class="rate-gap-y-labels">', p2_y_labels_html, '</div>',
+  '<div class="rate-gap-cells">', p2_heatmap_cells_html, '</div>',
+  '<div class="rate-gap-x-labels">', p2_x_labels_html, '</div>',
+  '<div class="rate-gap-native-legend">',
+  '<strong>Rate gap vs<br>national rate</strong>',
+  '<div class="rate-gap-legend-scale">',
+  '<i aria-hidden="true"></i>',
+  '<span><b>+50 pp</b><b>+25 pp</b><b>0 pp</b><b>−25 pp</b><b>−50 pp</b></span>',
+  '</div>',
+  '</div>',
+  '</div>'
+)
+
+# Counterfactual and symmetric shift-share analysis
+
+endpoints <- stream_year |>
+  filter(year %in% c(2014, 2024)) |>
+  select(waste_stream, year, generated, exact_recycling_rate) |>
+  pivot_wider(
+    names_from = year,
+    values_from = c(generated, exact_recycling_rate),
+    names_glue = "{.value}_{year}"
+  ) |>
+  mutate(
+    weight_2014 = generated_2014 / sum(generated_2014),
+    weight_2024 = generated_2024 / sum(generated_2024)
+  )
+
+counterfactual_rate <- endpoints |>
+  summarise(
+    value = sum(weight_2014 * exact_recycling_rate_2024)
+  ) |>
+  pull(value)
+
+reconstructed_rate_2014 <- sum(
+  endpoints$weight_2014 * endpoints$exact_recycling_rate_2014
+)
+reconstructed_rate_2024 <- sum(
+  endpoints$weight_2024 * endpoints$exact_recycling_rate_2024
+)
+
+rate_effect_counterfactual <-
+  counterfactual_rate - reconstructed_rate_2014
+mix_effect_counterfactual <-
+  reconstructed_rate_2024 - counterfactual_rate
+
+counterfactual_plot_data <- tibble(
+  scenario = factor(
+    c(
+      "2014 reconstructed",
+      "2024 counterfactual\n(2014 mix, 2024 rates)",
+      "2024 reconstructed"
+    ),
+    levels = c(
+      "2014 reconstructed",
+      "2024 counterfactual\n(2014 mix, 2024 rates)",
+      "2024 reconstructed"
+    )
+  ),
+  rate = c(
+    reconstructed_rate_2014,
+    counterfactual_rate,
+    reconstructed_rate_2024
+  ),
+  fill = c("Actual", "Counterfactual", "Actual")
+)
+
+counterfactual_chart <- ggplot(
+  counterfactual_plot_data,
+  aes(x = scenario, y = rate)
+) +
+  geom_col(aes(fill = fill), width = 0.58) +
+  geom_line(
+    aes(group = 1),
+    colour = "#607173",
+    linewidth = 0.65,
+    linetype = "dashed"
+  ) +
+  geom_text(
+    aes(label = percent(rate, accuracy = 0.1)),
+    vjust = -0.35,
+    fontface = "bold",
+    size = 5,
+    colour = "#17212b"
+  ) +
+  annotate(
+    "text",
+    x = 1.5,
+    y = 0.625,
+    label = paste0(
+      "Rates changed: ",
+      number(rate_effect_counterfactual * 100, accuracy = 0.1),
+      " pp"
+    ),
+    colour = unname(
+      effect_colours["Performance effect (stream rates changed)"]
+    ),
+    fontface = "bold",
+    size = 4.3
+  ) +
+  annotate(
+    "text",
+    x = 2.5,
+    y = 0.575,
+    label = paste0(
+      "Then mix changed: ",
+      number(mix_effect_counterfactual * 100, accuracy = 0.1),
+      " pp"
+    ),
+    colour = unname(
+      effect_colours["Mix effect (composition changed)"]
+    ),
+    fontface = "bold",
+    size = 4.3
+  ) +
+  scale_fill_manual(
+    values = c("Actual" = "#17212b", "Counterfactual" = "#9aa6a4"),
+    guide = "none"
+  ) +
+  scale_y_continuous(
+    labels = label_percent(accuracy = 1),
+    breaks = c(0, 0.2, 0.4, 0.6),
+    limits = c(0, 0.68),
+    expand = expansion(mult = c(0, 0))
+  ) +
+  labs(
+    title = "Holding the waste mix at 2014 levels keeps 2024 near 57%",
+    subtitle = "A sequential counterfactual check using rates calculated from published tonnage",
+    x = NULL,
+    y = "National recycling rate",
+    caption = source_note
+  ) +
+  slide_chart_theme +
+  theme(
+    panel.grid.major.x = element_line(colour = "#e4e7e6"),
+    axis.ticks.x = element_blank(),
+    plot.margin = margin(10, 10, 8, 10)
+  )
+
+shift_share <- endpoints |>
+  mutate(
+    mix_effect_pp =
+      (weight_2024 - weight_2014) *
+      (exact_recycling_rate_2014 + exact_recycling_rate_2024) / 2 * 100,
+    rate_effect_pp =
+      (exact_recycling_rate_2024 - exact_recycling_rate_2014) *
+      (weight_2014 + weight_2024) / 2 * 100,
+    total_contribution_pp = mix_effect_pp + rate_effect_pp
+  ) |>
+  arrange(total_contribution_pp)
+
+shift_share_total <- shift_share |>
+  summarise(
+    mix_effect_pp = sum(mix_effect_pp),
+    rate_effect_pp = sum(rate_effect_pp),
+    total_contribution_pp = sum(total_contribution_pp)
+  )
+
+stopifnot(
+  isTRUE(all.equal(
+    shift_share_total$total_contribution_pp,
+    (reconstructed_rate_2024 - reconstructed_rate_2014) * 100,
+    tolerance = 1e-8
+  ))
+)
+
+shift_share_long <- shift_share |>
+  mutate(
+    waste_stream = factor(waste_stream, levels = waste_stream)
+  ) |>
+  select(
+    waste_stream,
+    total_contribution_pp,
+    `Mix effect (composition changed)` = mix_effect_pp,
+    `Performance effect (stream rates changed)` = rate_effect_pp
+  ) |>
+  pivot_longer(
+    cols = c(
+      `Mix effect (composition changed)`,
+      `Performance effect (stream rates changed)`
+    ),
+    names_to = "effect",
+    values_to = "contribution_pp"
+  ) |>
+  mutate(
+    effect = factor(
+      effect,
+      levels = c(
+        "Mix effect (composition changed)",
+        "Performance effect (stream rates changed)"
+      )
+    )
+  )
+
+shift_share_chart <- ggplot(
+  shift_share_long,
+  aes(x = contribution_pp, y = waste_stream, fill = effect)
+) +
+  geom_col(width = 0.7) +
+  geom_vline(xintercept = 0, colour = "#17212b", linewidth = 0.55) +
+  geom_point(
+    data = shift_share,
+    aes(x = total_contribution_pp, y = waste_stream),
+    inherit.aes = FALSE,
+    shape = 21,
+    fill = "white",
+    colour = "#17212b",
+    stroke = 0.8,
+    size = 3.5
+  ) +
+  scale_fill_manual(
+    values = effect_colours
+  ) +
+  scale_x_continuous(
+    labels = function(x) paste0(number(x, accuracy = 1), " pp"),
+    breaks = c(-6, -4, -2, 0),
+    expand = expansion(mult = c(0.03, 0.18))
+  ) +
+  labs(
+    title = NULL,
+    subtitle = NULL,
+    x = "Contribution to national rate change (percentage points)",
+    y = NULL,
+    fill = NULL,
+    caption = NULL
+  ) +
+  slide_chart_theme +
+  theme(
+    panel.grid.major.y = element_blank(),
+    legend.position = "bottom",
+    plot.margin = margin(4, 10, 8, 10)
+  )
+
+# Appendix dataframe previews
+
+raw_preview_gt <- raw_waste |>
+  slice(1:8) |>
+  transmute(
+    DataSeries = if_else(
+      row_number() == 1,
+      DataSeries,
+      paste0("↳ ", str_trim(DataSeries))
+    ),
+    `2024`,
+    `2023`,
+    `2022`,
+    `2021`
+  ) |>
+  gt() |>
+  tab_header(
+    title = html("<span class='df-name'>raw_waste</span>"),
+    subtitle = "The first metric block in the source CSV"
+  ) |>
+  fmt_number(columns = where(is.numeric), decimals = 0, use_seps = TRUE) |>
+  cols_label(DataSeries = "Data series") |>
+  tab_style(
+    style = list(cell_text(weight = "bold"), cell_fill(color = "#e3f0ec")),
+    locations = cells_body(rows = 1)
+  ) |>
+  tab_options(
+    table.width = pct(100),
+    table.font.size = px(24),
+    data_row.padding = px(10),
+    heading.title.font.size = px(30),
+    heading.subtitle.font.size = px(21),
+    column_labels.font.size = px(21),
+    table.border.top.style = "none",
+    table.border.bottom.style = "none"
+  )
+
+stream_preview_gt <- stream_year |>
+  filter(
+    year == 2024,
+    waste_stream %in% c(
+      "Construction & Demolition", "Ferrous Metal", "Horticultural",
+      "Paper/Cardboard", "Food", "Plastic", "Others"
+    )
+  ) |>
+  transmute(
+    waste_stream,
+    year,
+    generated_kt,
+    recycled_kt,
+    disposed_kt,
+    recycling_rate = source_recycling_rate,
+    category = waste_system_category
+  ) |>
+  gt() |>
+  tab_header(
+    title = html("<span class='df-name'>stream_year</span>"),
+    subtitle = "A 2024 preview of the analysis-ready dataframe"
+  ) |>
+  cols_label(
+    waste_stream = "Waste stream",
+    year = "Year",
+    generated_kt = "Generated (kt)",
+    recycled_kt = "Recycled (kt)",
+    disposed_kt = "Disposed (kt)",
+    recycling_rate = "Rate",
+    category = "Category"
+  ) |>
+  fmt_number(
+    columns = c(generated_kt, recycled_kt, disposed_kt),
+    decimals = 0,
+    use_seps = TRUE
+  ) |>
+  fmt(
+    columns = recycling_rate,
+    fns = function(x) ifelse(is.na(x), "NA", paste0(x, "%"))
+  ) |>
+  tab_style(
+    style = cell_text(
+      weight = "bold",
+      color = unname(system_colours["recycling"])
+    ),
+    locations = cells_body(columns = waste_stream)
+  ) |>
+  tab_options(
+    table.width = pct(100),
+    table.font.size = px(23),
+    data_row.padding = px(14),
+    heading.title.font.size = px(30),
+    heading.subtitle.font.size = px(21),
+    column_labels.font.size = px(20),
+    table.border.top.style = "none",
+    table.border.bottom.style = "none"
+  )
+
+# Interactive priority map
+
+plot_summary <- priority_stream_year |>
+  distinct(
+    Year,
+    median_generated_kt,
+    national_recycling_rate
+  )
+
+plot_x_max <- ceiling(max(priority_stream_year$generated_kt) / 100) * 100
+plot_y_max <- 108
+
+repel_priority_labels <- function(data, x_max, y_max, seed_year) {
+  point_positions <- cbind(
+    data$generated_plot_kt / x_max,
+    data$recycling_rate_plot / y_max
+  )
+
+  label_width <- pmin(
+    0.235,
+    pmax(0.05, nchar(data$chart_label) * 0.0072)
+  )
+  label_height <- rep(0.036, nrow(data))
+  label_centres <- cbind(
+    point_positions[, 1],
+    pmin(
+      0.95,
+      pmax(
+        0.05,
+        point_positions[, 2] +
+          if_else(point_positions[, 2] > 0.85, -0.05, 0.05)
+      )
+    )
+  )
+  label_boxes <- cbind(
+    label_centres[, 1] - label_width / 2,
+    label_centres[, 2] - label_height / 2,
+    label_centres[, 1] + label_width / 2,
+    label_centres[, 2] + label_height / 2
+  )
+
+  set.seed(1200 + seed_year)
+  repelled <- ggrepel:::repel_boxes2(
+    data_points = point_positions,
+    point_size = scales::rescale(
+      sqrt(pmax(data$disposed_kt, 0)),
+      to = c(0.01, 0.05)
+    ),
+    point_padding_x = 0.006,
+    point_padding_y = 0.009,
+    boxes = label_boxes,
+    xlim = c(0.015, 0.985),
+    ylim = c(0.025, 0.975),
+    hjust = rep(0.5, nrow(data)),
+    vjust = rep(0.5, nrow(data)),
+    force_push = 8e-06,
+    force_pull = 4e-07,
+    max_time = 0.6,
+    max_overlaps = Inf,
+    max_iter = 12000L,
+    direction = "both",
+    verbose = 0L
+  )
+
+  data |>
+    mutate(
+      label_generated_plot_kt = repelled$x * x_max,
+      label_recycling_rate_plot = repelled$y * y_max,
+      label_distance = sqrt(
+        ((label_generated_plot_kt - generated_plot_kt) / x_max)^2 +
+          ((label_recycling_rate_plot - recycling_rate_plot) / y_max)^2
+      )
+    )
+}
+
+priority_stream_year <- priority_stream_year |>
+  group_by(year) |>
+  group_modify(
+    ~ repel_priority_labels(
+      .x,
+      x_max = plot_x_max,
+      y_max = plot_y_max,
+      seed_year = .y$year
+    )
+  ) |>
+  ungroup()
+
+reference_lines <- plot_summary |>
+  crossing(point = 1:2) |>
+  mutate(
+    x = if_else(point == 1, 0, plot_x_max),
+    y = national_recycling_rate
+  )
+
+median_lines <- plot_summary |>
+  crossing(point = 1:2) |>
+  mutate(
+    x = median_generated_kt,
+    y = if_else(point == 1, 0, plot_y_max)
+  )
+
+action_area <- plot_summary |>
+  crossing(point = 1:5) |>
+  mutate(
+    x = case_when(
+      point %in% c(1, 4, 5) ~ median_generated_kt,
+      TRUE ~ plot_x_max
+    ),
+    y = case_when(
+      point %in% c(1, 2, 5) ~ 0,
+      TRUE ~ national_recycling_rate
+    )
+  )
+
+reference_labels <- plot_summary |>
+  mutate(
+    x = plot_x_max * 0.98,
+    y = national_recycling_rate + 2.2,
+    label = paste0("National rate: ", national_recycling_rate, "%")
+  )
+
+action_labels <- plot_summary |>
+  mutate(
+    x = median_generated_kt + (plot_x_max - median_generated_kt) * 0.82,
+    y = national_recycling_rate * 0.86,
+    label = "High-volume, low-recycling"
+  )
+
+size_legend_values <- c(100, 300, 600)
+size_legend_diameters <- c(7, 13, 20)
+
+priority_plot <- plot_ly(
+  height = 610,
+  colors = unname(category_colours),
+  sizes = c(8, 55)
+) |>
+  add_trace(
+    data = action_area,
+    x = ~x,
+    y = ~y,
+    frame = ~Year,
+    type = "scatter",
+    mode = "lines",
+    fill = "toself",
+    fillcolor = "rgba(180, 83, 31, 0.10)",
+    line = list(width = 0),
+    hoverinfo = "skip",
+    showlegend = FALSE
+  ) |>
+  add_lines(
+    data = reference_lines,
+    x = ~x,
+    y = ~y,
+    frame = ~Year,
+    line = list(color = "#687676", width = 1.5, dash = "dash"),
+    hoverinfo = "skip",
+    showlegend = FALSE
+  ) |>
+  add_lines(
+    data = median_lines,
+    x = ~x,
+    y = ~y,
+    frame = ~Year,
+    line = list(
+      color = unname(system_colours["disposal_action"]),
+      width = 1.5,
+      dash = "dot"
+    ),
+    hoverinfo = "skip",
+    showlegend = FALSE
+  ) |>
+  add_trace(
+    data = priority_stream_year,
+    x = ~generated_plot_kt,
+    y = ~recycling_rate_plot,
+    frame = ~Year,
+    type = "scatter",
+    mode = "markers",
+    size = ~disposed_kt,
+    color = ~waste_system_category,
+    hovertext = ~hover_text,
+    hoverinfo = "text",
+    cliponaxis = TRUE,
+    showlegend = FALSE,
+    marker = list(
+      sizemode = "diameter",
+      opacity = 0.9,
+      line = list(color = "#58656b", width = 1)
+    )
+  ) |>
+  add_segments(
+    data = priority_stream_year |>
+      filter(label_distance > 0.018),
+    x = ~generated_plot_kt,
+    xend = ~label_generated_plot_kt,
+    y = ~recycling_rate_plot,
+    yend = ~label_recycling_rate_plot,
+    frame = ~Year,
+    line = list(color = "rgba(88, 101, 107, 0.65)", width = 0.8),
+    hoverinfo = "skip",
+    showlegend = FALSE
+  ) |>
+  add_trace(
+    data = priority_stream_year,
+    x = ~label_generated_plot_kt,
+    y = ~label_recycling_rate_plot,
+    frame = ~Year,
+    type = "scatter",
+    mode = "text",
+    text = ~chart_label,
+    textposition = "middle center",
+    textfont = list(size = 12, color = ~label_colour),
+    hoverinfo = "skip",
+    cliponaxis = FALSE,
+    showlegend = FALSE
+  ) |>
+  add_text(
+    data = reference_labels,
+    x = ~x,
+    y = ~y,
+    frame = ~Year,
+    text = ~label,
+    textposition = "middle left",
+    textfont = list(size = 18, color = "#17212b"),
+    hoverinfo = "skip",
+    showlegend = FALSE
+  ) |>
+  add_text(
+    data = action_labels,
+    x = ~x,
+    y = ~y,
+    frame = ~Year,
+    text = ~label,
+    textposition = "middle center",
+    textfont = list(
+      size = 18,
+      color = unname(system_colours["disposal_action"])
+    ),
+    hoverinfo = "skip",
+    showlegend = FALSE
+  ) |>
+  layout(
+    xaxis = list(
+      title = list(
+        text = "Waste generated ('000 tonnes)",
+        font = list(size = 20)
+      ),
+      range = c(0, plot_x_max),
+      tickfont = list(size = 18),
+      gridcolor = "#d4e2de",
+      linecolor = "#263238",
+      linewidth = 1,
+      showline = TRUE,
+      zeroline = FALSE
+    ),
+    yaxis = list(
+      title = list(
+        text = "Recycling rate (%)",
+        font = list(size = 20)
+      ),
+      range = c(0, plot_y_max),
+      tickfont = list(size = 18),
+      ticksuffix = "%",
+      gridcolor = "#d4e2de",
+      linecolor = "#263238",
+      linewidth = 1,
+      showline = TRUE,
+      zeroline = FALSE
+    ),
+    legend = list(
+      orientation = "v",
+      itemsizing = "trace",
+      x = 1.02,
+      xanchor = "left",
+      y = 1,
+      yanchor = "top",
+      font = list(size = 17),
+      title = list(
+        text = "<b>Waste Stream Category</b>",
+        font = list(size = 17)
+      ),
+      tracegroupgap = 12
+    ),
+    margin = list(l = 76, r = 190, t = 20, b = 140),
+    paper_bgcolor = "rgba(0,0,0,0)",
+    plot_bgcolor = "#f8fbfa",
+    font = list(
+      family = "ui-sans-serif, system-ui, sans-serif",
+      size = 19,
+      color = "#263238"
+    ),
+    hoverlabel = list(
+      bgcolor = "#ffffff",
+      bordercolor = "#c7d5d1",
+      font = list(size = 19, color = "#263238")
+    )
+  )
+
+for (category_name in names(category_colours)) {
+  priority_plot <- priority_plot |>
+    add_bars(
+      x = -1000,
+      y = -1000,
+      name = category_name,
+      legendgroup = "category",
+      marker = list(
+        color = unname(category_colours[category_name]),
+        line = list(color = "#263238", width = 0.5)
+      ),
+      hoverinfo = "skip",
+      showlegend = TRUE
+    )
+}
+
+for (i in seq_along(size_legend_values)) {
+  size_value <- size_legend_values[i]
+  priority_plot <- priority_plot |>
+    add_markers(
+      x = -1000,
+      y = -1000,
+      name = paste0(size_value, " kt"),
+      legendgroup = "size",
+      legendgrouptitle = if (i == 1) {
+        list(text = "<b>Disposed waste</b>")
+      } else {
+        NULL
+      },
+      marker = list(
+        color = "#58656b",
+        size = size_legend_diameters[i],
+        sizemode = "diameter",
+        line = list(color = "#263238", width = 1)
+      ),
+      hoverinfo = "skip",
+      showlegend = TRUE
+    )
+}
+
+priority_plot <- priority_plot |>
+  animation_opts(frame = 220, transition = 160, redraw = TRUE) |>
+  animation_slider(
+    active = 10,
+    x = 0.085,
+    y = -0.08,
+    len = 0.915,
+    currentvalue = list(
+      prefix = "Year: ",
+      font = list(size = 19, color = "#000000")
+    ),
+    pad = list(t = 12)
+  ) |>
+  animation_button(
+    label = "Play",
+    x = 0,
+    y = -0.08,
+    xanchor = "left",
+    yanchor = "top",
+    pad = list(t = 35, r = 5)
+  ) |>
+  config(displayModeBar = FALSE, responsive = TRUE) |>
+  onRender(
+    "function(el) {
+      if (el.dataset.priorityInitialised === 'true') return;
+      el.dataset.priorityInitialised = 'true';
+      function styleCategoryLegend() {
+        el.querySelectorAll('.legend path.legendundefined').forEach(function(path) {
+          path.setAttribute('d', 'M10,5H-10V-5H10Z');
+        });
+      }
+      styleCategoryLegend();
+      el.on('plotly_animated', styleCategoryLegend);
+      window.setTimeout(function() {
+        Plotly.animate(
+          el,
+          ['2024'],
+          {
+            mode: 'immediate',
+            transition: {duration: 0},
+            frame: {duration: 0, redraw: true}
+          }
+        );
+        styleCategoryLegend();
+      }, 150);
+    }"
+  )
+
+# Render-stopping validation
+
+national_check <- stream_year |>
+  group_by(year) |>
+  summarise(
+    generated_streams = sum(generated, na.rm = TRUE),
+    recycled_streams = sum(recycled, na.rm = TRUE),
+    disposed_streams = sum(disposed, na.rm = TRUE),
+    .groups = "drop"
+  ) |>
+  left_join(
+    national_year |>
+      transmute(
+        year,
+        generated_published = generated,
+        recycled_published = recycled,
+        disposed_published = disposed
+      ),
+    by = "year"
+  )
+
+stream_arithmetic_check <- stream_year |>
+  mutate(balance_gap = abs(generated - recycled - disposed))
+
+missing_rate_check <- stream_year |>
+  filter(
+    year %in% 2014:2024,
+    is.na(source_recycling_rate)
+  )
+
+# pipeline-step-5-start
+pipeline_data_checks <- c(
+  source_shape = nrow(raw_waste) == 60 && ncol(raw_waste) == 26 &&
+    length(grep("^[0-9]{4}$", names(raw_waste))) == 25,
+  tidy_structure = nrow(stream_year) == 14 * 25 &&
+    all(c("generated", "recycled", "disposed", "source_recycling_rate") %in%
+      names(stream_year)),
+  category_coverage = all(!is.na(stream_year$waste_system_category)),
+  amount_bounds = all(stream_year$generated >= 0, na.rm = TRUE) &&
+    all(stream_year$recycled >= 0, na.rm = TRUE) &&
+    all(stream_year$disposed >= 0, na.rm = TRUE) &&
+    all(stream_year$generated >= stream_year$recycled, na.rm = TRUE) &&
+    all(stream_year$generated >= stream_year$disposed, na.rm = TRUE),
+  rate_bounds = all(is.na(stream_year$source_recycling_rate) |
+    dplyr::between(stream_year$source_recycling_rate, 0, 100)),
+  declared_missingness = nrow(missing_rate_check) == 3 &&
+    all(missing_rate_check$waste_stream == "Others") &&
+    setequal(missing_rate_check$year, 2022:2024),
+  national_reconciliation = max(
+    abs(national_check$generated_streams - national_check$generated_published),
+    abs(national_check$recycled_streams - national_check$recycled_published),
+    abs(national_check$disposed_streams - national_check$disposed_published)
+  ) <= 3000,
+  stream_arithmetic = max(stream_arithmetic_check$balance_gap,
+    na.rm = TRUE) <= 3000,
+  published_anchors = isTRUE(all.equal(
+    decade_rate_data |> filter(year %in% c(2014, 2024)) |>
+      pull(source_recycling_rate),
+    c(60, 50)
+  ))
+)
+
+stopifnot(all(pipeline_data_checks))
+# pipeline-step-5-end
+
+priority_disposal_share <- priority_2024 |>
+  filter(waste_stream %in% c("Plastic", "Paper/Cardboard", "Food")) |>
+  summarise(value = sum(disposal_share)) |>
+  pull(value)
+
+analytical_result_checks <- c(
+  abs(priority_disposal_share - 0.718) < 0.001,
+  nrow(priority_card_data) == 3,
+  identical(
+    priority_card_data$waste_stream,
+    c("Plastic", "Paper/Cardboard", "Food")
+  ),
+  identical(
+    top_disposal_2024,
+    c("Plastic", "Paper/Cardboard", "Food")
+  ),
+  identical(
+    screened_streams_2024,
+    c("Plastic", "Paper/Cardboard", "Food")
+  ),
+  all(dplyr::between(priority_card_data$generated_width, 0, 100)),
+  all(dplyr::between(priority_card_data$disposed_width, 0, 100)),
+  priority_card_scale_kt >= max(priority_card_data$generated_kt),
+  isTRUE(all.equal(
+    priority_card_summary$disposal_share,
+    priority_disposal_share,
+    tolerance = 1e-10
+  )),
+  nrow(contribution_mismatch) == 14,
+  "Others" %in% contribution_mismatch$waste_stream,
+  all(!is.na(contribution_mismatch$recycling_share)),
+  all(!is.na(contribution_mismatch$disposal_share)),
+  abs(sum(contribution_mismatch$recycling_share) - 1) < 0.002,
+  abs(sum(contribution_mismatch$disposal_share) - 1) < 0.002,
+  abs(shift_share_total$mix_effect_pp - (-6.5)) < 0.1,
+  abs(shift_share_total$rate_effect_pp - (-3.0)) < 0.1,
+  abs(counterfactual_rate - 0.569) < 0.002
+)
+
+stopifnot(all(analytical_result_checks))
+
+# Slide-ready pipeline excerpts and previews are generated from the live objects.
+
+presentation_source <- readLines("presentation.qmd", warn = FALSE)
+
+extract_pipeline_code <- function(step) {
+  start_marker <- paste0("# pipeline-step-", step, "-start")
+  end_marker <- paste0("# pipeline-step-", step, "-end")
+  start_line <- match(start_marker, str_trim(presentation_source))
+  end_line <- match(end_marker, str_trim(presentation_source))
+
+  stopifnot(
+    !is.na(start_line),
+    !is.na(end_line),
+    end_line > start_line
+  )
+
+  paste(
+    presentation_source[(start_line + 1):(end_line - 1)],
+    collapse = "\n"
+  )
+}
+
+pipeline_code_html <- lapply(
+  1:5,
+  function(step) {
+    paste(
+      highr::hi_html(extract_pipeline_code(step)),
+      collapse = "\n"
+    )
+  }
+)
+
+format_pipeline_number <- function(value) {
+  format(
+    value,
+    big.mark = ",",
+    scientific = FALSE,
+    trim = TRUE
+  )
+}
+
+raw_block_starts <- which(raw_waste$DataSeries %in% block_names)
+
+pipeline_preview_data <- list(
+  raw_waste |>
+    slice(sort(c(raw_block_starts, raw_block_starts + 1))) |>
+    transmute(
+      DataSeries = str_trim(DataSeries),
+      `2024` = format_pipeline_number(`2024`),
+      `2023` = format_pipeline_number(`2023`)
+    ),
+  raw_tagged |>
+    filter(
+      str_trim(DataSeries) %in%
+        c("Construction & Demolition", "Plastic")
+    ) |>
+    transmute(
+      DataSeries = str_trim(DataSeries),
+      Metric = recode(
+        metric,
+        `Total Generated` = "Generated",
+        `Total Recycled` = "Recycled",
+        `Total Disposed` = "Disposed",
+        `Recycling Rate` = "Rate"
+      ),
+      `2024` = if_else(
+        metric == "Recycling Rate",
+        paste0(`2024`, "%"),
+        format_pipeline_number(`2024`)
+      )
+    ),
+  stream_year |>
+    filter(
+      waste_stream %in% c("Construction & Demolition", "Plastic"),
+      year %in% c(2023, 2024)
+    ) |>
+    arrange(waste_stream, desc(year)) |>
+    transmute(
+      Stream = waste_stream,
+      Year = year,
+      Generated = format_pipeline_number(generated),
+      Rate = paste0(source_recycling_rate, "%")
+    ),
+  priority_stream_year |>
+    filter(
+      year == 2024,
+      waste_stream %in% c(
+        "Construction & Demolition",
+        "Paper/Cardboard",
+        "Food",
+        "Plastic"
+      )
+    ) |>
+    transmute(
+      Stream = if_else(
+        waste_stream == "Construction & Demolition",
+        "C&D",
+        waste_stream
+      ),
+      Generated = paste0(format_pipeline_number(generated_kt), " kt"),
+      `Rate gap` = paste0(
+        if_else(rate_gap > 0, "+", ""),
+        format(round(rate_gap, 0), trim = TRUE),
+        " pp"
+      ),
+      Disposed = paste0(format_pipeline_number(disposed_kt), " kt")
+    )
+)
+
+max_national_difference <- max(
+  abs(
+    national_check$generated_streams -
+      national_check$generated_published
+  ),
+  abs(
+    national_check$recycled_streams -
+      national_check$recycled_published
+  ),
+  abs(
+    national_check$disposed_streams -
+      national_check$disposed_published
+  )
+)
+
+validation_preview_pass <- c(
+  pipeline_data_checks["source_shape"],
+  pipeline_data_checks["tidy_structure"],
+  pipeline_data_checks["tidy_structure"],
+  all(pipeline_data_checks[
+    c("amount_bounds", "rate_bounds", "stream_arithmetic")
+  ]),
+  pipeline_data_checks["national_reconciliation"],
+  pipeline_data_checks["published_anchors"],
+  pipeline_data_checks["declared_missingness"],
+  all(analytical_result_checks)
+)
+
+pipeline_preview_data[[5]] <- tibble(
+  Check = paste0(
+    if_else(validation_preview_pass, "✓ ", "✗ "),
+    sprintf("%02d ", seq_along(validation_preview_pass)),
+    c(
+      "Source shape",
+      "Metric coverage",
+      "Tidy record count",
+      "Bounds and balance",
+      "National reconciliation",
+      "Published anchors",
+      "Declared missingness",
+      "Analytical results"
+    )
+  ),
+  Result = c(
+    paste(
+      nrow(raw_waste), "×", ncol(raw_waste), "·",
+      length(grep("^[0-9]{4}$", names(raw_waste))), "annual fields"
+    ),
+    "Generated · recycled · disposed · rate",
+    paste(
+      length(unique(stream_year$waste_stream)),
+      "streams ×",
+      length(unique(stream_year$year)),
+      "years =",
+      format_pipeline_number(nrow(stream_year))
+    ),
+    "No negatives · rates 0–100% · arithmetic passes",
+    paste0(
+      "Stream and national totals agree within ",
+      format_pipeline_number(max_national_difference / 1000),
+      " kt"
+    ),
+    paste0(
+      decade_rate_data$source_recycling_rate[
+        decade_rate_data$year == 2014
+      ],
+      "% → ",
+      decade_rate_data$source_recycling_rate[
+        decade_rate_data$year == 2024
+      ],
+      "%"
+    ),
+    paste0(
+      unique(missing_rate_check$waste_stream),
+      ", ",
+      min(missing_rate_check$year),
+      "–",
+      max(missing_rate_check$year),
+      " · nothing imputed"
+    ),
+    "Shares · ranking · decomposition · counterfactual retested"
+  )
+)
+
+pipeline_preview_html <- lapply(
+  pipeline_preview_data,
+  function(data) {
+    paste(
+      knitr::kable(
+        data,
+        format = "html",
+        escape = TRUE,
+        table.attr = 'class="pipeline-preview-table"'
+      ),
+      collapse = "\n"
+    )
+  }
+)
+
+pipeline_preview_html[[5]] <- paste(
+  knitr::kable(
+    pipeline_preview_data[[5]],
+    format = "html",
+    escape = TRUE,
+    table.attr = paste(
+      'class="pipeline-preview-table',
+      'pipeline-validation-table"'
+    )
+  ),
+  collapse = "\n"
+)
+
+tagging_start <- match("Total Recycled", raw_tagged$DataSeries)
+
+pipeline_tagging_example <- raw_tagged |>
+  slice(tagging_start:(tagging_start + 2)) |>
+  transmute(
+    `Source row` = str_trim(DataSeries),
+    `Before tagging` = if_else(
+      DataSeries %in% block_names,
+      DataSeries,
+      "—"
+    ),
+    `After fill()` = recode(
+      metric,
+      `Total Generated` = "Generated",
+      `Total Recycled` = "Recycled",
+      `Total Disposed` = "Disposed",
+      `Recycling Rate` = "Rate"
+    ),
+    `2024 value` = format_pipeline_number(`2024`)
+  )
+
+pipeline_tagging_html <- paste(
+  knitr::kable(
+    pipeline_tagging_example,
+    format = "html",
+    escape = TRUE,
+    table.attr = 'class="pipeline-evidence-table"'
+  ),
+  collapse = "\n"
+)
+
+pipeline_preview_notes <- c(
+  paste(nrow(raw_waste), "rows ×", ncol(raw_waste), "columns"),
+  paste(length(block_names), "metric blocks recovered"),
+  paste(
+    length(unique(stream_year$waste_stream)),
+    "streams ×",
+    length(unique(stream_year$year)),
+    "years =",
+    nrow(stream_year),
+    "records"
+  ),
+  paste0(
+    "2024 national recycling rate: ",
+    national_reference$national_recycling_rate[
+      national_reference$year == 2024
+    ],
+    "%"
+  ),
+  "Any failed assertion stops the render before a chart is shown"
+)
+```
+
+## Singapore generated 6.66 million tonnes of waste in 2024 {#headline}
+
+::: {.slide-subtitle}
+The national system records each tonne in one of two outcomes: recycled or disposed.
+:::
+
+```{=html}
+<div class="headline-equation" aria-label="In 2024, 6.66 million tonnes of generated waste equalled 3.33 million tonnes recycled plus 3.33 million tonnes disposed">
+  <div class="headline-term headline-generated fragment custom box-reveal" data-fragment-index="0">
+    <span class="headline-value">6.66m</span>
+    <span class="headline-label">tonnes generated</span>
+    <span class="headline-note">All waste generated nationally</span>
+  </div>
+  <span class="headline-operator" aria-hidden="true">=</span>
+  <div class="headline-term headline-recycled fragment custom box-reveal" data-fragment-index="0">
+    <span class="headline-value">3.33m</span>
+    <span class="headline-label">tonnes recycled</span>
+    <span class="headline-note">Recovered for another use</span>
+  </div>
+  <span class="headline-operator" aria-hidden="true">+</span>
+  <div class="headline-term headline-disposed fragment custom box-reveal" data-fragment-index="0">
+    <span class="headline-value">3.33m</span>
+    <span class="headline-label">tonnes disposed</span>
+    <span class="headline-note">Incinerated or landfilled</span>
+  </div>
+</div>
+
+<div class="headline-explanations">
+  <div class="headline-explanation headline-measurement fragment custom box-reveal" data-fragment-index="1">
+    <span class="headline-kicker">How the system is measured</span>
+    <h3>Generated waste reconciles to two recorded outcomes</h3>
+    <p>Recycled and disposed tonnage add back to the total amount generated.</p>
+  </div>
+  <div class="headline-explanation headline-disposal fragment custom box-reveal" data-fragment-index="2">
+    <span class="headline-kicker">Why disposal matters</span>
+    <h3>Disposed waste is the operational burden</h3>
+    <p>Material that is not recovered still requires incineration or landfill, a burden the percentage alone cannot locate.</p>
+  </div>
+</div>
+
+<div class="headline-summary fragment custom box-reveal" data-fragment-index="3">
+  <div class="headline-summary-title">Key takeaway</div>
+  <p class="headline-summary-message">In 2024, Singapore recycled and disposed almost equal amounts of waste, producing the <strong>50% national headline*</strong>.</p>
+</div>
+<div class="headline-meta-footer">
+  <p class="source-note headline-calculation-note">* Rounded annual totals reproduce the published headline: 3.33m recycled &divide; 6.66m generated = 50%.</p>
+  <p class="source-note">Source: <a href="https://data.gov.sg/datasets/d_daf568968ab40dc81e7b08887a83c8fa/view">MSE and NEA, <em>Waste Management And Overall Recycling Rates, Annual</em></a>, via SingStat/Data.gov.sg, 2024. Figures rounded.</p>
+</div>
+```
+
+::: {.notes}
+Good morning/afternoon. We are presenting Two Worlds of Waste: What Singapore's Recycling Rate Hides.
+
+The cover image is Semakau, Singapore's only landfill, which is projected to be full by 2035.
+
+Our project asks whether the national recycling rate tells us enough about where Singapore's waste burden actually comes from.
+
+In 2024, Singapore generated approximately 6.66 million tonnes of waste. Around 3.33 million tonnes were recycled, while another 3.33 million tonnes were disposed of. This gives the published national recycling rate of 50%.
+
+The figure is correct, but it only tells us the overall outcome. It does not show which materials created that result, which streams performed well or poorly, or where most of the disposal burden sits.
+:::
+
+## A single 50% rate hides two different questions {#rate-questions-slide}
+
+::: {.slide-subtitle}
+It summarises the system, but not where recycling strength and disposal burden originate.
+:::
+
+::: {.rate-explainer}
+::: {.headline-rate}
+::: {.rate-chart-row}
+```{=html}
+<div class="rate-chart-copy">
+<div class="rate-summary-row">
+<div class="question-kicker">National recycling rate</div>
+<div class="rate-change-summary" aria-label="The national recycling rate fell from 60 percent in 2014 to 50 percent in 2024">
+<div class="rate-change-values">
+<span class="rate-change-value">60%</span>
+<span class="rate-summary-arrow" aria-hidden="true">→</span>
+<span class="rate-change-value">50%</span>
+</div>
+<div class="rate-change-years">
+<span>2014</span>
+<span>2024</span>
+</div>
+</div>
+</div>
+<p class="rate-chart-caption">Rounded annual totals reproduce the published headline: 3.33m recycled &divide; 6.66m generated = 50%.</p>
+<p class="rate-decade-caption">NEA directly links the marked turning points to changes in construction, industrial activity and processing capacity. These are evidence-backed mechanisms, but the annual chart cannot isolate each event's independent causal effect.</p>
+</div>
+```
+
+::: {.rate-trend-chart}
+```{r}
+#| label: national-rate-decade-chart
+#| echo: false
+#| fig-width: 15.2
+#| fig-height: 4.35
+#| fig-retina: 2
+#| fig-format: svg
+#| out-width: 100%
+decade_rate_plot
+```
+:::
+:::
+
+:::
+
+::: {.rate-questions}
+::: {.rate-question .rate-question-measures .fragment .custom .box-reveal data-fragment-index="0"}
+<div class="question-kicker">What the evidence supports</div>
+
+::: {.rate-topic .rate-topic-teal}
+<h3><span class="rate-topic-number">01</span>Larger waste streams exert more influence</h3>
+<p>A 1,000 kt stream carries ten times the pull of a 100 kt stream because the national rate is weighted by tonnage.</p>
+:::
+
+::: {.rate-topic .rate-topic-teal-alt}
+<h3><span class="rate-topic-number">02</span>A shrinking high-recycling stream lowers the headline</h3>
+<p>When a large industrial stream contracts, its recycled tonnage falls even if its own recycling performance is unchanged.</p>
+:::
+:::
+
+::: {.rate-question .rate-question-hides .fragment .custom .box-reveal data-fragment-index="1"}
+<div class="question-kicker">What remains uncertain</div>
+
+::: {.rate-topic .rate-topic-orange}
+<h3><span class="rate-topic-number">03</span>The mix can change, or performance can change</h3>
+<p>One percentage cannot distinguish a different waste mix from weaker recycling within individual streams.</p>
+:::
+
+::: {.rate-topic .rate-topic-orange-alt}
+<h3><span class="rate-topic-number">04</span>The headline cannot locate strength or burden</h3>
+<p>It does not show which streams build recycled tonnage or create disposed waste, and those contributions may originate in different places.</p>
+:::
+:::
+:::
+:::
+
+```{=html}
+<div class="callout callout-question callout-titled rate-transition fragment custom box-reveal" data-fragment-index="2" role="note" aria-label="The question this raises">
+  <div class="callout-title">The question this raises</div>
+  <div class="callout-body">
+    <div class="callout-content">
+      <p>Does a lower national rate necessarily mean that recycling performance deteriorated across the system?</p>
+    </div>
+  </div>
+</div>
+```
+
+<p class="source-note rate-source">Sources: <a href="https://data.gov.sg/datasets/d_daf568968ab40dc81e7b08887a83c8fa/view">MSE and NEA annual dataset</a>; event annotations: <a href="https://www.nea.gov.sg/media/news/news/index/reduction-in-overall-waste-generation-in-2020-with-less-waste-sent-to-semakau-landfill">[1] NEA 2020</a>, <a href="https://www.nea.gov.sg/media/news/news/index/waste-generation-and-recycling-rates-increased-in-2022-as-economic-activity-picked-up">[2] NEA 2022</a>, <a href="https://www.nea.gov.sg/media/news/news/index/singapore-sees-a-decade-of-progress-in-waste-reduction-but-more-can-be-done-for-recycling">[3] NEA 2023</a> and <a href="https://www.nea.gov.sg/media/news/news/index/waste-generation-rate-continues-to-trend-downwards-in-2024">[4] NEA 2024</a>.</p>
+
+::: {.notes}
+Singapore's national recycling rate fell from 60% in 2014 to 50% in 2024.
+
+The decade also included major shifts, including the 2020 Circuit Breaker, the recovery in 2022 and fewer demolition projects in the later years.
+
+However, the national rate can fall for two different reasons. First, individual waste streams may be recycling less effectively. This is the performance effect. Second, Singapore may be generating less highly recyclable industrial waste. This changes the waste mix and lowers the national average. This is the mix effect.
+
+These are different problems and require different responses. The national rate alone cannot separate them, which is the main issue our redesign and analysis address.
+
+Handover: Dalton will now explain what the original CNA chart shows, what it leaves hidden and the dataset used for our redesign.
+:::
+
+## CNA shows the national totals moving together {#cna-story-slide}
+
+::: {.slide-subtitle}
+From 2014 to 2024, waste generation fell, and recycled tonnage fell faster.
+:::
+
+```{=html}
+<div class="cna-layout">
+  <figure class="cna-figure">
+    <img src="assets/original-cna-visualisation.png" alt="CNA chart titled How much waste Singapore generated and recycled in the past 10 years, showing generated and recycled waste from 2014 to 2024">
+  </figure>
+
+  <div class="cna-findings">
+    <span class="cna-section-label">2014–2024 tonnage change</span>
+    <div class="cna-stat-grid">
+      <div class="cna-stat-card">
+        <span class="cna-change">−11%</span>
+        <strong>Total waste generated</strong>
+        <span>7.52m → 6.66m tonnes</span>
+      </div>
+      <div class="cna-stat-card">
+        <span class="cna-change">−26%</span>
+        <strong>Waste recycled</strong>
+        <span>4.47m → 3.33m tonnes</span>
+      </div>
+    </div>
+
+    <p class="cna-calculation-note">Calculated from NEA’s published 2014 and 2024 tonnage.</p>
+
+    <div class="cna-summary-card cna-period-card">
+      <span class="cna-section-label">Across the period</span>
+      <h3>The 2020 disruption is followed by a rebound</h3>
+      <p>Both measures then decline again towards 2024, with recycled tonnage falling faster than total generation.</p>
+    </div>
+
+    <div class="cna-summary-card cna-establish-card">
+      <span class="cna-section-label">What CNA establishes</span>
+      <h3>Singapore generated less waste and recycled substantially less waste</h3>
+      <p>Both national totals were lower in 2024 than a decade earlier.</p>
+    </div>
+
+    <div class="cna-limitations">
+      <span class="cna-section-label">Limitations</span>
+      <h3>The chart shows what changed nationally, but not which waste streams caused it.</h3>
+    </div>
+  </div>
+
+  <div class="cna-transition-panel cna-strength-transition" aria-labelledby="cna-transition-strengths-heading">
+    <h3 id="cna-transition-strengths-heading">ORIGINAL CHART STRENGTHS</h3>
+    <ul class="cna-transition-list">
+      <li class="cna-transition-item">
+        <span class="cna-transition-marker">S1</span>
+        <div>
+          <h4>Low visual complexity</h4>
+          <p>Two visual series keep the national comparison easy to follow.</p>
+        </div>
+      </li>
+      <li class="cna-transition-item">
+        <span class="cna-transition-marker">S2</span>
+        <div>
+          <h4>Common unit and scale</h4>
+          <p>Both measures use ’000 tonnes on the same axis for direct comparison.</p>
+        </div>
+      </li>
+      <li class="cna-transition-item">
+        <span class="cna-transition-marker">S3</span>
+        <div>
+          <h4>Clear national trend</h4>
+          <p>The generated-waste line makes the decade movement immediately visible.</p>
+        </div>
+      </li>
+      <li class="cna-transition-item">
+        <span class="cna-transition-marker">S4</span>
+        <div>
+          <h4>Familiar chart type</h4>
+          <p>The conventional line-and-bar format is approachable and quick to scan.</p>
+        </div>
+      </li>
+    </ul>
+  </div>
+
+  <div class="cna-transition-panel cna-weakness-transition" aria-labelledby="cna-transition-weaknesses-heading">
+    <h3 id="cna-transition-weaknesses-heading">ORIGINAL CHART WEAKNESSES</h3>
+    <ul class="cna-transition-list">
+      <li class="cna-transition-item" data-weakness="w1">
+        <span class="cna-transition-marker">W1</span>
+        <div>
+          <h4>Recycling rate is absent</h4>
+          <p>The 50% headline metric is not plotted, so readers must infer performance from the two totals.</p>
+        </div>
+      </li>
+      <li class="cna-transition-item" data-weakness="w2">
+        <span class="cna-transition-marker">W2</span>
+        <div>
+          <h4>Waste-stream composition is hidden</h4>
+          <p>National totals conceal major differences in material volume, recycling performance and disposal.</p>
+        </div>
+      </li>
+      <li class="cna-transition-item" data-weakness="w3">
+        <span class="cna-transition-marker">W3</span>
+        <div>
+          <h4>Actionable insight is limited</h4>
+          <p>The chart cannot locate the largest disposal burdens or separate weaker recycling from a changed waste mix.</p>
+        </div>
+      </li>
+      <li class="cna-transition-item" data-weakness="w4">
+        <span class="cna-transition-marker">W4</span>
+        <div>
+          <h4>Visual emphasis favours generated waste</h4>
+          <p>The strong red line dominates the pale recycling bars, making generation feel like the primary story.</p>
+        </div>
+      </li>
+      <li class="cna-transition-item" data-weakness="w5">
+        <span class="cna-transition-marker">W5</span>
+        <div>
+          <h4>Important benchmarks and annotations are missing</h4>
+          <p>The 2024 low, 50% reference and influence of high-recycling streams are not marked.</p>
+        </div>
+      </li>
+    </ul>
+  </div>
+
+  <div class="cna-transition-triggers" aria-hidden="true">
+    <span class="fragment cna-transition-trigger" data-stage="strengths" data-fragment-index="1"></span>
+    <span class="fragment cna-transition-trigger" data-stage="weaknesses" data-fragment-index="2"></span>
+    <span class="fragment cna-transition-trigger" data-stage="move" data-fragment-index="3"></span>
+  </div>
+
+  <div class="critique-encoding-response critique-w1-response fragment fade-left" data-fragment-index="4" aria-label="Recycling rate addresses weakness one">
+    <div class="critique-encoding-response-header">
+      <span class="critique-encoding-symbol">Y</span>
+      <div>
+        <span class="critique-encoding-kicker">ADDRESSES W1</span>
+        <h3>Place recycling rate on the y-axis</h3>
+      </div>
+    </div>
+    <p class="critique-encoding-summary">Each bubble’s height will show its waste stream’s recycling rate in the selected year.</p>
+    <div class="critique-encoding-detail">
+      <p><strong>Y-axis</strong><span>Higher bubbles indicate stronger recovery; lower bubbles indicate weaker recovery</span></p>
+      <p><strong>Comparison</strong><span>Streams can be compared directly instead of inferring performance from two national totals</span></p>
+      <p><strong>Reference</strong><span>A moving national-rate line opens at 50% for 2024 and updates with the selected year</span></p>
+    </div>
+  </div>
+
+  <div class="critique-encoding-response critique-w2-response fragment fade-left" data-fragment-index="5" aria-label="Waste-stream comparison addresses weakness two">
+    <div class="critique-encoding-response-header">
+      <span class="critique-encoding-symbol">X</span>
+      <div>
+        <span class="critique-encoding-kicker">ADDRESSES W2</span>
+        <h3>Plot every waste stream separately</h3>
+      </div>
+    </div>
+    <p class="critique-encoding-summary">The two national series become a selected-year field of named waste-stream bubbles.</p>
+    <div class="critique-encoding-detail">
+      <p><strong>Marks</strong><span>One bubble represents one waste stream in the selected year</span></p>
+      <p><strong>X-axis</strong><span>Generated waste in ’000 tonnes; streams farther right contribute more material</span></p>
+      <p><strong>Structure</strong><span>A stream-year dataset supplies the position and measures for every bubble</span></p>
+    </div>
+  </div>
+
+  <div class="critique-encoding-response critique-w2-grouping-response fragment fade-left" data-fragment-index="6" aria-label="Waste Stream Category supports weakness two">
+    <div class="critique-encoding-response-header">
+      <span class="critique-encoding-symbol critique-category-palette" aria-label="Four category colours">
+        <i></i><i></i><i></i><i></i>
+      </span>
+      <div>
+        <span class="critique-encoding-kicker">SUPPORTS W2</span>
+        <h3>Waste Stream Category</h3>
+      </div>
+    </div>
+    <p class="critique-encoding-summary">Colour separates everyday materials, industrial/construction, organic/landscape and process/other streams. It reveals related clusters without changing the calculations.</p>
+  </div>
+
+  <div class="critique-encoding-response critique-w3-response fragment fade-left" data-fragment-index="7" aria-label="Disposed waste addresses weakness three">
+    <div class="critique-encoding-response-header">
+      <span class="critique-encoding-symbol critique-disposal-bubble">●</span>
+      <div>
+        <span class="critique-encoding-kicker">ADDRESSES W3</span>
+        <h3>Scale each bubble by disposed waste</h3>
+      </div>
+    </div>
+    <p class="critique-encoding-summary">Bubble diameter will show how much material remains after recycling and still requires disposal.</p>
+    <div class="critique-encoding-detail">
+      <p><strong>Diameter</strong><span>Larger bubbles represent greater disposed tonnage in the selected year</span></p>
+      <p><strong>Burden</strong><span>The largest marks locate the streams placing more pressure on incineration or landfill</span></p>
+      <p><strong>Priority pattern</strong><span>Far right, low and large means high volume, weak recycling and substantial disposal</span></p>
+    </div>
+  </div>
+
+  <div class="critique-encoding-response critique-w4-response fragment fade-left" data-fragment-index="8" aria-label="Coordinated core encodings address weakness four">
+    <span class="critique-encoding-kicker">ADDRESSES W4</span>
+    <h3>Build one coordinated priority map</h3>
+    <p class="critique-encoding-summary">Four encodings keep scale, recovery, disposal and composition visible at the same time.</p>
+    <div class="critique-core-encoding-strip" aria-label="Four coordinated core encodings">
+      <div><span class="critique-mini-symbol">X</span><strong>Generated<br>tonnage</strong></div>
+      <div><span class="critique-mini-symbol">Y</span><strong>Recycling<br>rate</strong></div>
+      <div><span class="critique-mini-symbol critique-mini-bubble">●</span><strong>Disposed<br>waste</strong></div>
+      <div>
+        <span class="critique-mini-symbol critique-mini-palette" aria-label="Four category colours"><i></i><i></i><i></i><i></i></span>
+        <strong>Waste Stream<br>Category</strong>
+      </div>
+    </div>
+    <div class="critique-encoding-detail critique-w4-reading">
+      <p><strong>Read position</strong><span>The x-axis shows scale while the y-axis shows recovery performance</span></p>
+      <p><strong>Then inspect</strong><span>Diameter exposes unrecycled burden and colour identifies the waste stream category</span></p>
+    </div>
+    <p class="critique-encoding-reading">A large, highly recycled stream can now be distinguished from one of similar scale that leaves a much greater disposal burden.</p>
+  </div>
+
+  <div class="critique-encoding-response critique-w5-response fragment fade-left" data-fragment-index="9" aria-label="Interpretive cues address weakness five">
+    <div class="critique-encoding-response-header">
+      <span class="critique-encoding-symbol critique-reference-symbol">50%</span>
+      <div>
+        <span class="critique-encoding-kicker">ADDRESSES W5</span>
+        <h3>Add guides for interpreting each year</h3>
+      </div>
+    </div>
+    <p class="critique-encoding-summary">The chart will explain how a stream compares with the selected year and why its position matters.</p>
+    <div class="critique-encoding-detail">
+      <p><strong>Reference</strong><span>A horizontal line marks the selected year’s national recycling rate</span></p>
+      <p><strong>Screening</strong><span>A median-volume boundary shades streams that are high-volume and below-reference</span></p>
+      <p><strong>Details</strong><span>Labels, legends and hover text reveal exact tonnage, rate, gap and category</span></p>
+    </div>
+  </div>
+
+  <div class="critique-encoding-response critique-year-slider-response fragment fade-left" data-fragment-index="10" aria-label="Year slider tracks changes across the decade">
+    <div class="critique-encoding-response-header">
+      <span class="critique-encoding-symbol critique-slider-symbol">↔</span>
+      <div>
+        <span class="critique-encoding-kicker">TRACKS CHANGE OVER TIME</span>
+        <h3>2014–2024 year slider</h3>
+      </div>
+    </div>
+    <p class="critique-encoding-summary">Moving the slider redraws every bubble’s position and size. The national reference and screening boundary also update for the selected year.</p>
+  </div>
+</div>
+<p class="source-note cna-source-note">Sources: <a href="https://www.channelnewsasia.com/singapore/waste-recycling-rates-domestic-statistics-nea-2024-5253106">CNA, 23 July 2025</a>; <a href="https://data.gov.sg/datasets/d_daf568968ab40dc81e7b08887a83c8fa/view">MSE and NEA annual waste-management data via SingStat/Data.gov.sg</a>. Changes calculated from 2014 and 2024 tonnage.</p>
+```
+
+::: {.notes}
+We started with CNA's July 2025 chart showing Singapore's generated and recycled waste from 2014 to 2024.
+
+Over the decade, total waste generated fell by 11%, from 7.52 million to 6.66 million tonnes. Recycled waste fell faster, by 26%, from 4.47 million to 3.33 million tonnes.
+
+The chart also makes the 2020 dip and the recovery that followed easy to see.
+
+Before critiquing it, the chart has four clear strengths. It is visually simple, uses one consistent unit, makes the national trend easy to understand and uses a familiar chart type that is quick to scan.
+
+However, it also has five important limitations, and each one informed our redesign. First, the recycling rate is not shown directly, so we place it on the y-axis. Second, waste-stream composition is hidden, so each stream becomes a separate bubble positioned by generated tonnage on the x-axis. Third, the chart gives limited actionable insight, so bubble size shows disposed waste directly. Fourth, the generated-waste line receives most of the visual attention, so our redesign balances four dimensions: scale, recycling performance, disposal burden and waste category. Fifth, the chart lacks benchmarks and explanatory detail, so we add the annual national recycling-rate reference, a shaded screening area, hover information and a year slider.
+
+This keeps the original chart's clear decade view, while adding the stream-level detail needed to understand what is driving the result.
+:::
+
+
+## Our Dataset {#data-source-slide}
+
+::: {.slide-subtitle}
+The same NEA statistics behind CNA’s chart, taken from SingStat.
+:::
+
+```{=html}
+<div class="data-scope-layout">
+  <div class="dataset-identity fragment custom box-reveal" data-fragment-index="0">
+    <span class="question-kicker">Primary dataset</span>
+    <h3>Waste Management And Overall Recycling Rates, Annual</h3>
+    <p>The downloaded CSV provides the national totals used by CNA and the component waste streams needed for our redesign. The four colour groups are analyst-defined for visual navigation and do not affect calculations.</p>
+    <dl class="dataset-meta">
+      <div><dt>Publisher</dt><dd>Ministry of Sustainability and the Environment; National Environment Agency</dd></div>
+      <div><dt>Platform</dt><dd>Data.gov.sg</dd></div>
+      <div><dt>Dataset ID</dt><dd>d_daf568968ab40dc81e7b08887a83c8fa</dd></div>
+      <div><dt>Dataset page</dt><dd><a href="https://data.gov.sg/datasets/d_daf568968ab40dc81e7b08887a83c8fa/view">Open the public release</a></dd></div>
+      <div><dt>Local copy</dt><dd>data/waste_management.csv, retrieved 17 June 2026</dd></div>
+      <div><dt>Licence</dt><dd><a href="https://data.gov.sg/open-data-licence">Singapore Open Data Licence 1.0</a></dd></div>
+    </dl>
+  </div>
+  <div class="data-scope-summary fragment custom box-reveal" data-fragment-index="1">
+    <div class="scope-statistics">
+      <div class="scope-stat"><strong>2000–2024</strong><span>annual coverage; analysis uses 2014–2024 to match CNA</span></div>
+      <div class="scope-stat"><strong>14</strong><span>waste streams, plus national totals</span></div>
+      <div class="scope-stat"><strong>4</strong><span>measures: generated, recycled, disposed and rate</span></div>
+      <div class="scope-stat"><strong>1</strong><span>official source, so no cross-dataset joins</span></div>
+    </div>
+    <div class="scope-limitation">
+      <span class="question-kicker">Dataset limitation</span>
+      <h3>No recycling rate is available for “Others” from 2022</h3>
+      <p>We still include “Others” in Singapore’s national waste totals. However, we leave it out of comparisons that require a recycling rate instead of estimating the missing values. This does not change the three priority waste streams identified for 2024.</p>
+    </div>
+  </div>
+</div>
+
+<p class="source-note">Source: <a href="https://data.gov.sg/datasets/d_daf568968ab40dc81e7b08887a83c8fa/view">MSE and NEA, <em>Waste Management And Overall Recycling Rates, Annual</em></a>, via SingStat/Data.gov.sg; retrieved 17 June 2026.</p>
+```
+
+::: {.notes}
+We used the official MSE and NEA annual waste-management dataset through SingStat and Data.gov.sg. This is the same official source underlying CNA's article.
+
+The full dataset covers 2000 to 2024. Our main analysis uses the same 2014 to 2024 period shown by CNA, which allows a direct comparison between the original visualisation and our redesign.
+
+The dataset includes national totals and 14 published waste streams. One limitation is that the stream labelled Others has no published recycling rate from 2022 to 2024. We retain it in national generated, recycled and disposed totals, but exclude it from analyses that require a stream-level recycling rate. We do not estimate or fill in the missing values.
+:::
+
+
+## Data Engineering Pipeline {#pipeline-revised-slide}
+
+::: {.slide-subtitle}
+Each stage has a named output, a defined transformation and an explicit validation target.
+:::
+
+```{=html}
+<div class="pipeline-stage" aria-label="Five-stage data engineering pipeline">
+<div class="preparation-flow">
+  <div class="preparation-step pipeline-step-1">
+    <div class="preparation-label">
+      <span class="preparation-number"><span class="step-prefix">STEP </span>01</span>
+      <h3>Import<span class="expanded-heading-suffix"> Dataset</span></h3>
+    </div>
+    <p>The import is deliberately conservative: <code>read.csv()</code> reads the dataset file, <code>check.names = FALSE</code> preserves the published year headings and <code>na.strings</code> converts blank or “NA” entries into proper missing values.</p>
+    <div class="pipeline-code">
+      <pre><code>`r pipeline_code_html[[1]]`</code></pre>
+    </div>
+    <div class="pipeline-stage-evidence pipeline-import-summary">
+      <span class="pipeline-evidence-kicker">DATASET SUMMARY</span>
+      <div class="pipeline-summary-grid">
+        <div>
+          <strong>`r nrow(raw_waste)` × `r ncol(raw_waste)`</strong>
+          <span>rows and columns imported</span>
+        </div>
+        <div>
+          <strong>`r min(as.integer(grep("^[0-9]{4}$", names(raw_waste), value = TRUE)))`–`r max(as.integer(grep("^[0-9]{4}$", names(raw_waste), value = TRUE)))`</strong>
+          <span>year coverage detected</span>
+        </div>
+        <div>
+          <strong>`r sum(is.na(raw_waste))`</strong>
+          <span>missing entries recognised</span>
+        </div>
+      </div>
+      <p>Nothing is reshaped or recalculated here. The imported object remains a faithful starting point for every later transformation.</p>
+    </div>
+  </div>
+  <span class="preparation-arrow" aria-hidden="true">→</span>
+  <div class="preparation-step pipeline-step-2">
+    <div class="preparation-label">
+      <span class="preparation-number"><span class="step-prefix">STEP </span>02</span>
+      <h3>Organise<span class="expanded-heading-suffix"> Measurement Blocks</span></h3>
+    </div>
+    <p>The source is organised in repeated measurement blocks. <code>mutate()</code> identifies each block’s heading, while <code>fill()</code> carries that metric down to the waste streams beneath it.</p>
+    <div class="pipeline-code">
+      <pre><code>`r pipeline_code_html[[2]]`</code></pre>
+    </div>
+    <div class="pipeline-stage-evidence pipeline-tagging-evidence">
+      <span class="pipeline-evidence-kicker">WHAT <code>fill()</code> ADDS</span>
+      <p>The metric appears only on the block heading before tagging. Afterwards, the following waste-stream rows inherit that same label while their values remain unchanged.</p>
+      `r pipeline_tagging_html`
+    </div>
+  </div>
+  <span class="preparation-arrow" aria-hidden="true">→</span>
+  <div class="preparation-step pipeline-step-3">
+    <div class="preparation-label">
+      <span class="preparation-number"><span class="step-prefix">STEP </span>03</span>
+      <h3>Reshape<span class="expanded-heading-suffix"> into Stream-Year Records</span></h3>
+    </div>
+    <p>Two pivots make the data analysis-ready: <code>pivot_longer()</code> turns year columns into observations, while <code>pivot_wider()</code> places the four measures side by side. <code>left_join()</code> then adds stream categories before <code>mutate()</code> calculates rates and kilotonnes.</p>
+    <div class="pipeline-code">
+      <pre><code>`r pipeline_code_html[[3]]`</code></pre>
+    </div>
+  </div>
+  <span class="preparation-arrow" aria-hidden="true">→</span>
+  <div class="preparation-step pipeline-step-4">
+    <div class="preparation-label">
+      <span class="preparation-number"><span class="step-prefix">STEP </span>04</span>
+      <h3>Prepare<span class="expanded-heading-suffix"> Chart Fields</span></h3>
+    </div>
+    <p>To make streams comparable, <code>left_join()</code> attaches each year’s national benchmark. Within <code>group_by(year)</code>, <code>mutate()</code> derives shares, rate gaps and the screening groups used by the final chart.</p>
+    <div class="pipeline-code">
+      <pre><code>`r pipeline_code_html[[4]]`</code></pre>
+    </div>
+  </div>
+  <span class="preparation-arrow" aria-hidden="true">→</span>
+  <div class="preparation-step pipeline-step-5">
+    <div class="preparation-label">
+      <span class="preparation-number"><span class="step-prefix">STEP </span>05</span>
+      <h3>Validate<span class="expanded-heading-suffix"> Data Quality</span></h3>
+    </div>
+    <p>Validation is a render requirement, not a final spot check. The named <code>pipeline_data_checks</code> test structure, missingness, ranges and reconciliation, while <code>stopifnot()</code> stops the deck if any result is false.</p>
+    <div class="pipeline-code">
+      <pre><code>`r pipeline_code_html[[5]]`</code></pre>
+    </div>
+  </div>
+</div>
+<div class="pipeline-preview-area" aria-live="polite">
+  <div class="pipeline-data-preview pipeline-preview-1">
+    <span class="pipeline-preview-kicker">RAW DATA PREVIEW</span>
+    <h4 class="pipeline-output-subheading">The source arrives as four stacked measurement blocks</h4>
+    `r pipeline_preview_html[[1]]`
+    <small>`r pipeline_preview_notes[[1]]`</small>
+    <p class="pipeline-output-commentary">Read the rows in pairs. Each national heading starts a different measurement block, and the Construction &amp; Demolition row beneath it is one example from that block. The repeated stream therefore shows four different measures: generated, recycled and disposed values are tonnes, while the final recycling-rate values are percentages.</p>
+  </div>
+  <div class="pipeline-data-preview pipeline-preview-2">
+    <span class="pipeline-preview-kicker">TAGGED SOURCE ROWS</span>
+    <h4 class="pipeline-output-subheading">Each source row now carries its inherited metric</h4>
+    `r pipeline_preview_html[[2]]`
+    <small>`r pipeline_preview_notes[[2]]`</small>
+    <p class="pipeline-output-commentary">The same waste streams still appear once within each measurement block, but the new Metric column now states what every value means. Read across a row to see the stream, its inherited measure and its 2024 value. For example, Construction &amp; Demolition records 708,000 tonnes generated, 706,000 recycled, 3,000 disposed and a 99% recycling rate.</p>
+  </div>
+  <div class="pipeline-data-preview pipeline-preview-3">
+    <span class="pipeline-preview-kicker">STREAM-YEAR OUTPUT</span>
+    <h4 class="pipeline-output-subheading">One row now represents one waste stream in one year</h4>
+    `r pipeline_preview_html[[3]]`
+    <small>`r pipeline_preview_notes[[3]]`</small>
+    <p class="pipeline-output-commentary">The block structure has now disappeared. Read each row as one waste stream in one year, with its measures placed in separate columns. This compact preview shows Generated and Rate; recycled and disposed remain in the underlying record. Repeated stream names now represent different years rather than different measurement blocks.</p>
+  </div>
+  <div class="pipeline-data-preview pipeline-preview-4">
+    <span class="pipeline-preview-kicker">CHART-READY FIELDS</span>
+    <h4 class="pipeline-output-subheading">Each record now carries the final chart encodings</h4>
+    `r pipeline_preview_html[[4]]`
+    <small>`r pipeline_preview_notes[[4]]`</small>
+    <p class="pipeline-output-commentary">Each row still represents one stream in one year, but it now carries the fields required by the final chart. Generated determines the x-axis position, disposed tonnage controls bubble size and Rate gap shows how far the stream sits above or below that year’s national recycling rate. The retained category field supplies the bubble colour.</p>
+    <div class="pipeline-output-callouts">
+      <div class="callout callout-note callout-titled" role="note" aria-label="Output structure">
+        <div class="callout-title">Output structure</div>
+        <div class="callout-body">
+          <div class="callout-content">
+            <p>One row represents one waste stream in one year.</p>
+          </div>
+        </div>
+      </div>
+      <div class="callout callout-info callout-titled" role="note" aria-label="Downstream use">
+        <div class="callout-title">Downstream use</div>
+        <div class="callout-body">
+          <div class="callout-content">
+            <p>One reproducible pipeline supplies the interactive chart, decade decomposition and every reported 2024 contribution share.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="pipeline-data-preview pipeline-preview-5">
+    <span class="pipeline-preview-kicker">VALIDATION RESULTS</span>
+    <h4 class="pipeline-output-subheading">All eight live checks pass before any chart is drawn</h4>
+    `r pipeline_preview_html[[5]]`
+    <small>`r pipeline_preview_notes[[5]]`</small>
+    <p class="pipeline-output-commentary">This is the pipeline’s live test report. A structural, arithmetic, reconciliation, missingness or analytical failure stops the render before a misleading result can be shown.</p>
+  </div>
+</div>
+<div class="pipeline-fragment-triggers" aria-hidden="true">
+  <span class="fragment pipeline-trigger" data-step="2"></span>
+  <span class="fragment pipeline-trigger" data-step="3"></span>
+  <span class="fragment pipeline-trigger" data-step="4"></span>
+  <span class="fragment pipeline-trigger" data-step="5"></span>
+</div>
+</div>
+
+<!--
+<p class="preparation-output">Each row represents one waste stream in one year, bringing its generated, recycled and disposed tonnage, recycling rate, category and national context into one record.</p>
+-->
+```
+
+::: {.notes}
+The original CSV is not tidy. It contains four repeated blocks: generated, recycled, disposed and recycling rate.
+
+Each block repeats the same stream names, so the first step is to tag each row by its measurement type. We then standardise the stream names, reshape the years into rows and create one record for each waste stream in each year.
+
+From this cleaned table, we calculate the rate gap, disposal share, recycling contribution and the values used in our later analyses.
+
+Before anything renders, the pipeline runs eight validation checks. These include checking the source structure, expected record count, valid values, arithmetic balance, national reconciliation within three kilotonnes, and the published anchor rates of 60% in 2014 and 50% in 2024. The checks also confirm the declared missing values for Others and the main analytical results.
+
+If any validation check fails, the presentation stops rendering. This means the charts are generated only after the data and results pass the required checks.
+:::
+
+
+## Improved Visualisation: Two Worlds of Waste {#priority-map-slide .hero-chart-slide}
+
+::: {.slide-subtitle}
+One bubble represents each stream; move the year slider through CNA’s 2014–2024 decade.
+:::
+
+::: {.chart-explainer-layout .chart-interactive-layout}
+::: {.chart-frame .chart-frame-final .chart-interactive}
+```{r}
+#| label: interactive-priority-map
+#| echo: false
+priority_plot
+```
+<p class="chart-caption chart-method-caption">Bubble diameter shows disposed tonnage; jitter separates points and ggrepel separates labels; hover retains exact values; 2024 is the default.</p>
+:::
+
+::: {.chart-reading .chart-findings}
+<span class="question-kicker">How to read it</span>
+<div class="reading-point reading-screening fragment custom box-reveal" data-fragment-index="0">
+  <span class="reading-cue" aria-hidden="true">↘</span>
+  <strong>Right and low marks high-volume, low-recycling streams</strong>
+  <p>Above-median volume and below-reference recycling.</p>
+</div>
+<div class="reading-point reading-size fragment custom box-reveal" data-fragment-index="1">
+  <span class="reading-cue reading-cue-bubble" aria-hidden="true">●</span>
+  <strong>Bubble diameter shows disposed tonnage</strong>
+  <p>Ferrous metal sits far right but has almost no bubble because nearly all is recovered.</p>
+</div>
+<span class="question-kicker findings-kicker">What the decade reveals</span>
+<div class="reading-point priority-result fragment custom box-reveal" data-fragment-index="2">
+  <strong class="priority-result-title">A persistent disposal burden</strong>
+  <p class="priority-result-summary">Plastic, paper/cardboard and food remain high-volume, low-recycling streams throughout 2014 to 2024.</p>
+  <span class="priority-result-stat">
+    <span class="priority-result-value">71.8%</span>
+    <span class="priority-result-stat-copy">of Singapore’s disposed waste in 2024.</span>
+  </span>
+</div>
+:::
+:::
+
+<p class="source-note">Source: <a href="https://data.gov.sg/datasets/d_daf568968ab40dc81e7b08887a83c8fa/view">MSE and NEA, <em>Waste Management And Overall Recycling Rates, Annual</em></a>, via SingStat/Data.gov.sg.</p>
+
+::: {.notes}
+This is our improved interactive visualisation.
+
+Each bubble represents one waste stream. The x-axis shows generated waste. The y-axis shows the recycling rate. Bubble size shows disposed tonnage, while colour shows the waste-system category.
+
+The dashed horizontal line marks the national recycling-rate reference for the selected year. The slider allows the audience to move through the period from 2014 to 2024, with 2024 shown by default. Hovering over a bubble reveals the exact values for that waste stream.
+
+In 2024, ferrous metal and construction and demolition waste sit near the top because they recycle almost all their waste. Their disposal bubbles are therefore relatively small. Plastic, paper and cardboard, and food sit below the national reference with large generated volumes and large disposal bubbles.
+
+The shaded area identifies streams with above-median generated volume and below-reference recycling. This is a descriptive screening rule, not an official policy target.
+
+A low recycling rate alone does not automatically make a stream a national priority, especially if the stream is very small. Similarly, a large stream is not necessarily a major problem if most of it is already recycled.
+
+By combining volume, recycling performance and disposal burden, the chart gives a more complete picture. Both the screening rule and the direct disposal ranking identify the same three priority streams: plastic, paper and cardboard, and food.
+:::
+
+## P1: Disposal burden by waste stream {#mismatch-slide}
+
+::: {.slide-subtitle}
+Each point compares a stream’s share of national recycling with its share of national disposal in 2024; bubble area represents generated tonnage.
+:::
+
+::: {.chart-commentary-layout .mismatch-layout}
+::: {.mismatch-chart-column}
+::: {.chart-frame .chart-frame-mismatch .chart-r-output}
+```{r}
+#| label: presentation-disposal-recycling-chart
+#| echo: false
+#| results: asis
+cat(disposal_recycling_svg)
+```
+:::
+:::
+
+::: {.chart-commentary .mismatch-commentary}
+```{=html}
+    <div class="mismatch-card mismatch-recycling fragment custom box-reveal" data-fragment-index="0">
+      <span class="question-kicker">Recycling contribution</span>
+      <h3>Ferrous metal is 38.1% of everything recycled</h3>
+      <p>It represents just <strong>0.2%</strong> of disposal. Construction and demolition also contributes far more to recycling than disposal.</p>
+    </div>
+    <div class="mismatch-card mismatch-disposal fragment custom box-reveal" data-fragment-index="1">
+      <span class="question-kicker">Disposal contribution</span>
+      <h3>Plastic leads the disposal burden</h3>
+      <p>Plastic is <strong>26.3%</strong> of disposal and only <strong>1.3%</strong> of recycling; paper/cardboard and food also carry substantial burdens.</p>
+    </div>
+    <div class="mismatch-takeaway fragment custom box-reveal" data-fragment-index="2">
+      <span class="mismatch-takeaway-title">Key takeaway</span>
+      <p>Most major streams sit far from the equal-shares line. The streams strengthening the recycling total are not those creating most of the disposal burden.</p>
+    </div>
+```
+:::
+:::
+
+<p class="mismatch-method-note">All 14 published waste streams are included. Distance from the equality line shows the continuous contribution gap; colour reinforces its direction and magnitude. Light deterministic jitter separates edge points, while ggrepel positions labels. No classification threshold is applied.</p>
+
+```{=html}
+<p class="source-note">Source: <a href="https://data.gov.sg/datasets/d_daf568968ab40dc81e7b08887a83c8fa/view">MSE and NEA, <em>Waste Management And Overall Recycling Rates, Annual</em></a>, via SingStat/Data.gov.sg, 2024.</p>
+```
+
+::: {.notes}
+P1 compares each stream's share of national recycling with its share of national disposal in 2024.
+
+The dashed diagonal represents equal contribution. A point above the line contributes more to recycling than disposal, while a point below the line contributes more to disposal than recycling.
+
+Ferrous metal is strongly recycling-heavy. It contributes 38.1% of recycled waste, but only 0.2% of disposed waste.
+
+Plastic shows almost the opposite pattern. It contributes 26.3% of disposal, but only 1.3% of recycling.
+
+Together, plastic, paper and cardboard, and food account for 71.8% of all disposed waste in 2024.
+
+This shows that the streams strengthening Singapore's recycling total are not the same streams creating most of the disposal burden. That is the main idea behind our title, Two Worlds of Waste.
+:::
+
+## P2: Weak recycling persists, but volume sets priority {#rate-gap-slide}
+
+::: {.slide-subtitle}
+Rate gaps reveal persistence across eleven years; generated volume determines which gaps become priorities.
+:::
+
+::: {.rate-gap-layout}
+::: {.rate-gap-chart-column}
+::: {.chart-frame .chart-frame-rate-gap .chart-r-output}
+```{r}
+#| label: presentation-rate-gap-heatmap
+#| echo: false
+#| results: asis
+cat(p2_native_heatmap_html)
+```
+:::
+:::
+
+```{=html}
+<div class="rate-gap-commentary">
+  <div class="rate-gap-card rate-gap-persistence fragment custom box-reveal" data-fragment-index="0">
+    <span class="question-kicker">Persistent rate gap</span>
+    <h3>The three high-volume priorities stay below the reference</h3>
+    <p>Plastic, paper/cardboard and food remain below the reference in all eleven years.</p>
+  </div>
+  <div class="rate-gap-card rate-gap-volume fragment custom box-reveal" data-fragment-index="1">
+    <span class="question-kicker">Why volume still matters</span>
+    <h3>Rate does not stand in for scale</h3>
+    <p>Across 13 streams in 2024, volume and rate have almost no rank association: <strong>Spearman’s ρ = 0.017.</strong></p>
+  </div>
+  <div class="rate-gap-takeaway fragment custom box-reveal" data-fragment-index="2">
+    <span>Key takeaway</span>
+    <p>Combining recycling rate with generated volume isolates the action area: plastic, paper/cardboard and food.</p>
+  </div>
+</div>
+```
+:::
+
+<p class="rate-gap-method-note">Cell labels show signed percentage-point gaps. Published integer rates are shown for the 13 streams with complete 2014–2024 observations. Grey 2018 cells fall below the displayed −55 pp scale and are not missing. “Others” is excluded because no rate is published for 2022–2024. The national rate is a reference, not a universal material target.</p>
+<p class="source-note">Source: <a href="https://data.gov.sg/datasets/d_daf568968ab40dc81e7b08887a83c8fa/view">MSE and NEA, <em>Waste Management And Overall Recycling Rates, Annual</em></a>, via SingStat/Data.gov.sg, 2014–2024.</p>
+
+::: {.notes}
+P2 asks whether weak recycling in the priority streams is temporary or persistent.
+
+This heatmap shows each stream's recycling-rate gap from the annual national reference for the 13 streams with complete published rates from 2014 to 2024.
+
+Plastic, paper and cardboard, and food remain below the national reference in all eleven years. This shows that their weaker recycling performance is persistent rather than a one-year fluctuation.
+
+However, low recycling alone does not define priority. In the 2024 cross-section, generated volume and recycling rate show almost no rank association, with a Spearman's rho of 0.017. This means larger waste streams do not automatically recycle better or worse.
+
+The heatmap shows persistence, while the priority map adds generated volume and disposal burden. Together, they identify the streams where weak recycling occurs at a nationally important scale.
+:::
+
+## P3: Stream-level change (1) {#stream-decline-slide}
+
+::: {.slide-subtitle}
+The decade combines changes in material volumes with changes in stream-level recycling.
+:::
+
+```{=html}
+<div class="stream-decline-layout">
+  <div class="stream-decline-anchor">
+    <p class="stream-decline-commentary">The national decline was concentrated in a few large waste streams rather than shared evenly across all streams.</p>
+    <div class="stream-decline-summary">
+      <div class="stream-decline-rate" aria-label="National recycling rate declined from 60 per cent in 2014 to 50 per cent in 2024">
+        <span class="decade-start">60%</span>
+        <span class="decade-arrow" aria-hidden="true">→</span>
+        <span class="decade-end">50%</span>
+      </div>
+      <span class="decade-label">national recycling rate<br>2014 to 2024</span>
+    </div>
+  </div>
+
+  <div class="stream-decline-rows">
+    <div class="stream-decline-row decline-industrial fragment custom box-reveal" data-fragment-index="0">
+      <span class="question-kicker">Industrial contraction</span>
+      <div class="stream-decline-metric metric-single">
+        <strong class="metric-value">81%</strong>
+        <span class="metric-label">of the national decline in recycled tonnes</span>
+      </div>
+      <h3>Three highly recycled streams explain most of the loss.</h3>
+      <p>Construction and demolition fell by <strong>554 kt</strong>, used slag by <strong>251 kt</strong> and ferrous metal by <strong>121 kt</strong>.</p>
+    </div>
+
+    <div class="stream-decline-row decline-consumer fragment custom box-reveal" data-fragment-index="1">
+      <span class="question-kicker">Everyday materials</span>
+      <div class="stream-decline-metric metric-pair">
+        <span class="metric-item">
+          <strong class="metric-value">+37 kt</strong>
+          <span class="metric-label">Food</span>
+        </span>
+        <span class="metric-item">
+          <strong class="metric-value">−244 kt</strong>
+          <span class="metric-label">Paper/cardboard</span>
+        </span>
+      </div>
+      <h3>Everyday materials moved in different directions.</h3>
+      <p>Food recycling increased while paper/cardboard recycling fell, showing that the decade was not uniformly worse.</p>
+    </div>
+
+    <div class="stream-decline-row decline-implication fragment custom box-reveal" data-fragment-index="2">
+      <span class="question-kicker">Interpretation</span>
+      <div class="stream-decline-metric metric-words">
+        <strong>Mix</strong>
+        <span aria-hidden="true">+</span>
+        <strong>Performance</strong>
+      </div>
+      <h3>The headline combines two different mechanisms.</h3>
+      <p>A changed waste mix reduced industrial streams’ contribution, while weaker recycling within some streams added further pressure.</p>
+    </div>
+  </div>
+</div>
+
+<div class="callout callout-note callout-titled decade-transition fragment custom box-reveal" data-fragment-index="3" role="note" aria-label="Different denominator">
+  <div class="callout-title">Different denominator</div>
+  <div class="callout-body">
+    <div class="callout-content">
+      <p><strong>81%</strong> explains the decline in recycled tonnes. The next slide decomposes the recycling-rate change into mix and performance effects.</p>
+    </div>
+  </div>
+</div>
+<p class="source-note">Source: <a href="https://data.gov.sg/datasets/d_daf568968ab40dc81e7b08887a83c8fa/view">MSE and NEA, <em>Waste Management And Overall Recycling Rates, Annual</em></a>, via SingStat/Data.gov.sg, 2014 and 2024. Changes calculated from published stream tonnage.</p>
+```
+
+::: {.notes}
+Before we break down why the national recycling rate fell, it helps to first look at what happened to recycled tonnage.
+
+From 2014 to 2024, around 81% of the decline in recycled tonnage came from just three highly recycled industrial streams. Construction and demolition waste fell by 554 kilotonnes, used slag fell by 251 kilotonnes, and ferrous metal fell by 121 kilotonnes.
+
+These materials already have very high recycling rates. So when less of them was generated, there was naturally less of them available to be recycled.
+
+However, the everyday-material streams did not all follow the same pattern. Food recycling actually increased by 37 kilotonnes, while paper and cardboard recycling fell by 244 kilotonnes.
+
+This gives us an important clue. The fall in recycled tonnage was not caused by every waste stream performing worse. Part of it came from Singapore simply generating less of the industrial waste that is usually recycled at very high rates.
+
+But tonnage alone still cannot tell us how much of the decline came from a change in the waste mix, and how much came from weaker recycling performance.
+
+Also, the 81% here refers only to the decline in recycled tonnage. The next slide looks at the decline in the national recycling rate itself.
+:::
+
+## P3: Shift-share decomposition (2) {#decomposition-slide}
+
+::: {.slide-subtitle}
+Shift-share separates changes in what Singapore generated from changes in how well each stream was recycled; white circles mark net stream effects.
+:::
+
+::: {.chart-commentary-layout .decomposition-layout}
+::: {.decomposition-chart-column}
+::: {.chart-frame .chart-frame-decomposition .chart-r-output}
+```{r}
+#| label: presentation-shift-share-chart
+#| echo: false
+#| fig-width: 12.2
+#| fig-height: 6
+#| fig-retina: 2
+#| fig-format: svg
+#| out-width: 100%
+shift_share_chart
+```
+:::
+<p class="decomposition-method-note">Symmetric shift-share allocates the interaction equally. The components total −9.5 pp; the remaining 0.5 pp to the published ten-point change reflects source rounding. A separate counterfactual robustness check is provided in the appendix.</p>
+```{=html}
+<div class="callout callout-note callout-titled decomposition-takeaway fragment custom box-reveal" data-fragment-index="3" role="note" aria-label="Key takeaway">
+  <div class="callout-title">Key takeaway</div>
+  <div class="callout-body">
+    <div class="callout-content">
+      <p>Composition explains <strong>68%</strong> of the reconstructed rate decline; this is distinct from the prior 81% result about lost recycled tonnage.</p>
+    </div>
+  </div>
+</div>
+```
+:::
+
+::: {.chart-commentary .decomposition-commentary}
+```{=html}
+    <div class="decomposition-result decomposition-mix fragment custom box-reveal" data-fragment-index="0">
+      <span class="question-kicker">Mix effect</span>
+      <div class="decomposition-result-line">
+        <strong>−6.5 pp</strong>
+        <span>68% of reconstructed decline</span>
+      </div>
+      <p>Changes in the relative volumes of waste streams produced most of the fall.</p>
+    </div>
+    <div class="decomposition-result decomposition-rate fragment custom box-reveal" data-fragment-index="1">
+      <span class="question-kicker">Performance effect</span>
+      <div class="decomposition-result-line">
+        <strong>−3.0 pp</strong>
+        <span>32% of reconstructed decline</span>
+      </div>
+      <p>Changes in recycling performance within streams still reduced the national result.</p>
+    </div>
+    <div class="decomposition-contributors fragment custom box-reveal" data-fragment-index="2">
+      <span class="question-kicker">Main contributors</span>
+      <h3>Industrial streams drove composition; paper/cardboard drove performance.</h3>
+      <p>Construction and demolition and used slag dominate the mix effect. Paper/cardboard contributes the largest negative performance effect.</p>
+    </div>
+```
+:::
+:::
+
+```{=html}
+<p class="source-note decomposition-source">Source: <a href="https://data.gov.sg/datasets/d_daf568968ab40dc81e7b08887a83c8fa/view">MSE and NEA, <em>Waste Management And Overall Recycling Rates, Annual</em></a>, via SingStat/Data.gov.sg, 2014 and 2024.</p>
+```
+
+::: {.notes}
+To separate these two reasons, we use a method called shift-share decomposition. In simple terms, it breaks the decline into two parts.
+
+The first is the mix effect. This looks at how the national rate changed because Singapore generated different proportions of each waste stream. The second is the performance effect. This looks at how the national rate changed because individual streams recycled better or worse.
+
+Our results show a negative 6.5 percentage-point mix effect and a negative 3.0 percentage-point performance effect. This means around 68% of the reconstructed decline came from the changing waste mix, while the remaining 32% came from actual changes in recycling performance.
+
+Construction and demolition waste and used slag were the main drivers of the mix effect because their share of total waste became smaller. For the performance effect, paper and cardboard had the largest negative contribution. Its recycling rate fell from 52% in 2014 to 32% in 2024.
+
+The two effects add up to around negative 9.5 percentage points, instead of the full published ten-point drop. This small difference is because the source values are rounded.
+
+So the main takeaway is that Singapore's falling recycling rate does not mean every waste stream suddenly became much worse at recycling. Most of the decline came from generating less highly recyclable industrial waste, although there was still a real performance decline in some streams, especially paper and cardboard.
+:::
+
+## Conclusion {#conclusion-slide}
+
+```{=html}
+<div class="conclusion-thesis">
+  <p>The decline was largely compositional, while the 2024 disposal burden was concentrated in three waste streams.</p>
+</div>
+
+<div class="conclusion-column-grid">
+  <div class="conclusion-column fragment custom box-reveal" data-fragment-index="0">
+    <div class="conclusion-metric conclusion-metric-headline">
+      <span class="conclusion-kicker">Headline</span>
+      <strong class="conclusion-number">50%</strong>
+      <h4>2024 national recycling rate</h4>
+      <p>Tracks the national outcome.</p>
+    </div>
+    <div class="conclusion-context">
+      <span class="conclusion-kicker">Decade context</span>
+      <p><strong>Singapore generated and recycled less waste in 2024 than in 2014.</strong> The major turning points reflect the 2020 Circuit Breaker, the 2022 recovery, fewer demolition projects and lower steel-smelting activity.</p>
+    </div>
+  </div>
+  <div class="conclusion-column fragment custom box-reveal" data-fragment-index="1">
+    <div class="conclusion-metric conclusion-metric-cause">
+      <span class="conclusion-kicker">Cause</span>
+      <strong class="conclusion-number">68%</strong>
+      <h4>of the reconstructed decline came from a changed waste mix</h4>
+      <p>Explains why the rate fell.</p>
+    </div>
+    <div class="conclusion-context conclusion-performance-context">
+      <span class="conclusion-kicker">Performance context</span>
+      <p>Stream-level performance explains the remaining <strong>32%</strong> of the reconstructed decline. Paper/cardboard made the largest negative performance contribution.</p>
+    </div>
+  </div>
+  <div class="conclusion-column fragment custom box-reveal" data-fragment-index="2">
+    <div class="conclusion-metric conclusion-metric-priority">
+      <span class="conclusion-kicker">Priority</span>
+      <strong class="conclusion-number">71.8%</strong>
+      <h4>of 2024 disposal came from</h4>
+      <h5>Plastic · Paper/Cardboard · Food</h5>
+      <p>Shows where the burden sits.</p>
+    </div>
+    <div class="conclusion-context">
+      <span class="conclusion-kicker">Two material worlds</span>
+      <p><strong>Construction, slag and metals</strong> dominate recycled tonnage. Plastic, paper/cardboard and food combine large volumes with persistently low recycling rates and dominate disposal.</p>
+    </div>
+  </div>
+</div>
+
+<p class="conclusion-takeaway fragment custom box-reveal" data-fragment-index="3">The national rate tells us what happened. Generated tonnes, recycling rates and disposed tonnes reveal where the burden sits.</p>
+<p class="conclusion-limit">These data identify priority streams but do not establish their behavioural, collection or market causes.</p>
+<p class="source-note conclusion-source">Sources: <a href="https://data.gov.sg/datasets/d_daf568968ab40dc81e7b08887a83c8fa/view">MSE and NEA annual waste-management data via SingStat/Data.gov.sg</a>, 2014 and 2024; NEA media releases on the 2020–2024 turning points.</p>
+```
+
+::: {.notes}
+To conclude, there are three main numbers to remember.
+
+First, 50% is Singapore's national recycling rate in 2024.
+
+Second, 68% explains why the reconstructed rate declined. Most of the fall came from a change in the waste mix, rather than every stream suddenly recycling worse.
+
+Third, 71.8% shows where the current disposal burden is concentrated: in plastic, paper and cardboard, and food.
+
+Together, these findings reveal what we mean by two worlds of waste. Construction waste, slag and metals contribute most of the recycled tonnage, while plastic, paper and cardboard, and food contribute most of the disposed waste.
+
+So, the national recycling rate tells us what happened, but the stream-level generated, recycled and disposed tonnes help explain why it happened and where attention is most needed.
+
+At the same time, our analysis only identifies the priority streams. It does not prove the behavioural, collection, market or policy reasons behind their outcomes. Those causes would require further investigation.
+
+Thank you. We are happy to take questions.
+:::
+
+## Q&A {#qa-slide .plain-closing}
+
+::: {.notes}
+Prepared answers:
+
+- Two decomposition methods differ because the sequential counterfactual is order-dependent, while the symmetric method allocates the interaction evenly. Both reconstruct minus 9.5 points.
+- “Others” is not imputed because the source publishes no rate from 2022. It stays in reconciliation and does not change the priority ranking.
+- Disposed waste is encoded directly because it is the operational burden and because inferring it would repeat the original chart’s weakness.
+- The median volume threshold is transparent, distribution-free and recomputed per year, but the high-volume, low-recycling area is not an official benchmark.
+- Composition is not a circular explanation. The counterfactual quantifies it: applying 2024 rates to the 2014 mix still gives 56.9%, so a genuine 2.6-point sequential performance loss remains.
+- The 2020 disruption does not determine the decomposition because the comparison uses the 2014 and 2024 endpoints. It remains visible in the interactive decade view.
+- A single bubble chart was preferred to small multiples because the argument requires generated scale, recycling performance and disposal burden to be read together.
+- The analysis is descriptive. Annual national totals cannot identify contamination, collection channel or policy causality.
+- The 81% and 68% figures use different denominators. The first explains lost recycled tonnes; the second decomposes the recycling-rate change.
+- A lower national rate is not automatically a worse overall outcome. Total generation fell 11%, while the changing mix of highly recycled industrial streams pulled the rate down.
+- The priority set is robust to the high-volume, low-recycling boundary: a direct ranking by disposed tonnage identifies the same three streams.
+:::
+
+## References {.plain-closing data-visibility="uncounted"}
+
+::: {.slide-subtitle}
+Sources used throughout the proposal, analysis and final presentation.
+:::
+
+```{=html}
+<div class="references-columns">
+  <div class="reference-column">
+    <p class="reference-item"><strong>[1]</strong> E. Liam, “Singapore generated less waste and recycled less in 2024,” <em>Channel NewsAsia</em>, 23 July 2025. [Online]. Available: <a href="https://www.channelnewsasia.com/singapore/waste-recycling-rates-domestic-statistics-nea-2024-5253106">channelnewsasia.com</a></p>
+    <p class="reference-item"><strong>[2]</strong> Ministry of Sustainability and the Environment and National Environment Agency, “Waste Management And Overall Recycling Rates, Annual,” <em>Data.gov.sg</em>, 2025. Dataset ID: d_daf568968ab40dc81e7b08887a83c8fa. Accessed: 17 June 2026. [Online]. Available: <a href="https://data.gov.sg/datasets/d_daf568968ab40dc81e7b08887a83c8fa/view">data.gov.sg</a></p>
+    <p class="reference-item"><strong>[3]</strong> National Environment Agency, “Waste Statistics and Overall Recycling,” 2025. [Online]. Available: <a href="https://www.nea.gov.sg/our-services/waste-management/waste-statistics-and-overall-recycling">nea.gov.sg</a></p>
+    <p class="reference-item"><strong>[4]</strong> National Environment Agency, “Waste Generation Rate Continues To Trend Downwards In 2024,” media release, 23 July 2025. [Online]. Available: <a href="https://www.nea.gov.sg/media/news/news/index/waste-generation-rate-continues-to-trend-downwards-in-2024">nea.gov.sg</a></p>
+    <p class="reference-item"><strong>[5]</strong> National Environment Agency, “Reduction In Overall Waste Generation In 2020, With Less Waste Sent To Semakau Landfill,” media release, 23 April 2021. [Online]. Available: <a href="https://www.nea.gov.sg/media/news/news/index/reduction-in-overall-waste-generation-in-2020-with-less-waste-sent-to-semakau-landfill">nea.gov.sg</a></p>
+    <p class="reference-item"><strong>[6]</strong> National Environment Agency, “Waste Generation And Recycling Rates Increased In 2022 As Economic Activity Picked Up,” media release, 3 May 2023. [Online]. Available: <a href="https://www.nea.gov.sg/media/news/news/index/waste-generation-and-recycling-rates-increased-in-2022-as-economic-activity-picked-up">nea.gov.sg</a></p>
+    <p class="reference-item"><strong>[7]</strong> National Environment Agency, “Singapore Sees A Decade Of Progress In Waste Reduction, But More Can Be Done For Recycling,” media release, 19 June 2024. [Online]. Available: <a href="https://www.nea.gov.sg/media/news/news/index/singapore-sees-a-decade-of-progress-in-waste-reduction-but-more-can-be-done-for-recycling">nea.gov.sg</a></p>
+  </div>
+  <div class="reference-column">
+    <p class="reference-item"><strong>[8]</strong> E. Segel and J. Heer, “Narrative Visualization: Telling Stories with Data,” <em>IEEE Transactions on Visualization and Computer Graphics</em>, vol. 16, no. 6, pp. 1139–1148, 2010, doi: <a href="https://doi.org/10.1109/TVCG.2010.179">10.1109/TVCG.2010.179</a>.</p>
+    <p class="reference-item"><strong>[9]</strong> C. Sievert, <em>Interactive Web-Based Data Visualization with R, Plotly, and Shiny</em>. Boca Raton, FL, USA: Chapman and Hall/CRC, 2020, doi: <a href="https://doi.org/10.1201/9780429447273">10.1201/9780429447273</a>.</p>
+    <p class="reference-item"><strong>[10]</strong> World Wide Web Consortium, “Web Content Accessibility Guidelines (WCAG) 2.2,” W3C Recommendation, 2024. [Online]. Available: <a href="https://www.w3.org/TR/WCAG22/">w3.org/TR/WCAG22</a></p>
+    <p class="reference-item"><strong>[11]</strong> M. Okabe and K. Ito, “Color Universal Design,” 2008. [Online]. Available: <a href="https://jfly.uni-koeln.de/color/">jfly.uni-koeln.de/color</a></p>
+    <p class="reference-item"><strong>[12]</strong> B. Wong, “Points of View: Color Blindness,” <em>Nature Methods</em>, vol. 8, no. 6, p. 441, 2011, doi: <a href="https://doi.org/10.1038/nmeth.1618">10.1038/nmeth.1618</a>.</p>
+    <p class="reference-item"><strong>[13]</strong> <em>The Straits Times</em>, "Science Talk: Looking at the other half of Singapore's waste story beyond the recycling rate." [Online]. Available: <a href="https://www.straitstimes.com/singapore/environment/science-talk-looking-at-the-other-half-of-singapores-waste-story-beyond-the-recycling-rate">straitstimes.com</a></p>
+    <p class="reference-item"><strong>[14]</strong> Government of Singapore, “Singapore Open Data Licence 1.0.” [Online]. Available: <a href="https://data.gov.sg/open-data-licence">data.gov.sg/open-data-licence</a></p>
+  </div>
+</div>
+```
+
+## Appendix: Six questions we would answer differently now {#appendix-reflection-slide .plain-closing data-visibility="uncounted"}
+
+::: {.slide-subtitle}
+Looking back, these were the moments that changed how we understood the project.
+:::
+
+```{=html}
+<div class="reflection-grid">
+  <article class="reflection-item reflection-teal">
+    <h3><span>01:</span> Why did we look beyond the headline?</h3>
+    <h4>Timothy Chia</h4>
+    <p>When I first saw CNA’s chart, the story seemed straightforward: Singapore generated less waste, but the recycling rate also fell from 60% in 2014 to 50% in 2024. I initially thought our job was just to make that decline easier to see.</p>
+    <p>Once we started asking why it happened, however, I realised the national totals could not tell us which materials created the disposal burden, which streams contributed most to recycled tonnage, or whether every stream had actually become worse. That changed the direction of our work. We kept the headline because it gives useful context, but treated it as the question we needed to investigate rather than the answer we had to repeat.</p>
+  </article>
+  <article class="reflection-item reflection-orange">
+    <h3><span>02:</span> What actually took the most work?</h3>
+    <h4>Dalton Chng</h4>
+    <p>I expected most of our time to go into plotting, but the hardest part came before the first chart. The source looked like a normal 60 × 26 table, yet generated, recycled, disposed and recycling-rate values were stored in four repeated blocks. A row could not be interpreted safely until we identified which metric block it belonged to. We tagged those blocks, reshaped them into 350 stream-year records and checked that the totals still matched the published figures.</p>
+    <p>Only then could we derive disposal, rate gaps, contribution shares and stream groups from one consistent structure. It was less visible than the final charts, but this work stopped us from copying values by hand and made every later revision much safer.</p>
+  </article>
+  <article class="reflection-item reflection-teal">
+    <h3><span>03:</span> How did the proposal help us?</h3>
+    <h4>Pham Anh Bao Khang</h4>
+    <p>For me, the proposal was most useful because it forced us to state what we wanted to test before we became attached to a particular chart. It gave us the three analysis questions, the stream-year structure, the priority-map idea and an early validation plan.</p>
+    <p>Still, our final work did not follow it word for word. While analysing the data, we added the rate-gap heatmap, rank check, shift-share decomposition and counterfactual because each one answered a new doubt that the proposal had not fully resolved. We also learnt that an interactive chart should add exploration, not carry the whole argument. The proposal therefore became a plan we could question and improve, rather than a conclusion that our results were expected to defend.</p>
+  </article>
+  <article class="reflection-item reflection-orange">
+    <h3><span>04:</span> What result surprised us most?</h3>
+    <h4>Sitt Min Naing</h4>
+    <p>I was surprised that a lower national recycling rate did not mean every waste stream had become worse. Plastic, paper/cardboard and food were still the clearest 2024 priorities because they combined high generated volume with weak recycling and together formed most of the disposal burden.</p>
+    <p>However, the decade decline had another explanation: highly recycled industrial streams made up a smaller share of total waste in 2024. In our symmetric decomposition, this changing mix accounted for 6.5 points of the reconstructed 9.5-point fall. Recycling performance still mattered, especially for paper/cardboard, but it was not the whole story. This result made us separate two claims that we had originally treated as one: where action is needed now, and why the national rate changed.</p>
+  </article>
+  <article class="reflection-item reflection-teal">
+    <h3><span>05:</span> What did we have to correct?</h3>
+    <h4>Ang Ben Rong</h4>
+    <p>One useful part of the project was realising that some proposal wording went beyond what the dataset could support. We had contrasted industrial recycling with “consumer-facing” waste because it sounded intuitive. The source, however, identifies material streams, not whether waste came from households, businesses or industrial activity.</p>
+    <p>We changed the label to “everyday materials”, made all four groups explicitly analyst-defined and explained that they were for navigation rather than official NEA classifications. We also avoided claiming that behaviour, contamination, collection or processing capacity caused the patterns because those variables were unavailable. The wording became less dramatic, but it made our interpretation more responsible and easier to defend.</p>
+  </article>
+  <article class="reflection-item reflection-orange">
+    <h3><span>06:</span> What would we improve next?</h3>
+    <h4>Timothy · Dalton · Khang · Sitt · Ben</h4>
+    <p>As a team, we would keep validation inside the analysis rather than treating it as a final checklist. Our deck now stops if the source shape changes, the arithmetic fails, national totals no longer reconcile or a headline result moves unexpectedly. We also left the unpublished “Others” rates missing instead of filling them, because a complete-looking series was not worth inventing unsupported values.</p>
+    <p>If we continued the project, we would user-test whether people understand the bubble size, national reference line, highlighted priority area and year control without explanation. We would also look for origin-sector, contamination, collection and processing data. Those additions would help us move beyond describing what changed and towards explaining why it changed and which interventions might realistically work.</p>
+  </article>
+</div>
+```
+
+::: {.notes}
+The original CNA visualisation was useful and accurate for the national trend, but it answered a narrower question. Our redesign moved from aggregate description to stream-level diagnosis by restructuring the same official NEA and MSE source.
+
+The proposal remained active throughout the project. It established the weaknesses to address, the stream-year data model, three analytical questions, the interactive priority map and the validation plan. The final build retained those foundations while adding the persistent rate-gap heatmap, Spearman rank check, stream-level change analysis, symmetric shift-share decomposition and counterfactual test.
+
+The data-engineering work converted a 60-row by 26-column source with four repeated metric blocks into 350 stream-year observations covering 14 streams and 25 years. Derived fields included generated, recycled and disposed kilotonnes, recycling-rate gaps, contribution shares and analyst-defined categories. Automated checks covered dimensions, metric blocks, record counts, ranges, arithmetic, national reconciliation, published references, expected missingness and headline conclusions.
+
+The most important responsible decision was not estimating the unpublished recycling rates for "Others" from 2022 to 2024. "Others" remains in national tonnage reconciliation and is excluded only where a published stream rate is required.
+
+The priority map was chosen because generated volume, recycling rate and disposed tonnage answer different questions. Reading them together identifies action priorities more responsibly than ranking by only one measure. The supporting analyses showed that plastic, paper/cardboard and food remain central to the disposal burden, while the national recycling-rate decline mainly reflects the smaller share of highly recycled industrial streams. Performance still mattered, particularly for paper/cardboard.
+
+We corrected the proposal's earlier industrial-versus-consumer framing because the source records material streams, not household, commercial or industrial origin. The final presentation therefore uses analyst-defined groupings and does not claim causes involving behaviour, contamination, collection, processing capacity or commodity markets.
+
+With more time, we would test whether viewers understand bubble size, the national reference, the highlighted action region and the year control. We would also seek origin-sector and operational datasets to move from descriptive diagnosis towards stronger causal explanation and policy recommendations.
+:::
+
+## Appendix: Additional critique and design decisions {#appendix-critique-slide .plain-closing data-visibility="uncounted"}
+
+::: {.slide-subtitle}
+Supporting evidence shows how the redesign addresses visual hierarchy and interpretive context.
+:::
+
+```{=html}
+<div class="appendix-method-grid appendix-critique-grid">
+  <div class="appendix-method">
+    <span class="question-kicker">W4 · Visual hierarchy</span>
+    <h3>Generated waste receives disproportionate emphasis</h3>
+    <p><strong>Evidence:</strong> CNA’s saturated red line dominates the pale recycled-waste bars, even though the article’s headline also foregrounds recycling.</p>
+    <p><strong>Design response:</strong> Generated volume, recycling rate, disposed tonnage and category receive coordinated encodings rather than competing visual weights.</p>
+  </div>
+  <div class="appendix-method">
+    <span class="question-kicker">W5 · Interpretive context</span>
+    <h3>Benchmarks and annotations are absent</h3>
+    <p><strong>Evidence:</strong> Readers receive no national-rate reference, stream labels or visual indication of the high-volume, lower-recycling region.</p>
+    <p><strong>Design response:</strong> The redesign adds a moving national reference, direct labels and a shaded high-volume, low-recycling area while preserving one coordinated plot.</p>
+  </div>
+</div>
+
+<p class="appendix-critique-takeaway">All five weaknesses are addressed without adding another quantitative channel or turning the redesign into a dashboard.</p>
+```
+
+::: {.notes}
+Use this slide if asked for supporting evidence behind W4 and W5. The main critique slide names all five weaknesses; this appendix preserves the fuller evidence and design response.
+:::
+
+## Appendix: Methods and limitations {#appendix-methods-slide .plain-closing data-visibility="uncounted"}
+
+::: {.slide-subtitle}
+The principal assumptions are visible so the analysis can be challenged and reproduced.
+:::
+
+```{=html}
+<div class="appendix-method-grid">
+  <div class="appendix-method">
+    <span class="question-kicker">National arithmetic</span>
+    <h3>Published rates are retained</h3>
+    <p>Exact tonnage-derived rates are used for decomposition; published integer rates are used for headline references. This explains the reconstructed 59.5% versus published 60% in 2014.</p>
+  </div>
+  <div class="appendix-method">
+    <span class="question-kicker">Missing values</span>
+    <h3>No recycling rates are imputed</h3>
+    <p>“Others” is retained when reconciling national tonnage but excluded from rate-based 2022–2024 plotting where the source publishes no rate.</p>
+  </div>
+  <div class="appendix-method">
+    <span class="question-kicker">Decomposition</span>
+    <h3>Primary result is symmetric</h3>
+    <p>The shift-share method averages endpoint weights and rates, allocating the mix-rate interaction equally. The fixed-2014-mix scenario is a separate sequential robustness check.</p>
+  </div>
+  <div class="appendix-method">
+    <span class="question-kicker">Interpretation</span>
+    <h3>Descriptive, not causal</h3>
+    <p>The analysis identifies accounting contributions and priority streams. The median and national-rate boundaries are recalculated each year; the shaded area is not an NEA target or definitive policy ranking, and the analysis does not estimate causal effects.</p>
+  </div>
+</div>
+```
+
+## Appendix: Symmetric shift-share equations {#appendix-shift-share-equations-slide .plain-closing data-visibility="uncounted"}
+
+::: {.slide-subtitle}
+Midpoint weights separate composition and performance while reconstructing the tonnage-derived endpoint change exactly.
+:::
+
+```{=html}
+<div class="shift-equation-layout">
+  <div class="shift-equation-rate">
+    <span class="question-kicker">Tonnage-reconstructed national rate</span>
+    <div class="shift-equation-math">\(R_t^{*} = \sum_i w_{i,t}r_{i,t}\)</div>
+    <div class="shift-equation-definitions">
+      <p><strong>\(w_{i,t}\)</strong> is stream \(i\)'s share of generated waste in year \(t\).</p>
+      <p><strong>\(r_{i,t}\)</strong> is its exact recycling rate, calculated from recycled and generated tonnage.</p>
+    </div>
+  </div>
+
+  <div class="shift-equation-grid">
+    <div class="shift-equation-panel shift-equation-mix">
+      <span class="question-kicker">Mix effect</span>
+      <div class="shift-equation-math">\(M_i = (w_{i,2024}-w_{i,2014})\left(\frac{r_{i,2014}+r_{i,2024}}{2}\right)\times100\)</div>
+      <p>Changes in each stream's share of total generated waste, evaluated at its average recycling rate.</p>
+    </div>
+    <div class="shift-equation-panel shift-equation-performance">
+      <span class="question-kicker">Performance effect</span>
+      <div class="shift-equation-math">\(P_i = (r_{i,2024}-r_{i,2014})\left(\frac{w_{i,2014}+w_{i,2024}}{2}\right)\times100\)</div>
+      <p>Changes in each stream's recycling rate, evaluated at its average share of generated waste.</p>
+    </div>
+  </div>
+
+  <div class="shift-equation-reconstruction">
+    <div>
+      <span class="question-kicker">Exact reconstruction</span>
+      <div class="shift-equation-math">\(\sum_i(M_i+P_i)=R_{2024}^{*}-R_{2014}^{*}=50.0\%-59.5\%=-9.5\text{ pp}\)</div>
+    </div>
+    <p><strong>Why midpoint weights?</strong> Averaging both endpoints divides the mix-performance interaction equally, so the split is symmetric and independent of which year is treated first. Multiplication by 100 expresses each contribution in percentage points.</p>
+  </div>
+
+  <p class="shift-equation-note"><strong>Rounding:</strong> the published headline moves from 60% to 50%. The decomposition uses exact tonnage and therefore starts at 59.5%. The appendix counterfactual is a sequential robustness check, so its component split is order-dependent and is not expected to match the symmetric split.</p>
+</div>
+```
+
+::: {.notes}
+Use this slide only if the audience asks how the 68% and 32% contributions were calculated. Emphasise that the two equations reconstruct the exact tonnage-derived change and that midpoint averaging prevents the answer from depending on which endpoint is applied first.
+
+The published national rate is rounded to a whole percentage. The 2014 reconstructed rate is 59.5%, which rounds to the published 60%; the 2024 reconstructed rate is 50.0%.
+:::
+
+## Appendix: Analyst-defined stream grouping {#appendix-category-map-slide .plain-closing data-visibility="uncounted"}
+
+::: {.slide-subtitle}
+NEA publishes the 14 material streams; our four colour groups provide visual navigation and do not alter any calculation.
+:::
+
+```{=html}
+<div class="appendix-method-grid category-mapping-grid">
+  <div class="appendix-method category-mapping-card mapping-everyday">
+    <span class="question-kicker">Everyday materials</span>
+    <h3>Five commonly encountered material streams</h3>
+    <p>Paper/Cardboard, Glass, Food, Textile/Leather and Plastic</p>
+  </div>
+  <div class="appendix-method category-mapping-card mapping-industrial">
+    <span class="question-kicker">Industrial/construction</span>
+    <h3>Five metal, construction and production streams</h3>
+    <p>Construction &amp; Demolition, Ferrous Metal, Non-Ferrous Metal, Used Slag and Scrap Tyres</p>
+  </div>
+  <div class="appendix-method category-mapping-card mapping-organic">
+    <span class="question-kicker">Organic/landscape</span>
+    <h3>Two plant and timber streams</h3>
+    <p>Horticultural and Wood</p>
+  </div>
+  <div class="appendix-method category-mapping-card mapping-process">
+    <span class="question-kicker">Process/other</span>
+    <h3>Two residual or combined streams</h3>
+    <p>Ash And Sludge and Others</p>
+  </div>
+</div>
+
+<p class="category-mapping-note"><strong>Interpretation limit:</strong> the source identifies waste material, not whether it originated from households, businesses or industrial activity.</p>
+```
+
+## Appendix: Counterfactual robustness check {#appendix-counterfactual-slide data-visibility="uncounted"}
+
+::: {.slide-subtitle}
+Holding composition at 2014 levels tests whether 2024 stream rates alone can reproduce the 50% headline.
+:::
+
+::: {.chart-commentary-layout .counterfactual-layout}
+::: {.chart-frame .chart-frame-counterfactual .chart-r-output}
+```{r}
+#| label: presentation-counterfactual-chart
+#| echo: false
+#| fig-width: 11.5
+#| fig-height: 5.6
+#| fig-retina: 2
+#| fig-format: svg
+#| out-width: 100%
+counterfactual_chart
+```
+:::
+
+::: {.chart-commentary .counterfactual-commentary}
+```{=html}
+    <div class="counterfactual-values">
+      <div><span>2014 reconstructed</span><strong>59.5%</strong></div>
+      <div><span>2024 rates on 2014 mix</span><strong>56.9%</strong></div>
+      <div><span>2024 reconstructed</span><strong>50.0%</strong></div>
+    </div>
+    <div class="robustness-verdict">
+      <span class="question-kicker">Robustness result</span>
+      <strong>Only 2.6 percentage points disappear when stream rates change but the 2014 mix is held fixed.</strong>
+      <p>The larger gap appears only when the 2024 waste mix is introduced.</p>
+    </div>
+    <p class="counterfactual-takeaway">A second method supports the same conclusion: the national decline is mostly compositional, not a uniform collapse in recycling performance.</p>
+    <p class="method-note"><strong>Method note:</strong> this sequential scenario is order-dependent. The main −6.5/−3.0 pp result uses a symmetric allocation, so the two splits should not be numerically identical. Neither method establishes causality.</p>
+```
+:::
+:::
+
+::: {.notes}
+Use this appendix slide only if the audience asks for a robustness check. Applying 2024 stream rates to the 2014 mix produces 56.9%, well above the actual 50%.
+
+The sequential and symmetric splits differ because the sequential result depends on which change is applied first. Both reconstruct the same endpoint change and support the same qualitative conclusion. Neither identifies causality.
+:::
+
+## Appendix: Raw source structure {.plain-closing data-visibility="uncounted"}
+
+::: {.slide-subtitle}
+The downloaded CSV begins with a national total followed by component streams inside each repeated metric block.
+:::
+
+::: {.df-output}
+```{r}
+#| label: appendix-raw-dataframe-preview
+#| echo: false
+raw_preview_gt
+```
+:::
+
+<p class="df-summary"><strong>60 rows × 26 columns:</strong> four repeated measure blocks spanning 2000–2024.</p>
+
+## Appendix: Analysis-ready schema {.plain-closing data-visibility="uncounted"}
+
+::: {.slide-subtitle}
+Reshaping connects scale, recovery, disposal and stream category in one stream-year record.
+:::
+
+::: {.df-output}
+```{r}
+#| label: appendix-stream-year-dataframe-preview
+#| echo: false
+stream_preview_gt
+```
+:::
+
+<p class="df-summary"><strong>350 stream-year records:</strong> 14 streams × 25 years before rate-based missingness filters.</p>

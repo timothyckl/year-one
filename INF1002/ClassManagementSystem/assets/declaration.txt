@@ -1,0 +1,26 @@
+                                              Declaration
+SIT's policy on copying does not allow the students to copy source code as well as assessment solutions
+from another person AI or other places. It is the students' responsibility to guarantee that their
+assessment solutions are their own work. Meanwhile, the students must also ensure that their work is
+not accessible by others. Where such plagiarism is detected, both of the assessments involved will
+receive ZERO mark.
+
+We hereby declare that:
+- We fully understand and agree to the abovementioned plagiarism policy.
+- We did not copy any code from others or from other places.
+- We did not share our codes with others or upload to any other places for public access and will 
+  not do that in the future.
+- We agree that our project will receive Zero mark if there is any plagiarism detected.
+- We agree that we will not disclose any information or material of the group project to others or
+  upload to any other places for public access.
+- We agree that we did not copy any code directly from AI generated sources
+
+Declared by: P1-8 
+Team members:
+1. Dalton Chng Cheng Hao          (2504003)
+2. Low Gin Lim                    (2501267)
+3. Mohammed Aamir                 (2500933) 
+4. Muhammad Hasif Bin Mohd Faisal (2500619)
+5. Timothy Chia Kai Lun           (2501530)
+
+Date: 25th November, 2025.

@@ -1,0 +1,11 @@
+numpy==2.3.3
+pandas==2.3.2
+pydantic==2.11.9
+pytest==8.4.2
+streamlit==1.49.1
+yfinance==0.2.65
+pandera==0.26.1
+matplotlib==3.9.2
+plotly==6.3.1
+watchdog==6.0.0
+nbformat>=4.2.0

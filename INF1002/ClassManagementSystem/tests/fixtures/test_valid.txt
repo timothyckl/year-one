@@ -1,0 +1,10 @@
+Database Name: Test Database
+Authors: Test Suite
+
+Table Name: StudentRecords
+ID	Name	Programme	Mark
+2500100	Alice	Computer Science	95.50
+2500101	Bob	Software Engineering	82.30
+2500102	Charlie	Data Science	67.80
+2500103	Diana	Computer Science	91.00
+2500104	Eve	Software Engineering	75.50

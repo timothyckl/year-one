@@ -1,0 +1,33 @@
+project:
+  type: website
+
+website:
+  title: "AAI1001 Data Engineering and Data Visualisation" 
+  navbar:
+    title: false
+    left:
+      - href: index.qmd
+        text: AAI1001
+      - text: Lecture Notes
+        menu:
+          - text: "Week 02 – Introduction to R"
+            href: notes/lecture-02.qmd
+          - text: "Week 03 – Tidyverse Single-Table Queries"
+            href: notes/lecture-03.qmd
+          - text: "Week 04 – Tidyverse Join-Table Queries"
+            href: notes/lecture-04.qmd
+          - text: "Week 05 – Time Series Analysis Basics"
+            href: notes/lecture-05.qmd
+      - href: resources.qmd
+        text: Resources
+
+format:
+  html:
+    theme:
+      - united 
+      - brand
+    css: styles.css
+    toc: true
+
+
+

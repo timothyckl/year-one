@@ -1,0 +1,930 @@
+---
+title: "Lecture 05: Time Series Analysis Basics" 
+author: "Timothy Chia"
+date: "Tuesday June 2, 2026"
+format:
+  html:
+    toc: true
+    toc-depth: 4
+    number-sections: true
+    embed-resources: true
+---
+
+```{r}
+#| message: false
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+library(readr)
+library(purrr)
+library(tibble)
+library(lubridate)
+library(stringr)
+library(tidyquant)
+library(readxl)
+
+set_theme <- function() {
+  theme_bw() +
+    theme(
+      panel.background = element_rect(fill = "#fffdf0", colour = NA),
+      panel.grid.major = element_line(colour = "grey70", linetype = "dashed"),
+      panel.grid.minor = element_line(colour = "grey90")
+    )
+}
+```
+
+# What is Time Series?
+
+- A time series is a sequence of observations recorded at regular time intervals.
+- Time series data is used in various fields such as economics, finance, statistics, and signal processing.
+- Time series analysis is related to two major tasks:
+  - __Modelling__ (descriptive): Identifying patterns (e.g., trend, seasonality, cyclicality, etc.).
+  - __Forecasting__ (predictive): Predicting future values based on historical data.
+- Example: Daily and Monthly Adjusted Close Prices of NVIDIA Corp. (NASDAQ: NVDA).
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+#| fig-cap: "Daily and monthly adjusted close prices of NVIDIA Corp. (NASDAQ: NVDA)."
+#| fig-width: 10
+#| fig-height: 4
+
+nvda_daily <- tq_get(
+  "NVDA",
+  from = "2023-01-01",
+  to = Sys.Date(),
+  get = "stock.prices"
+) |>
+  select(date, adjusted) |>
+  mutate(series = "Daily adjusted close price")
+
+nvda_monthly <- nvda_daily |>
+  mutate(date = floor_date(date, "month")) |>
+  group_by(date) |>
+  summarise(adjusted = last(adjusted), .groups = "drop") |>
+  mutate(series = "Monthly adjusted close price")
+
+bind_rows(nvda_daily, nvda_monthly) |>
+  ggplot(aes(x = date, y = adjusted)) +
+  geom_line(colour = "#3366AA", linewidth = 0.8) +
+  facet_wrap(~ series, scales = "free_x", nrow = 1) +
+  labs(
+    x = NULL,
+    y = "Adjusted close price",
+    title = "NVDA Adjusted Close Prices"
+  ) +
+  set_theme()
+```
+
+# More Time Series Examples
+
+- Time Series 1: [Monthly coal consumption for electricity generation in the United States (2022-2024)](https://www.eia.gov/electricity/monthly/)
+- Time Series 2: [Monthly average surface temperature by year, United States (2022-2024)](https://ourworldindata.org/grapher/monthly-average-surface-temperatures-by-year?facet=none&country=~USA)
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+#| fig-cap: "Monthly coal consumption and average surface temperature in the United States, 2022-2024."
+#| fig-width: 10
+#| fig-height: 5
+
+coal_url <- "https://www.eia.gov/electricity/data/state/consumption_monthly.xlsx"
+temp_url <- "https://ourworldindata.org/grapher/monthly-average-surface-temperatures-by-year.csv?country=~USA"
+
+coal_file <- tempfile(fileext = ".xlsx")
+download.file(coal_url, coal_file, mode = "wb", quiet = TRUE)
+
+coal <- map_dfr(
+  paste0(2022:2024, "_Final"),
+  ~ read_excel(coal_file, sheet = .x, skip = 4)
+) |>
+  filter(
+    STATE == "US-Total",
+    `TYPE OF PRODUCER` == "Total Electric Power Industry",
+    `ENERGY SOURCE` == "Coal (Short Tons)"
+  ) |>
+  transmute(
+    date = make_date(YEAR, MONTH, 1),
+    value = CONSUMPTION / 10^7,
+    type = "coal"
+  )
+
+temp <- read_csv(temp_url, show_col_types = FALSE) |>
+  filter(Code == "USA") |>
+  select(month = Year, `2022`, `2023`, `2024`) |>
+  pivot_longer(
+    cols = `2022`:`2024`,
+    names_to = "year",
+    values_to = "temperature"
+  ) |>
+  transmute(
+    date = make_date(as.integer(year), month, 1),
+    value = temperature / 5,
+    type = "temp"
+  )
+
+plot_data <- bind_rows(coal, temp) |>
+  arrange(date) |>
+  mutate(month_label = str_to_lower(format(date, "%b_%Y")))
+
+plot_data |>
+  ggplot(aes(x = month_label, y = value, colour = type, shape = type, group = type)) +
+  geom_line(linewidth = 0.9) +
+  geom_point(size = 2.6) +
+  scale_colour_manual(values = c(coal = "royalblue", temp = "limegreen")) +
+  scale_shape_manual(values = c(coal = 1, temp = 3)) +
+  labs(
+    title = "Coal Consumption (× 10^7 Tons) and Temperature (× 5 Degrees Celsius)",
+    x = "Month",
+    y = "Value",
+    colour = "type",
+    shape = "type"
+  ) +
+  set_theme() +
+  theme(
+    axis.text.x = element_text(angle = 60, hjust = 1),
+    legend.position = "right"
+  )
+```
+
+# Time Series Components
+
+- Trend: A long-term increase or decrease in the data.
+  - Upward, downward, or flat.
+  - Can be linear or nonlinear.
+
+- Seasonality: A pattern that repeats at regular intervals.
+  - Regular intervals (daily, monthly, yearly).
+  - Driven by known factors (climate, behaviour).
+
+- Cyclicality: A pattern that repeats at irregular intervals.
+  - Irregular intervals (months, year)
+  - Caused by macroeconomic or systemic changes. 
+
+- Examples:
+  - S&P 500 and NASDAQ show an upward trend over decades.
+  - Retail sales show seasonality with peaks during holidays. 
+  - Economic recessions and booms occur every several years but are not fixed like seasonality.
+  - There is a hypothesis that the crypto market cycles are driven by Bitcoin halving events. 
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+#| fig-width: 10
+#| fig-height: 4
+#| fig-show: hold
+#| layout-ncol: 2
+
+airline_passengers <- tibble(
+  date = seq.Date(from = as.Date("1949-01-01"), by = "month", length.out = length(AirPassengers)),
+  passengers = as.numeric(AirPassengers)
+)
+
+vehicle_url <- "https://datamall.lta.gov.sg/content/dam/datamall/datasets/Facts_Figures/Vehicle%20Population/Monthly%20Motor%20Vehicle%20Population%20by%20Vehicle%20Type.zip"
+vehicle_zip <- tempfile(fileext = ".zip")
+vehicle_dir <- tempfile()
+
+download.file(vehicle_url, vehicle_zip, mode = "wb", quiet = TRUE)
+unzip(vehicle_zip, exdir = vehicle_dir)
+
+vehicle_file <- list.files(
+  vehicle_dir,
+  pattern = "M06-Vehs_by_Type\\.csv$",
+  recursive = TRUE,
+  full.names = TRUE
+)
+
+vehicle_population <- read_csv(vehicle_file, show_col_types = FALSE) |>
+  mutate(
+    date = as.Date(paste0(month, "-01")),
+    quarter = floor_date(date, "quarter")
+  ) |>
+  group_by(date, quarter) |>
+  summarise(population = sum(number), .groups = "drop") |>
+  group_by(quarter) |>
+  slice_max(date, n = 1, with_ties = FALSE) |>
+  ungroup() |>
+  filter(date >= as.Date("2014-03-01"), date <= as.Date("2024-12-01"))
+
+airline_passengers |>
+  ggplot(aes(x = date, y = passengers)) +
+  geom_line(colour = "royalblue", linewidth = 0.9) +
+  scale_x_date(date_breaks = "1 year", date_labels = "%Y") +
+  labs(
+    title = "Monthly Airline Passengers (1949-1960)",
+    x = "Year",
+    y = "Passengers"
+  ) +
+  set_theme() +
+  theme(
+    plot.title = element_text(size = 12),
+    axis.title = element_text(size = 10)
+  )
+
+vehicle_population |>
+  ggplot(aes(x = date, y = population)) +
+  geom_line(colour = "royalblue", linewidth = 0.9) +
+  scale_x_date(date_breaks = "3 months", date_labels = "%Y-%m") +
+  scale_y_continuous(labels = scales::comma) +
+  labs(
+    title = "Singapore's Quarterly Total Vehicle Population",
+    x = "Month",
+    y = "Population"
+  ) +
+  set_theme() +
+  theme(
+    plot.title = element_text(size = 12),
+    axis.title = element_text(size = 10),
+    axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)
+  )
+```
+
+# The Big Picture
+
+A full-scale journey into time series analysis includes the following topics and more:
+
+- [ ] Background knowledge (Statistics, Probability, Linear Algebra, Calculus, etc.)
+- [ ] Curve Fitting and Smoothing
+- [x] Stationarity and Adjustment (Decomposition, ADF and KPSS Test, Adjustment, etc.)
+- [x] Classical Time Series Models (AR, MA, ARMA, ARIMA, Seasonal ARIMA, ARIMAX, etc.)
+- [ ] Advanced and Multivariate Time Series Models
+- [ ] Machine Learning for Time Series Analysis (Boosting, Random Forest, etc.)
+- [ ] Deep Learning for Time Series Analysis (RNN, LSTM, Transformer, etc.)
+
+In this course, we will only cover the following:
+
+- Stationarity and Adjustment
+  - Definition of Stationarity
+  - Stationarity Test and Adjustment Techniques
+
+- Classical Time Series models
+  - Autoregressive (AR)
+  - Moving Average (MA)
+  - Autoregressive Moving Average (ARMA)
+  - Autoregressive Integrated Moving Average (ARIMA)
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+#| fig-width: 7
+#| fig-height: 9
+
+ap_stl <- stl(AirPassengers, s.window = "periodic")
+
+ap_stl_data <- tibble(
+  date = seq.Date(from = as.Date("1949-01-01"), by = "month", length.out = length(AirPassengers)),
+  value = as.numeric(AirPassengers),
+  trend = as.numeric(ap_stl$time.series[, "trend"]),
+  season_year = as.numeric(ap_stl$time.series[, "seasonal"]),
+  remainder = as.numeric(ap_stl$time.series[, "remainder"])
+) |>
+  pivot_longer(
+    cols = c(value, trend, season_year, remainder),
+    names_to = "component",
+    values_to = "value"
+  ) |>
+  mutate(component = factor(component, levels = c("value", "trend", "season_year", "remainder")))
+
+ap_stl_data |>
+  ggplot(aes(x = date, y = value)) +
+  geom_line(aes(colour = component), linewidth = 0.9, show.legend = FALSE) +
+  facet_wrap(~ component, scales = "free_y", ncol = 1, strip.position = "top") +
+  scale_colour_manual(values = c(
+    value = "black",
+    trend = "royalblue",
+    season_year = "royalblue",
+    remainder = "royalblue"
+  )) +
+  scale_x_date(date_breaks = "1 year", date_labels = "%Y") +
+  labs(
+    title = "STL Decomposition of AirPassengers Data",
+    x = "Year",
+    y = "Value"
+  ) +
+  set_theme() +
+  theme(
+    strip.background = element_rect(fill = "grey85", colour = "grey70"),
+    strip.text = element_text(size = 8),
+    plot.title = element_text(size = 12),
+    axis.text.x = element_text(size = 8)
+  )
+```
+
+# Stationarity
+
+- A time series can be modelled by a stochastic process (or random process) for theoretical analysis.
+- **Stationarity:** A time series is stationary if its statistical properties (mean, variance, etc.) are constant over time.
+  - A seasonal time series is not stationary because the mean and variance change at seasonal intervals. 
+  - A trended time series is not stationary because the mean changes over time.
+  - One classic example of a theoretically stationary time series is the observation of a collection of independent and identically distributed (i.i.d.) random variables over time, which is one of the most important concepts in many fields.
+
+- Some time series can be transformed into stationary time series by removing the non-stationary components. This leads to the concepts of **trend stationary** (stationary if the trend is removed) and **seasonal stationary** (stationary if the seasonality is removed).
+
+- **Importance of Stationarity:**
+  - Many time series models assume stationarity.
+  - Stationarity simplifies the analysis and interpretation of time series data.
+  - Stationarity is a key assumption in many statistical procedures used in time series analysis.
+
+
+::: {.callout-tip}
+A stochastic process can be strict-sense stationary (SSS), wide-sense stationary (WSS), or $n$th-order stationary. For more information, visit [here](https://en.wikipedia.org/wiki/Stationary_process).
+:::
+
+## Stationarity Test 
+
+- Stationarity tests can be modelled as a binary hypothesis test problem, in which a null hypothesis and an alternative hypothesis are defined, and the decision is made based on a test statistic and comparison with a critical value (threshold). 
+
+- **Augmented Dickey-fuller (ADF) Test:** A popular test for stationarity. The null hypothesis is that the time series is stationary. More information can be found [here](https://en.wikipedia.org/wiki/Augmented_Dickey%E2%80%93Fuller_test)
+
+- **Kwiatkowski-Phillips-Schmidt-Shin (KPSS) Test:** Another popular test for stationarity. The null hypothesis is that the time series is stationary. more information can be found [here](https://en.wikipedia.org/wiki/KPSS_test).
+
+- Akthough there are various tests for stationarity, a simple and practical first step to assess it is through visual inspection of the **time series plot**.
+
+<!-- German Power Grid Frequency Deviation (Hz) in 2020-01-01 -->
+
+### Example: i.i.d. Gaussian Process
+
+- i.i.d. Gaussian process (aka Gaussian white noise) is a classic stationary time series used in many fields.
+
+The figure below shows a time series of 1000 i.i.d. Gaussian random variables with mean 0 and standard deviation 1.
+
+```{r}
+#| message: false
+#| warning: false
+#| fig-width: 10
+#| fig-height: 4
+
+# generate a time series of 1000 i.i.d. Gaussian random variables
+set.seed(123)
+iid_gaussian <- tibble(
+  index = 1:1000,
+  value = rnorm(1000, mean = 0, sd = 1)
+)
+
+# plot the time series with ggplot
+iid_gaussian |>
+  ggplot(aes(x = index, y = value)) +
+  geom_line(colour = "royalblue", linewidth = 0.5) +
+  labs(
+    title = "i.i.d. Gaussian Process",
+    x = "Sample Index",
+    y = "Value"
+  ) +
+  set_theme()
+```
+
+The figure below shows the histogram of the generated values.
+
+```{r}
+#| message: false
+#| warning: false
+#| fig-width: 10
+#| fig-height: 4
+# calculate the histogram of the generated time series
+iid_gaussian |> 
+  ggplot(aes(x = value)) + 
+  geom_histogram(binwidth = 0.1, fill = "royalblue", color = "black") +
+  labs(
+    title = "Histogram of i.i.d. Gaussian Process",
+    x = "Value",
+    y = "Frequency"
+  ) +
+  set_theme()
+```
+
+The figure below shows the normalised histogram of the generated values. The red curve is the theoretical standard normal density.
+
+```{r}
+# normalise the historgram counts to density scale
+iid_gaussian |> 
+  ggplot(aes(x = value)) + 
+  geom_histogram(aes(y = after_stat(density)), binwidth = 0.1, fill = "royalblue", color = "black") +
+  labs(
+    title = "Normalized Histogram of i.i.d. Gaussian Process",
+    x = "Value",
+    y = "Density"
+  ) +
+  stat_function(fun = dnorm, args = list(mean = 0, sd = 1), colour = "red", linewidth = 1) +
+  set_theme()
+```
+
+The figure below shows the autocorrelation function (ACF) of the series.
+
+```{r}
+#| message: false
+#| warning: false
+#| fig-width: 10
+#| fig-height: 4
+
+# Plot the autocorrelation function of the series (ACF)
+acf_iid_gaussian <- acf(iid_gaussian$value, lag.max = 30, plot = FALSE)
+acf_iid_gaussian <- tibble(lag = acf_iid_gaussian$lag, acf = acf_iid_gaussian$acf)
+acf_iid_gaussian |>
+  ggplot(aes(x = lag, y = acf)) +
+  geom_segment(aes(xend = lag, yend = 0), color = "royalblue") +
+  geom_point(color = "royalblue", size = 3) +
+  ylim(-0.1, 1.05) +
+  labs(x = "Lag", y = "ACF") + set_theme()
+```
+
+The figure below shows the partial autocorrelation function (PACF) of the series.
+
+```{r}
+#| message: false
+#| warning: false
+#| fig-width: 10
+#| fig-height: 4
+
+# Plot the partial autocorrelation function of the series (PACF)
+pacf_iid_gaussian <- pacf(iid_gaussian$value, lag.max = 30, plot = FALSE)
+pacf_iid_gaussian <- tibble(lag = pacf_iid_gaussian$lag, pacf = pacf_iid_gaussian$acf)
+pacf_iid_gaussian |>
+  ggplot(aes(x = lag, y = pacf)) +
+  geom_segment(aes(xend = lag, yend = 0), color = "royalblue") +
+  geom_point(color = "royalblue", size = 3) +
+  ylim(-0.1, 1.05) +
+  labs(x = "Lag", y = "PACF") + set_theme()
+```
+
+## Stationarity Adjustment 
+
+- Since stationarity is an underlying assumption in many statistical procedures used in time series analysis, non-stationary data are often transformed to become statnary before further analysis.
+- De-trending and de-seasonalizing are two common operations to adjust non-stationary time series data.
+- De-trending techniques:
+  - Differencing: Subtracting the series from its lagged version. 
+  - Fitted Trned Subtraction: Subtracting the fitted trend. 
+  - Moving Average Subtraction: Substracting the moving averages.
+- Example: NVDIA Monthly Prices
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+#| fig-width: 10
+#| fig-height: 7
+
+nvda_monthly_adjusted <- nvda_monthly |>
+  select(date, adjusted) |>
+  mutate(
+    first_difference = adjusted - lag(adjusted),
+    second_difference = first_difference - lag(first_difference)
+  )
+
+monthly_adjusted_plot <- nvda_monthly_adjusted |>
+  ggplot(aes(x = date, y = adjusted)) +
+  geom_line(colour = "royalblue", linewidth = 0.8) +
+  labs(
+    title = "NVDA Monthly Adjusted Close Price",
+    x = NULL,
+    y = "Adjusted close price"
+  ) +
+  set_theme()
+
+first_difference_plot <- nvda_monthly_adjusted |>
+  drop_na(first_difference) |>
+  ggplot(aes(x = date, y = first_difference)) +
+  geom_line(colour = "royalblue", linewidth = 0.8) +
+  geom_hline(yintercept = 0, linetype = "dashed", colour = "grey50") +
+  labs(
+    title = "1st-Order Difference",
+    x = "Month",
+    y = "Difference"
+  ) +
+  set_theme()
+
+second_difference_plot <- nvda_monthly_adjusted |>
+  drop_na(second_difference) |>
+  ggplot(aes(x = date, y = second_difference)) +
+  geom_line(colour = "royalblue", linewidth = 0.8) +
+  geom_hline(yintercept = 0, linetype = "dashed", colour = "grey50") +
+  labs(
+    title = "2nd-Order Difference",
+    x = "Month",
+    y = "Difference"
+  ) +
+  set_theme()
+
+grid::grid.newpage()
+plot_layout <- grid::grid.layout(nrow = 2, ncol = 2)
+grid::pushViewport(grid::viewport(layout = plot_layout))
+
+print(monthly_adjusted_plot, vp = grid::viewport(layout.pos.row = 1, layout.pos.col = 1:2))
+print(first_difference_plot, vp = grid::viewport(layout.pos.row = 2, layout.pos.col = 1))
+print(second_difference_plot, vp = grid::viewport(layout.pos.row = 2, layout.pos.col = 2))
+```
+
+
+### Example: Random Walk
+
+A random walk is defined as:
+$$x_t = x_{t-1} + w_t,$$
+where $w_t \sim \text{i.i.d. } \mathcal{N}(0, \sigma_w^2)$.
+
+- **Mean:** $\mathbb{E}[x_t] = 0$
+- **Variance:** $\text{Var}(x_t) = t \cdot \sigma_w^2$
+
+The variance grows linearly with time, which indicates the random walk is **non-stationary** — its statistical properties change over time.
+
+To detrend the random walk, we can take the **first-order difference**, i.e., subtracting the series from its lagged version. The differenced series recovers the original i.i.d. noise and becomes stationary.
+
+```{r}
+#| message: false
+#| warning: false
+#| fig-width: 10
+#| fig-height: 8
+
+# Generate a random walk time series
+set.seed(123)
+random_walk <- tibble(
+  step = 1:1000,
+  value = cumsum(rnorm(1000, mean = 0, sd = 1))
+)
+
+# Plot the random walk
+rw_plot <- random_walk |>
+  ggplot(aes(x = step, y = value)) +
+  geom_line(colour = "royalblue", linewidth = 0.5) +
+  labs(
+    title = "Random Walk",
+    x = "Step Count",
+    y = "Distance from Origin"
+  ) +
+  set_theme()
+
+# Plot the 1st-order difference
+rw_diff_plot <- random_walk |>
+  mutate(diff = value - lag(value)) |>
+  drop_na(diff) |>
+  ggplot(aes(x = seq_along(diff), y = diff)) +
+  geom_line(colour = "royalblue", linewidth = 0.5) +
+  labs(
+    title = "1st-Order Difference of Random Walk (i.i.d. Noise Recovered)",
+    x = "Step Count",
+    y = "Differenced Value"
+  ) +
+  set_theme()
+
+grid::grid.newpage()
+plot_layout <- grid::grid.layout(nrow = 2, ncol = 1)
+grid::pushViewport(grid::viewport(layout = plot_layout))
+print(rw_plot, vp = grid::viewport(layout.pos.row = 1, layout.pos.col = 1))
+print(rw_diff_plot, vp = grid::viewport(layout.pos.row = 2, layout.pos.col = 1))
+```
+
+::: {.callout-tip}
+For the derivation of the mean and variance of a sum of i.i.d. Gaussian variables, visit [here](https://en.wikipedia.org/wiki/Sum_of_normally_distributed_random_variables).
+:::
+
+# Autoregressive (AR) Model
+
+A revised random walk condition introduces a coefficient $\phi$:
+$$x_t = \phi \cdot x_{t-1} + w_t,$$
+where $w_t \sim \text{i.i.d. } \mathcal{N}(0, \sigma_w^2)$.
+
+- If $|\phi| < 1$, the process is **stationary** (mean-reverting).
+- If $\phi = 1$, we obtain a **random walk** (non-stationary).
+- If $|\phi| > 1$, the process is **explosive** (non-stationary).
+
+More generally, a $p$th-order autoregressive model, i.e., $\text{AR}(p)$, is defined as:
+$$x_t = a_1 x_{t-1} + a_2 x_{t-2} + \dots + a_p x_{t-p} + w_t,$$
+where $a_1, a_2, \dots, a_p$ are the model parameters, $a_p \neq 0$, and $w_t$ is the white noise term.
+
+```{r}
+#| message: false
+#| warning: false
+#| fig-width: 10
+#| fig-height: 4
+
+# Generate an AR(1) process with phi = 0.9
+set.seed(123)
+n <- 1000
+x <- numeric(n)
+w <- rnorm(n, mean = 0, sd = 1)
+x[1] <- w[1]
+for (i in 2:n) x[i] <- 0.9 * x[i-1] + w[i]
+ar1 <- tibble(index = 1:n, value = x)
+
+ar1 |>
+  ggplot(aes(x = index, y = value)) +
+  geom_line(colour = "royalblue", linewidth = 0.5) +
+  labs(
+    title = expression(AR(1) ~ Process ~ (phi == 0.9)),
+    x = "Sample Index n",
+    y = "Value"
+  ) +
+  set_theme()
+```
+
+```{r}
+#| message: false
+#| warning: false
+#| fig-width: 10
+#| fig-height: 4
+
+# Generate an AR(3) process with a1 = 0.5, a2 = -0.2, a3 = 0.1
+x <- numeric(n)
+w <- rnorm(n, mean = 0, sd = 1)
+x[1:3] <- w[1:3]
+for (i in 4:n) x[i] <- 0.5 * x[i-1] - 0.2 * x[i-2] + 0.1 * x[i-3] + w[i]
+ar3 <- tibble(index = 1:n, value = x)
+
+ar3 |>
+  ggplot(aes(x = index, y = value)) +
+  geom_line(colour = "royalblue", linewidth = 0.5) +
+  labs(
+    title = expression(AR(3) ~ Process ~ (a[1] == 0.5 * "," ~ a[2] == -0.2 * "," ~ a[3] == 0.1)),
+    x = "Sample Index n",
+    y = "Value"
+  ) +
+  set_theme()
+```
+
+::: {.callout-note}
+An AR model describes how today's value depends on previous observations. For example, today's temperature is dependent on yesterday's and possibly a few previous days', where the order $p$ determines how many previous days are considered.
+:::
+
+# Moving Average (MA) Model
+
+A $q$th-order moving average model, i.e., $\text{MA}(q)$, is defined as:
+$$x_t = w_t + b_1 w_{t-1} + b_2 w_{t-2} + \dots + b_q w_{t-q},$$
+where $b_1, b_2, \dots, b_q$ are the model parameters (no need to be bounded), and $w_t$ is the white noise term.
+
+```{r}
+#| message: false
+#| warning: false
+#| fig-width: 10
+#| fig-height: 4
+
+# Generate an MA(1) process with b = 0.9
+set.seed(123)
+n <- 1000
+w <- rnorm(n, mean = 0, sd = 1)
+x <- numeric(n)
+x[1] <- w[1]
+for (i in 2:n) x[i] <- w[i] + 0.9 * w[i-1]
+ma1 <- tibble(index = 1:n, value = x)
+
+ma1 |>
+  ggplot(aes(x = index, y = value)) +
+  geom_line(colour = "royalblue", linewidth = 0.5) +
+  labs(
+    title = expression(MA(1) ~ Process ~ (b == 0.9)),
+    x = "Sample Index n",
+    y = "Value"
+  ) +
+  set_theme()
+```
+
+```{r}
+#| message: false
+#| warning: false
+#| fig-width: 10
+#| fig-height: 4
+
+# Generate an SMA(30) process
+x <- numeric(n)
+for (i in 1:n) x[i] <- mean(w[max(i - 30, 1):i])
+sma30 <- tibble(index = 1:n, value = x)
+
+sma30 |>
+  ggplot(aes(x = index, y = value)) +
+  geom_line(colour = "royalblue", linewidth = 0.5) +
+  labs(
+    title = "SMA(30) Process",
+    x = "Sample Index n",
+    y = "Value"
+  ) +
+  set_theme()
+```
+
+::: {.callout-note}
+The simple moving average (SMA) curve, i.e., MA with uniform weights, is a common smoothing technique for stock price analysis. It has variations such as the exponential moving average (EMA).
+:::
+
+# Autoregressive Moving Average (ARMA) Model
+
+Combining the AR and MA models, we obtain the ARMA model. Formally, an $\text{ARMA}(p, q)$ model is defined as:
+$$x_t = a_1 x_{t-1} + \dots + a_p x_{t-p} + w_t + b_1 w_{t-1} + \dots + b_q w_{t-q},$$
+where $a_1, \dots, a_p, b_1, \dots, b_q$ are the model parameters, $a_p \neq 0$, $b_q \neq 0$, and $w_t$ is the white noise term.
+
+The ARMA model generalises both the AR and MA models:
+- $\text{ARMA}(p, 0) = \text{AR}(p)$
+- $\text{ARMA}(0, q) = \text{MA}(q)$
+
+# Autoregressive Integrated Moving Average (ARIMA) Model
+
+The ARIMA model extends ARMA by adding an **integration** (differencing) component. It is denoted as $\text{ARIMA}(p, d, q)$:
+
+- **AR** ($p$): The variable of interest is regressed on its prior values.
+- **I** ($d$): The data values are replaced with the difference between each value and the previous one (applied $d$ times to achieve stationarity).
+- **MA** ($q$): The AR error is a linear combination of errors that occurred at various times in the past.
+
+Taking the $d$th difference of a non-stationary series yields a stationary $\text{ARMA}(p, q)$ model.
+
+::: {.callout-note}
+**Applications of ARIMA models:**
+- The random walk model is $\text{ARIMA}(0, 1, 0)$, while white noise is $\text{ARIMA}(0, 0, 0)$.
+- ARIMA models (e.g., $\text{ARIMA}(1, 1, 1)$) have been used to forecast stock prices, indices, and exchange rates, capturing both trends and short-term fluctuations.
+- ARIMA was used to forecast COVID-19 cases, hospitalisations, and deaths.
+- Power companies like National Grid, Tesla, and Siemens use ARIMA to predict electricity demand.
+- ARIMA models traffic congestion in cities to help navigation apps like Google Maps and Waze.
+:::
+
+# ARMA Modelling and Forecasting Workflow
+
+Let us begin with a stationary time series (detrended or stationary in nature). We want to build an $\text{ARMA}(p, q)$ model: to find $p$ and $q$ that best fit the data.
+
+## ACF and PACF
+
+Two diagnostic tools help determine the correlation structure and stationarity of a series:
+
+- **Autocorrelation Function (ACF):** Measures the correlation between the series and its lagged values.
+- **Partial Autocorrelation Function (PACF):** Measures the correlation between the series and its lagged values, controlling for intermediate lags.
+
+**Theoretical patterns** for ideal, infinite-length processes:
+
+| Model | ACF | PACF |
+|-------|-----|------|
+| $\text{AR}(p)$ | Tails off (geometric) | Cuts off after lag $p$ |
+| $\text{MA}(q)$ | Cuts off after lag $q$ | Tails off (geometric) |
+| $\text{ARMA}(p, q)$ | Tails off (geometric) | Tails off (geometric) |
+
+::: {.callout-warning}
+These patterns are rarely clean in practice, and even ideal synthetic signals can look ambiguous. ACF and PACF are more reliable for detecting **non-stationarity** (slow ACF decay suggests differencing is needed) and **seasonality** (spikes at multiples of the period). For order selection, rely on AIC, BIC, and `auto.arima()`.
+:::
+
+## Model Order Selection
+
+The standard procedure for ARMA modelling is:
+
+1. Guess a few $(p, q)$ combinations.
+2. Fit the ARMA models.
+3. Compare model performance using **AIC** (Akaike Information Criterion) or **BIC** (Bayesian Information Criterion).
+4. Select the model with the smallest AIC or BIC.
+
+```{r}
+#| message: false
+#| warning: false
+
+library(forecast)
+
+# Detrend NVDA daily prices to obtain a stationary series
+nvda_stationary <- nvda_daily |>
+  mutate(diff = adjusted - lag(adjusted)) |>
+  drop_na(diff)
+
+# Fit ARMA models with different orders
+fit_arma1 <- arima(nvda_stationary$diff, order = c(1, 0, 1))
+fit_arma2 <- arima(nvda_stationary$diff, order = c(2, 0, 1))
+fit_arma3 <- arima(nvda_stationary$diff, order = c(1, 0, 2))
+fit_arma4 <- arima(nvda_stationary$diff, order = c(2, 0, 2))
+
+# Compare AIC and BIC
+AIC(fit_arma1, fit_arma2, fit_arma3, fit_arma4)
+BIC(fit_arma1, fit_arma2, fit_arma3, fit_arma4)
+```
+
+The `forecast::auto.arima()` function can automatically select the best ARIMA model based on AIC or BIC.
+
+```{r}
+#| message: false
+#| warning: false
+
+# Automatic model selection using AIC
+auto_fit_aic <- auto.arima(
+  nvda_stationary$diff,
+  ic = "aic",
+  seasonal = FALSE,
+  stationary = TRUE
+)
+
+# Inspect the selected model
+auto_fit_aic
+```
+
+## Forecasting
+
+With the fitted ARMA model, we can forecast future values. Prediction intervals provide a measure of uncertainty around point forecasts.
+
+```{r}
+#| message: false
+#| warning: false
+#| fig-width: 10
+#| fig-height: 5
+
+# Forecast 30 steps ahead
+forecast(auto_fit_aic, h = 30) |>
+  autoplot() +
+  labs(
+    x = "Time",
+    y = "Differenced Price",
+    title = "ARMA Forecast of Differenced NVDA Daily Prices"
+  ) +
+  set_theme()
+```
+
+::: {.callout-note}
+ARMA forecasts tend to converge to the mean of the series over longer horizons. This is a natural property of stationary processes: the best long-term forecast is the unconditional mean.
+:::
+
+# Forecasting Non-Stationary Time Series
+
+Here we demonstrate forecasting with ARIMA models on several real-world non-stationary time series. The `auto.arima()` function automatically handles differencing and seasonality.
+
+## NVIDIA Monthly Prices
+
+```{r}
+#| message: false
+#| warning: false
+#| fig-width: 10
+#| fig-height: 5
+
+model_nvidia <- auto.arima(nvda_monthly$adjusted)
+
+model_nvidia |>
+  forecast(h = 30) |>
+  autoplot() +
+  labs(
+    x = "Sample Index",
+    y = "Price",
+    title = "ARIMA Forecast of NVIDIA Monthly Adjusted Close Prices"
+  ) +
+  set_theme()
+```
+
+## BTC Monthly Prices
+
+```{r}
+#| message: false
+#| warning: false
+#| fig-width: 10
+#| fig-height: 5
+
+btc_monthly <- tq_get(
+  "BTC-USD",
+  from = "2020-01-01",
+  to = Sys.Date(),
+  get = "stock.prices"
+) |>
+  select(date, adjusted) |>
+  mutate(date = floor_date(date, "month")) |>
+  group_by(date) |>
+  summarise(adjusted = last(adjusted), .groups = "drop")
+
+model_btc <- auto.arima(btc_monthly$adjusted)
+
+model_btc |>
+  forecast(h = 24) |>
+  autoplot() +
+  labs(
+    x = "Sample Index",
+    y = "Price",
+    title = "ARIMA Forecast of BTC Monthly Adjusted Close Prices"
+  ) +
+  set_theme()
+```
+
+## Airline Passengers
+
+```{r}
+#| message: false
+#| warning: false
+#| fig-width: 10
+#| fig-height: 5
+
+model_air <- auto.arima(AirPassengers)
+
+model_air |>
+  forecast(h = 24) |>
+  autoplot() +
+  labs(
+    x = "Sample Index",
+    y = "Passengers",
+    title = "ARIMA Forecast of Monthly Airline Passengers"
+  ) +
+  set_theme()
+```
+
+# Summary
+
+We have covered the following topics:
+
+1. Time series definition, components, and types.
+2. Time series decomposition and stationarity.
+3. Stationarity tests and adjustment techniques.
+4. AR, MA, ARMA, and ARIMA models.
+5. ARIMA modelling workflow with ACF, PACF, AIC, and BIC.
+6. ARIMA-based forecasting of several real-world time series.
+
+This is an introductory session, in which the mathematical details are not fully covered. It is intended to open the door for more advanced time series analysis and forecasting techniques.
+
+## References
+
+- [*Forecasting: Principles and Practice*](https://otexts.com/fpp3/) by R. J. Hyndman and G. Athanasopoulos.
+- [*Time Series Analysis Lectures*](https://bookdown.org/abkashlak/TSaLectures/) by A. B. Kashlak.
+- [*Time Series Analysis and Its Applications with R Examples*](https://www.stat.pitt.edu/stoffer/tsa4/) by R. H. Shumway and D. S. Stoffer.
+

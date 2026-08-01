@@ -1,0 +1,71 @@
+# talentbridge apache configuration
+# blocks direct http access to sensitive directories and config files
+
+Options -Indexes
+
+# ---------------------------------------------------------------
+# block direct access to the includes directory (php partials)
+# ---------------------------------------------------------------
+<IfModule mod_authz_core.c>
+    <FilesMatch "^">
+        # default to allow; individual directories override below
+    </FilesMatch>
+</IfModule>
+
+
+# protect config.php from direct web access
+<Files "config.php">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order deny,allow
+        Deny from all
+    </IfModule>
+</Files>
+
+# ---------------------------------------------------------------
+# http security headers
+# ---------------------------------------------------------------
+<IfModule mod_headers.c>
+    # prevent mime-type sniffing
+    Header always set X-Content-Type-Options "nosniff"
+
+    # deny framing to prevent clickjacking
+    Header always set X-Frame-Options "DENY"
+
+    # limit referrer information sent to third-party origins
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+
+    # disable unnecessary browser features
+    Header always set Permissions-Policy "geolocation=(), camera=(), microphone=()"
+
+    # content security policy — allow bootstrap cdn and same-origin resources
+    Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; font-src 'self' https://cdn.jsdelivr.net; img-src 'self' data:; frame-ancestors 'none'"
+
+    # hsts — only active when the server is running https
+    Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains" env=HTTPS
+</IfModule>
+
+# ---------------------------------------------------------------
+# session cookie security settings
+# ---------------------------------------------------------------
+<IfModule mod_php.c>
+    # prevent javascript from reading the session cookie
+    php_flag session.cookie_httponly On
+    # restrict cross-site cookie sending
+    php_value session.cookie_samesite Lax
+    php_flag session.cookie_secure On
+</IfModule>
+
+# rewrite rules
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    # block access to sensitive directories
+    RewriteRule ^includes/ - [F,L]
+    RewriteRule ^sql/ - [F,L]
+
+    # ensure https (uncomment on production server once ssl is configured)
+    RewriteCond %{HTTPS} off
+    RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+</IfModule>

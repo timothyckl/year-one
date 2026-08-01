@@ -1,0 +1,442 @@
+\documentclass[12pt]{scrartcl}
+
+\usepackage{amsmath,amssymb}
+\usepackage{fullpage}
+\usepackage{enumitem}
+\usepackage{hyperref}
+
+\setlength{\parindent}{0pt}
+
+\begin{document}
+
+\begin{center}
+	\hrule
+	\vspace{0.4cm}
+	{\textbf{\large INF1003 Tutorial 7}}\\[0.2cm]
+\end{center}
+
+\textbf{Name:} Timothy Chia\hspace{\fill} \textbf{Topic:} Proof Methods and Strategies\\
+\textbf{Student ID:} 2501530 \hspace{\fill} \textbf{Due Date:} 28/10/2025, 10:00PM\\
+
+\hrule
+
+\begin{enumerate}[label=\textbf{\arabic*.}]
+
+	%------------------------------------------------------------
+	\item \textbf{(Direct proof)}\quad
+	      Use a direct proof to show that the sum of two odd integers is even.
+
+	      \textbf{Proof.}
+	      Let $a$ and $b$ be odd integers.  By definition of an odd integer, there exist integers
+	      $i$ and $j$ such that
+	      \[
+		      a = 2i + 1
+		      \quad\text{and}\quad
+		      b = 2j + 1.
+	      \]
+	      Then
+	      \begin{align*}
+		      a + b
+		       & = (2i + 1) + (2j + 1) \\
+		       & = 2i + 2j + 2         \\
+		       & = 2(i + j + 1).
+	      \end{align*}
+	      Since $i + j + 1$ is an integer, $a + b$ is of the form $2k$ for some integer $k$.\\
+	      Hence $a + b$ is even.
+	      \hfill$\Box$
+
+	      %------------------------------------------------------------
+	\item Show that for any positive integer $n$, $n$ is odd if and only if $5n + 6$ is odd.
+
+	      \medskip
+	      We must show, for all positive integers $n$,
+	      \[
+		      \text{$n$ is odd} \;\leftrightarrow\; \text{$5n+6$ is odd}.
+	      \]
+	      By the hint, it is enough to prove both directions:
+	      \[
+		      (\Rightarrow)\quad
+		      \text{$n$ odd} \rightarrow \text{$5n+6$ odd},
+		      \qquad
+		      (\Leftarrow)\quad
+		      \text{$5n+6$ odd} \rightarrow \text{$n$ odd}.
+	      \]
+
+	      \begin{enumerate}[label=(\alph*)]
+		      \item \textbf{($n$ odd $\Rightarrow$ $5n+6$ odd; direct proof)}
+
+		            Assume $n$ is odd.  Then there exists an integer $k$ such that
+		            \[
+			            n = 2k + 1.
+		            \]
+		            Compute $5n+6$:
+		            \begin{align*}
+			            5n + 6
+			             & = 5(2k + 1) + 6  \\
+			             & = 10k + 5 + 6    \\
+			             & = 10k + 11       \\
+			             & = 2(5k + 5) + 1.
+		            \end{align*}
+		            Since $5k + 5$ is an integer, $5n + 6$ is of the form $2m+1$, so $5n+6$ is odd.
+		            \hfill$\Box$
+
+		      \item \textbf{($5n+6$ odd $\Rightarrow$ $n$ odd; proof by contraposition)}
+
+		            The statement
+		            \[
+			            \text{$5n+6$ odd} \rightarrow \text{$n$ odd}
+		            \]
+		            has contrapositive
+		            \[
+			            \text{$n$ even} \rightarrow \text{$5n+6$ even}.
+		            \]
+		            We prove this contrapositive.
+
+		            Assume $n$ is even.  Then there exists an integer $k$ such that
+		            \[
+			            n = 2k.
+		            \]
+		            Compute $5n+6$:
+		            \begin{align*}
+			            5n + 6
+			             & = 5(2k) + 6  \\
+			             & = 10k + 6    \\
+			             & = 2(5k + 3).
+		            \end{align*}
+		            As $5k+3$ is an integer, $5n + 6$ is of the form $2m$, hence is even.
+		            Therefore the contrapositive is true, so the original implication
+		            ``$5n+6$ odd $\rightarrow$ $n$ odd'' is also true.
+
+	      \end{enumerate}
+
+	      Combining both directions, we conclude that for every positive integer $n$,
+	      $n$ is odd if and only if $5n+6$ is odd.
+	      \hfill$\Box$
+
+	      %------------------------------------------------------------
+	\item Show that for any integer $n$, if $n^{3} + 5$ is odd, then $n$ is even.
+	      Provide two different proofs.
+
+	      \begin{enumerate}[label=(\alph*)]
+		      \item \textbf{Proof by contraposition.}
+
+		            The statement is
+		            \[
+			            \forall n \in \mathbb{Z}\,\bigl((n^{3} + 5 \text{ is odd}) \rightarrow (n \text{ is even})\bigr).
+		            \]
+		            Its contrapositive is
+		            \[
+			            \forall n \in \mathbb{Z}\,\bigl((n \text{ is odd}) \rightarrow (n^{3} + 5 \text{ is even})\bigr).
+		            \]
+
+		            Assume $n$ is odd.  Then there exists an integer $k$ such that $n = 2k + 1$.
+		            Compute $n^{3} + 5$:
+		            \begin{align*}
+			            n^{3} + 5
+			             & = (2k + 1)^{3} + 5                       \\
+			             & = 8k^{3} + 12k^{2} + 6k + 1 + 5          \\
+			             & = 8k^{3} + 12k^{2} + 6k + 6              \\
+			             & = 2\bigl(4k^{3} + 6k^{2} + 3k + 3\bigr).
+		            \end{align*}
+		            The expression in brackets is an integer, so $n^{3} + 5$ is even.
+		            Hence the contrapositive holds, and therefore the original statement
+		            is true.
+		            \hfill$\Box$
+
+		      \item \textbf{Proof by contradiction.}
+
+		            Suppose, for the sake of contradiction, that there exists an integer $n$
+		            such that $n^{3} + 5$ is odd \emph{and} $n$ is odd.
+
+		            Since $n$ is odd, let $n = 2k + 1$ for some integer $k$.
+		            As in part (a),
+		            \begin{align*}
+			            n^{3} + 5
+			             & = (2k + 1)^{3} + 5                       \\
+			             & = 8k^{3} + 12k^{2} + 6k + 6              \\
+			             & = 2\bigl(4k^{3} + 6k^{2} + 3k + 3\bigr),
+		            \end{align*}
+		            which is even.  This contradicts the assumption that $n^{3} + 5$ is odd.
+
+		            Therefore our assumption that $n$ could be odd when $n^{3}+5$ is odd
+		            must be false.  Hence, if $n^{3} + 5$ is odd, $n$ must be even.
+		            \hfill$\Box$
+	      \end{enumerate}
+
+	      %------------------------------------------------------------
+	\item Prove that if $m + n$ and $n + p$ are even integers, where $m$, $n$, $p$
+	      are integers, then $m + p$ is even.  State the strategies used in the proof.
+
+	      \textbf{Proof (direct proof using algebra and parity).}
+	      Assume $m+n$ and $n+p$ are even.
+
+	      Then there exist integers $a$ and $b$ such that
+	      \[
+		      m + n = 2a
+		      \quad\text{and}\quad
+		      n + p = 2b.
+	      \]
+	      Add these equations:
+	      \[
+		      (m + n) + (n + p) = 2a + 2b.
+	      \]
+	      So
+	      \[
+		      m + 2n + p = 2(a + b).
+	      \]
+	      Rearrange to isolate $m + p$:
+	      \begin{align*}
+		      m + p
+		       & = 2(a + b) - 2n \\
+		       & = 2(a + b - n).
+	      \end{align*}
+	      Since $a + b - n$ is an integer, $m + p$ is of the form $2k$ and hence is even.
+
+	      \textbf{Strategy used:} a \emph{direct proof} with the definition of even integers
+	      and simple algebraic manipulation.
+	      \hfill$\Box$
+
+	      %------------------------------------------------------------
+	      \newpage
+	\item Prove that $(n^{2} + 1) \ge 2n$ where $n$ is a positive integer with
+	      $1 \le n \le 4$.
+
+	      \textbf{Proof (exhaustive check).}
+	      We must check the inequality for each integer $n = 1,2,3,4$.
+
+	      \begin{itemize}
+		      \item $n = 1$:
+		            \[
+			            n^{2} + 1 = 1^{2} + 1 = 2, \quad 2n = 2(1) = 2,
+		            \]
+		            and $2 \ge 2$ is true.
+
+		      \item $n = 2$:
+		            \[
+			            n^{2} + 1 = 2^{2} + 1 = 5, \quad 2n = 2(2) = 4,
+		            \]
+		            and $5 \ge 4$ is true.
+
+		      \item $n = 3$:
+		            \[
+			            n^{2} + 1 = 3^{2} + 1 = 10, \quad 2n = 2(3) = 6,
+		            \]
+		            and $10 \ge 6$ is true.
+
+		      \item $n = 4$:
+		            \[
+			            n^{2} + 1 = 4^{2} + 1 = 17, \quad 2n = 2(4) = 8,
+		            \]
+		            and $17 \ge 8$ is true.
+	      \end{itemize}
+
+	      Since the inequality holds for all $n$ in the finite set $\{1,2,3,4\}$,
+	      it is true for every positive integer $n$ with $1 \le n \le 4$.
+	      \hfill$\Box$
+
+	      %------------------------------------------------------------
+	\item Prove or disprove the following statements, where $n$ ranges over all integers.
+
+	      \begin{enumerate}[label=(\alph*)]
+		      \item $\forall n\,(6n \text{ is even} \rightarrow n \text{ is even})$.
+
+		            \textbf{Disproof (counterexample).}
+		            For any integer $n$, $6n = 2(3n)$ is always even.  So the implication
+		            ``$6n$ is even $\rightarrow$ $n$ is even'' reduces to requiring that
+		            $n$ itself be even.
+
+		            Take $n = 1$.  Then $6n = 6$ is even, but $1$ is not even.
+		            The conditional
+		            \[
+			            6n \text{ even} \rightarrow n \text{ even}
+		            \]
+		            becomes
+		            \[
+			            \text{True} \rightarrow \text{False},
+		            \]
+		            which is false.  Hence the universal statement is \textbf{false}.
+
+		      \item $\forall n\,(6n \text{ is even} \rightarrow n \text{ is odd})$.
+
+		            \textbf{Disproof (counterexample).}
+		            Again $6n$ is even for every integer $n$.
+
+		            Take $n = 2$. Then $6n = 12$ is even but $2$ is not odd.
+		            The implication is $\text{True} \rightarrow \text{False}$, hence false.
+		            Therefore the universal statement is \textbf{false}.
+
+		      \item $\exists n\,(6n \text{ is even} \rightarrow n \text{ is even})$.
+
+		            \textbf{Proof.}
+		            Take $n = 2$. Then $6n = 12$ is even and $n$ is even.
+		            So the implication
+		            \[
+			            6n \text{ even} \rightarrow n \text{ even}
+		            \]
+		            is $\text{True} \rightarrow \text{True}$, which is true.
+		            Hence there exists an integer $n$ making the implication true,
+		            and the existential statement is \textbf{true}.
+
+		      \item $\exists n\,(6n \text{ is even} \rightarrow n \text{ is odd})$.
+
+		            \textbf{Proof.}
+		            Take $n = 1$.  Then $6n = 6$ is even and $n$ is odd.
+		            So the implication
+		            \[
+			            6n \text{ even} \rightarrow n \text{ odd}
+		            \]
+		            is $\text{True} \rightarrow \text{True}$, which is true.
+		            Hence the statement is \textbf{true}.
+
+		      \item $\forall n\,(n \text{ is even} \rightarrow 6n \text{ is even})$.
+
+		            \textbf{Proof.}
+		            Assume $n$ is even.  Then there exists an integer $k$ such that
+		            \[
+			            n = 2k.
+		            \]
+		            Then
+		            \begin{align*}
+			            6n & = 6(2k)  \\
+			               & = 12k    \\
+			               & = 2(6k),
+		            \end{align*}
+		            which is even.  Since this works for every even integer $n$,
+		            the universal statement is \textbf{true}.
+
+		      \item $\exists n\,(n \text{ is even} \rightarrow 6n \text{ is odd})$.
+
+		            \textbf{Proof.}
+		            We analyse the implication for different $n$.
+
+		            If $n$ is even, write $n = 2k$.  Then
+		            \[
+			            6n = 6(2k) = 12k = 2(6k),
+		            \]
+		            which is even, so ``$6n$ is odd'' is false.  Hence for every even $n$,
+		            the implication
+		            \[
+			            n \text{ even} \rightarrow 6n \text{ odd}
+		            \]
+		            is $\text{True} \rightarrow \text{False}$, which is false.
+
+		            If $n$ is odd, the antecedent ``$n$ is even'' is false, so the entire
+		            implication is vacuously true.
+
+		            Thus there \emph{do} exist integers $n$ (for example $n=1$) for which
+		            the implication is true, so formally the existential statement is
+		            \textbf{true}.  This illustrates how implications with false antecedent
+		            are automatically true (vacuous truth).
+	      \end{enumerate}
+	      \hfill$\Box$
+
+	      %------------------------------------------------------------
+	      \newpage
+	\item[\textbf{7.}]
+	      Prove or disprove the statement:
+	      \emph{``The product of two irrational numbers is always irrational.''}
+	      State the strategies used in the proof.
+
+	      \textbf{Disproof (counterexample).}
+	      Consider the irrational number $\sqrt{2}$.
+	      The product of $\sqrt{2}$ with itself is
+	      \[
+		      \sqrt{2} \cdot \sqrt{2} = 2,
+	      \]
+	      and $2$ is rational.  Thus we have two irrational numbers whose product
+	      is rational.
+
+	      Therefore the statement ``The product of two irrational numbers is always
+	      irrational'' is \textbf{false}.
+
+	      \textbf{Strategy used:} counterexample to disprove a universal claim.
+	      \hfill$\Box$
+
+	      %------------------------------------------------------------
+	\item[\textbf{8.}]
+	      A ceiling function maps $x$ to the least integer greater than or equal to $x$,
+	      denoted $\lceil x \rceil$.
+	      For example, $\lceil 2.1 \rceil = 3$ and $\lceil -2.1 \rceil = -2$.
+	      Prove that for any odd integer $n$,
+	      \[
+		      \left\lceil \frac{n^{2}}{4} \right\rceil = \frac{n^{2} + 3}{4}.
+	      \]
+
+	      \textbf{Proof (direct proof).}
+	      Let $n$ be any odd integer.  Then there exists an integer $k$ such that
+	      \[
+		      n = 2k + 1.
+	      \]
+	      Compute $n^{2}/4$:
+	      \begin{align*}
+		      \frac{n^{2}}{4}
+		       & = \frac{(2k + 1)^{2}}{4}    \\
+		       & = \frac{4k^{2} + 4k + 1}{4} \\
+		       & = k^{2} + k + \frac{1}{4}.
+	      \end{align*}
+	      The integer part of this expression is $k^{2} + k$, and the fractional part
+	      is $\frac{1}{4}$, which is strictly between $0$ and $1$.  Therefore
+	      the least integer greater than or equal to $k^{2} + k + \frac{1}{4}$
+	      is $k^{2} + k + 1$:
+	      \[
+		      \left\lceil \frac{n^{2}}{4} \right\rceil
+		      = \left\lceil k^{2} + k + \frac{1}{4} \right\rceil
+		      = k^{2} + k + 1.
+	      \]
+
+	      Now compute the right-hand side:
+	      \begin{align*}
+		      \frac{n^{2} + 3}{4}
+		       & = \frac{(2k + 1)^{2} + 3}{4}    \\
+		       & = \frac{4k^{2} + 4k + 1 + 3}{4} \\
+		       & = \frac{4k^{2} + 4k + 4}{4}     \\
+		       & = k^{2} + k + 1.
+	      \end{align*}
+	      Hence
+	      \[
+		      \left\lceil \frac{n^{2}}{4} \right\rceil = \frac{n^{2} + 3}{4}
+	      \]
+	      for every odd integer $n$.
+	      \hfill$\Box$
+
+	      %------------------------------------------------------------
+	\item[\textbf{9.}]
+	      Prove that if $x$ is irrational, then $1/x$ is irrational.
+
+	      \textbf{Proof (by contraposition).}\\
+	      We work with real numbers $x$ with $x \ne 0$ (since $1/x$ is undefined
+	      for $x = 0$).
+
+	      The statement to prove is
+	      \[
+		      \text{$x$ irrational} \rightarrow \text{$1/x$ irrational}.
+	      \]
+	      Its contrapositive is
+	      \[
+		      \text{$1/x$ rational} \rightarrow \text{$x$ rational}.
+	      \]
+
+	      Assume $1/x$ is rational.  Then we can write
+	      \[
+		      \frac{1}{x} = \frac{a}{b}
+	      \]
+	      for some integers $a$ and $b$ with $b \ne 0$ and the fraction in lowest terms.
+	      Since $1/x = a/b \ne 0$, we also have $a \ne 0$.
+
+	      Rearranging,
+	      \[
+		      x = \frac{b}{a}.
+	      \]
+	      Because $a$ and $b$ are integers with $a \ne 0$, the number $x = b/a$
+	      is rational.
+
+	      Thus the contrapositive is true, so the original statement
+	      ``If $x$ is irrational, then $1/x$ is irrational'' holds for all
+	      real $x \ne 0$.
+	      \hfill$\Box$
+
+	      %------------------------------------------------------------
+
+\end{enumerate}
+
+\end{document}

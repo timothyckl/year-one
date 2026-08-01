@@ -1,0 +1,310 @@
+[
+  {
+    "objectID": "resources.html",
+    "href": "resources.html",
+    "title": "Resources",
+    "section": "",
+    "text": "Learning Materials\n\nQuarto\nR for Data Science by G. Grolemund and H. Wickham\nggplot2: Elegant Graphics for Data Analysis by H. Wickham et al.\nR Graphics Cookbook by W. Chang\nDataCamp tutorials\n\n\n\nSoftware and Tools\n\nQuarto Markdown\nR\nRStudio\nGit/GitHub (Windows and MacOS)"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "AAI1001 Data Engineering and Data Visualisation",
+    "section": "",
+    "text": "Module Lead: Assoc. Prof. Guang HUA\nCo-Lead: Asst. Prof. Pulakesh UPADHYAYA\nCo-Instructors: Mr. Nai Tiong CHAN, Ms. Min Min CHAN\nSchedule: Tue 9–11am (Lectorials), Wed 9–11am (Labs)"
+  },
+  {
+    "objectID": "index.html#module-information",
+    "href": "index.html#module-information",
+    "title": "AAI1001 Data Engineering and Data Visualisation",
+    "section": "",
+    "text": "Module Lead: Assoc. Prof. Guang HUA\nCo-Lead: Asst. Prof. Pulakesh UPADHYAYA\nCo-Instructors: Mr. Nai Tiong CHAN, Ms. Min Min CHAN\nSchedule: Tue 9–11am (Lectorials), Wed 9–11am (Labs)"
+  },
+  {
+    "objectID": "index.html#course-overview",
+    "href": "index.html#course-overview",
+    "title": "AAI1001 Data Engineering and Data Visualisation",
+    "section": "Course Overview",
+    "text": "Course Overview\nThis module builds a solid foundation in data engineering, predictive modeling, and visualization using Quarto and R. Topics include the tidyverse package collection, time series analysis, and Naive Bayes classification, culminating in a team project."
+  },
+  {
+    "objectID": "index.html#learning-outcomes",
+    "href": "index.html#learning-outcomes",
+    "title": "AAI1001 Data Engineering and Data Visualisation",
+    "section": "Learning Outcomes",
+    "text": "Learning Outcomes\n\nApply Quarto to document and present data workflow\nUnderstand data engineering principles and practices\nApply supervised machine learning techniques in R\nAssess data visualization effectiveness\nApply R packages for effective visualizations\nDevelop and deliver data analysis presentations"
+  },
+  {
+    "objectID": "index.html#assessment",
+    "href": "index.html#assessment",
+    "title": "AAI1001 Data Engineering and Data Visualisation",
+    "section": "Assessment",
+    "text": "Assessment\n\n\n\nAssessment\nWeek\nWeight\n\n\n\n\nAssessment 1 (Report)\n04\n10%\n\n\nAssessment 2 (Quiz 1)\n06\n20%\n\n\nAssessment 3 (Report)\n11\n10%\n\n\nAssessment 4 (Quiz 2)\n12\n20%\n\n\nIn-Class Exercises\n2–6, 8–12\n10%\n\n\nTeam Project Proposal\n09\n5%\n\n\nTeam Project Presentation\n13\n20%\n\n\nPeer Evaluation\n13\n5%\n\n\n\n\n\n\n\n\n\nNote\n\n\n\nFinal score contains 55% individual performance and 45% team performance.\n\n\n\n\n\n\n\n\nNote\n\n\n\nBring your laptop to class to ensure you can keep up with the hands-on learning."
+  },
+  {
+    "objectID": "index.html#lecture-notes",
+    "href": "index.html#lecture-notes",
+    "title": "AAI1001 Data Engineering and Data Visualisation",
+    "section": "Lecture Notes",
+    "text": "Lecture Notes\n\n\n\nWeek\nTopic\nLink\n\n\n\n\n02\nIntroduction to R\nLecture 02"
+  },
+  {
+    "objectID": "notes/lecture-02.html",
+    "href": "notes/lecture-02.html",
+    "title": "Lecture 02: Introduction to R",
+    "section": "",
+    "text": "R is a programming language developed in 1996 by Ross Ihaka and Robert Gentleman, two statistics professors from the University of Auckland in New Zealand.\nR was initially intended to be merely a replacement for the statistics software used for teaching at their university department. However, R’s evolution into a free, open-source language compatible with all major operating systems has led to its widespread adoption among statisticians and data scientists worldwide.\nR’s versatility is further augmented through a plethora of downloadable packages, containing functions and datasets that extend R’s capabilities.\n\n\n\nR is a functional programming language, which means that functions are first-class objects that can be passed as arguments to other functions. However, R can support object-oriented programming, e.g., ggplot2 is written using R objects.\nInstead of covering how to write objects or functions in R, we will focus on how to use R’s off-the-shelf functions and packages to perform data engineering and visualization.\n\n\n\nR code can be integrated in a Quarto document using code chunks to generate documents combining text, code, and output.\nThe code chunk is defined as follows:\n```{r}\n#| eval: true\n#| echo: true\n#| output-location: column\n\n# Your code here\n```\nCode execution options are specified using #| followed by the option name and value.\n\n\n\n\n\n\nNote\n\n\n\nMore information about Quarto code chunk execution options can be found here."
+  },
+  {
+    "objectID": "notes/lecture-02.html#overview-of-r",
+    "href": "notes/lecture-02.html#overview-of-r",
+    "title": "Lecture 02: Introduction to R",
+    "section": "",
+    "text": "R is a programming language developed in 1996 by Ross Ihaka and Robert Gentleman, two statistics professors from the University of Auckland in New Zealand.\nR was initially intended to be merely a replacement for the statistics software used for teaching at their university department. However, R’s evolution into a free, open-source language compatible with all major operating systems has led to its widespread adoption among statisticians and data scientists worldwide.\nR’s versatility is further augmented through a plethora of downloadable packages, containing functions and datasets that extend R’s capabilities."
+  },
+  {
+    "objectID": "notes/lecture-02.html#why-is-r-so-great",
+    "href": "notes/lecture-02.html#why-is-r-so-great",
+    "title": "Lecture 02: Introduction to R",
+    "section": "",
+    "text": "R is a functional programming language, which means that functions are first-class objects that can be passed as arguments to other functions. However, R can support object-oriented programming, e.g., ggplot2 is written using R objects.\nInstead of covering how to write objects or functions in R, we will focus on how to use R’s off-the-shelf functions and packages to perform data engineering and visualization."
+  },
+  {
+    "objectID": "notes/lecture-02.html#r-code-in-quarto",
+    "href": "notes/lecture-02.html#r-code-in-quarto",
+    "title": "Lecture 02: Introduction to R",
+    "section": "",
+    "text": "R code can be integrated in a Quarto document using code chunks to generate documents combining text, code, and output.\nThe code chunk is defined as follows:\n```{r}\n#| eval: true\n#| echo: true\n#| output-location: column\n\n# Your code here\n```\nCode execution options are specified using #| followed by the option name and value.\n\n\n\n\n\n\nNote\n\n\n\nMore information about Quarto code chunk execution options can be found here."
+  },
+  {
+    "objectID": "notes/lecture-02.html#understanding-packages-and-cran",
+    "href": "notes/lecture-02.html#understanding-packages-and-cran",
+    "title": "Lecture 02: Introduction to R",
+    "section": "2.1 Understanding Packages and CRAN",
+    "text": "2.1 Understanding Packages and CRAN\nThe base installation of R contains an extensive selection of built-in functions and datasets. Many R community members contribute additional functions and datasets beyond the base collection. Such additional collections of code are called packages.\nR’s official package repository is known as the Comprehensive R Archive Network (CRAN). Currently, there are more than 20,000 packages available on CRAN."
+  },
+  {
+    "objectID": "notes/lecture-02.html#managing-the-package",
+    "href": "notes/lecture-02.html#managing-the-package",
+    "title": "Lecture 02: Introduction to R",
+    "section": "2.2 Managing the Package",
+    "text": "2.2 Managing the Package\nIn this course, we will work extensively with the dplyr package (included in tidyverse).\nPrint all loaded packages (compare this with installed.packages()):\n\nprint(.packages())\n\n[1] \"stats\"     \"graphics\"  \"grDevices\" \"utils\"     \"datasets\"  \"methods\"  \n[7] \"base\"     \n\n\nIf dplyr is not installed, install and load it using:\n\ninstall.packages(\"tidyverse\") # `dplyr` is one of the `tidyverse` packages\n\nInstalling package into '/opt/homebrew/lib/R/4.6/site-library'\n(as 'lib' is unspecified)\n\n\nalso installing the dependencies 'textshaping', 'ragg'\n\n\nWarning in install.packages(\"tidyverse\"): installation of package 'textshaping'\nhad non-zero exit status\n\n\nWarning in install.packages(\"tidyverse\"): installation of package 'ragg' had\nnon-zero exit status\n\n\nWarning in install.packages(\"tidyverse\"): installation of package 'tidyverse'\nhad non-zero exit status\n\nlibrary(dplyr)\n\n\nAttaching package: 'dplyr'\n\n\nThe following objects are masked from 'package:stats':\n\n    filter, lag\n\n\nThe following objects are masked from 'package:base':\n\n    intersect, setdiff, setequal, union\n\n\nFind the location of dplyr:\n\nfind.package(\"dplyr\")\n\n[1] \"/opt/homebrew/lib/R/4.6/site-library/dplyr\"\n\n\ndplyr contains a variety of functions and datasets, listed in the package documentation:\n\nhelp(package = \"dplyr\")\n\nYou may check the availability of dplyr by executing starwars in the Console tab:\n\nstarwars\n\n# A tibble: 87 × 14\n   name     height  mass hair_color skin_color eye_color birth_year sex   gender\n   &lt;chr&gt;     &lt;int&gt; &lt;dbl&gt; &lt;chr&gt;      &lt;chr&gt;      &lt;chr&gt;          &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt; \n 1 Luke Sk…    172    77 blond      fair       blue            19   male  mascu…\n 2 C-3PO       167    75 &lt;NA&gt;       gold       yellow         112   none  mascu…\n 3 R2-D2        96    32 &lt;NA&gt;       white, bl… red             33   none  mascu…\n 4 Darth V…    202   136 none       white      yellow          41.9 male  mascu…\n 5 Leia Or…    150    49 brown      light      brown           19   fema… femin…\n 6 Owen La…    178   120 brown, gr… light      blue            52   male  mascu…\n 7 Beru Wh…    165    75 brown      light      blue            47   fema… femin…\n 8 R5-D4        97    32 &lt;NA&gt;       white, red red             NA   none  mascu…\n 9 Biggs D…    183    84 black      light      brown           24   male  mascu…\n10 Obi-Wan…    182    77 auburn, w… fair       blue-gray       57   male  mascu…\n# ℹ 77 more rows\n# ℹ 5 more variables: homeworld &lt;chr&gt;, species &lt;chr&gt;, films &lt;list&gt;,\n#   vehicles &lt;list&gt;, starships &lt;list&gt;"
+  },
+  {
+    "objectID": "notes/lecture-02.html#creating-vector-variables-1-based-indexing",
+    "href": "notes/lecture-02.html#creating-vector-variables-1-based-indexing",
+    "title": "Lecture 02: Introduction to R",
+    "section": "3.1 Creating Vector Variables (1-Based Indexing)",
+    "text": "3.1 Creating Vector Variables (1-Based Indexing)\n\n3.1.1 Combining elements using c()\n\nc(31, -50, 93, 29, -44, 93)\n\n[1]  31 -50  93  29 -44  93\n\n\n\n\n3.1.2 Shortcuts for numeric sequences\nCreate a numeric sequence using ::\n\n3:10\n\n[1]  3  4  5  6  7  8  9 10\n\n\nCreate the index sequence of a given vector using seq_along():\n\nseq_along(c(31, -50, 93, 29, -44, 93))\n\n[1] 1 2 3 4 5 6\n\n\nTo create a sequence of a given length, use seq_len():\n\nseq_len(5)\n\n[1] 1 2 3 4 5\n\n\nTo create more general sequences, use seq():\n\nseq(from = 5.2, to = -4, by = -0.5)\n\n [1]  5.2  4.7  4.2  3.7  3.2  2.7  2.2  1.7  1.2  0.7  0.2 -0.3 -0.8 -1.3 -1.8\n[16] -2.3 -2.8 -3.3 -3.8\n\n\n\n\n3.1.3 The assignment operator\nThe assignment operator in R is &lt;-:\n\nv &lt;- c(31, -50, 93, 29, -44, 93)\nv\n\n[1]  31 -50  93  29 -44  93\n\n\n\n\n3.1.4 Vector length\nGet the number of elements in a vector using length():\n\nlength(v)\n\n[1] 6\n\n\nEven a single element is treated as a vector:\n\nforty_two &lt;- 42 # Do not write right-hand side as `c(42)`\nlength(forty_two)\n\n[1] 1"
+  },
+  {
+    "objectID": "notes/lecture-02.html#classes-of-vectors",
+    "href": "notes/lecture-02.html#classes-of-vectors",
+    "title": "Lecture 02: Introduction to R",
+    "section": "3.2 Classes of Vectors",
+    "text": "3.2 Classes of Vectors\n\n3.2.1 Numeric Vectors\nNumeric vectors contain real-valued numbers. By default, vectors are numeric even if all elements are integers:\n\nv &lt;- c(31, -50, 93, 29, -44, 93)\nv\n\n[1]  31 -50  93  29 -44  93\n\n\nGet the class of a vector using class():\n\nclass(v)\n\n[1] \"numeric\"\n\n\nCheck if v is numeric using is.numeric():\n\nis.numeric(v)\n\n[1] TRUE\n\n\n\n\n3.2.2 Integer Vectors\nCheck if v is integer:\n\nis.integer(v)\n\n[1] FALSE\n\n\nConvert v to integer using as.integer():\n\nw &lt;- as.integer(v)\nw\n\n[1]  31 -50  93  29 -44  93\n\n\nCheck if w is integer:\n\nis.integer(w)\n\n[1] TRUE\n\nis.numeric(w)\n\n[1] TRUE\n\n\n\n\n3.2.3 Character Vectors\n\ncompass &lt;- c(\n  \"North\", \"North East\", \"East\",\n  \"South East\", \"South\",\n  \"South West\", \"West\",\n  \"North West\"\n)\ncompass\n\n[1] \"North\"      \"North East\" \"East\"       \"South East\" \"South\"     \n[6] \"South West\" \"West\"       \"North West\"\n\n\nCheck the class of compass:\n\nclass(compass)\n\n[1] \"character\"\n\n\nSpecial built-in character vectors:\n\nLETTERS\n\n [1] \"A\" \"B\" \"C\" \"D\" \"E\" \"F\" \"G\" \"H\" \"I\" \"J\" \"K\" \"L\" \"M\" \"N\" \"O\" \"P\" \"Q\" \"R\" \"S\"\n[20] \"T\" \"U\" \"V\" \"W\" \"X\" \"Y\" \"Z\"\n\n\n\nletters\n\n [1] \"a\" \"b\" \"c\" \"d\" \"e\" \"f\" \"g\" \"h\" \"i\" \"j\" \"k\" \"l\" \"m\" \"n\" \"o\" \"p\" \"q\" \"r\" \"s\"\n[20] \"t\" \"u\" \"v\" \"w\" \"x\" \"y\" \"z\"\n\n\n\n\n3.2.4 Logical Vectors\nLogical vectors contain TRUE or FALSE values:\n\nagree &lt;- c(TRUE, TRUE, FALSE, FALSE, TRUE)\nclass(agree)\n\n[1] \"logical\"\n\nclass(TRUE)\n\n[1] \"logical\"\n\nclass(\"TRUE\")\n\n[1] \"character\"\n\n\nNo quotation marks:\n\nclass(agree)\n\n[1] \"logical\"\n\nis.logical(agree)\n\n[1] TRUE"
+  },
+  {
+    "objectID": "notes/lecture-02.html#class-casting-coercing",
+    "href": "notes/lecture-02.html#class-casting-coercing",
+    "title": "Lecture 02: Introduction to R",
+    "section": "3.3 Class Casting (Coercing)",
+    "text": "3.3 Class Casting (Coercing)\n\nQuestion: Can we mix different classes in a single vector?\n\nTo cast an object to a different class, use:\n\nas.numeric()\nas.integer()\nas.character()\nas.logical()\nas.factor()\n\n\n\n\n\n\n\nNote\n\n\n\nMore information about coercion can be found here."
+  },
+  {
+    "objectID": "notes/lecture-02.html#accessing-vector-elements",
+    "href": "notes/lecture-02.html#accessing-vector-elements",
+    "title": "Lecture 02: Introduction to R",
+    "section": "3.4 Accessing Vector Elements",
+    "text": "3.4 Accessing Vector Elements\n\n3.4.1 Extracting Vector Elements\n\ncompass\n\n[1] \"North\"      \"North East\" \"East\"       \"South East\" \"South\"     \n[6] \"South West\" \"West\"       \"North West\"\n\n\n\ncompass[1:2]\n\n[1] \"North\"      \"North East\"\n\n\n\ncompass[c(2, 8, 4, 4)]\n\n[1] \"North East\" \"North West\" \"South East\" \"South East\"\n\n\n\nhead(compass, 2)\n\n[1] \"North\"      \"North East\"\n\n\n\ntail(agree, 3)\n\n[1] FALSE FALSE  TRUE\n\n\n\n\n3.4.2 Positive and Negative Indexing\n\ncompass[c(2, 4, 6, 8)]\n\n[1] \"North East\" \"South East\" \"South West\" \"North West\"\n\n\n\ncompass[-c(2, 4, 6, 8)]\n\n[1] \"North\" \"East\"  \"South\" \"West\" \n\n\n\n\n3.4.3 Logical Indexing\n\nagree[c(TRUE, FALSE, TRUE, FALSE, TRUE)]\n\n[1]  TRUE FALSE  TRUE\n\n\n\nagree[c(FALSE, TRUE)]\n\n[1]  TRUE FALSE\n\n\n\n\n3.4.4 Replacing Vector Elements\n\ncompass_code &lt;- compass\ncompass_code[1] &lt;- \"N\"\ncompass_code\n\n[1] \"N\"          \"North East\" \"East\"       \"South East\" \"South\"     \n[6] \"South West\" \"West\"       \"North West\"\n\n\n\ncompass_code[c(5, 8)] &lt;- c(\"S\", \"NW\")\ncompass_code\n\n[1] \"N\"          \"North East\" \"East\"       \"South East\" \"S\"         \n[6] \"South West\" \"West\"       \"NW\"        \n\n\n\ncompass_code[c(2:4, 6:7)] &lt;- c(\"NE\", \"E\", \"SE\", \"SW\", \"W\")\ncompass_code\n\n[1] \"N\"  \"NE\" \"E\"  \"SE\" \"S\"  \"SW\" \"W\"  \"NW\""
+  },
+  {
+    "objectID": "notes/lecture-02.html#arguments-with-default-values",
+    "href": "notes/lecture-02.html#arguments-with-default-values",
+    "title": "Lecture 02: Introduction to R",
+    "section": "4.1 Arguments with Default Values",
+    "text": "4.1 Arguments with Default Values\nThe pull() function in dplyr extracts a single column from a data frame and returns it as a vector. The 2nd and 3rd argument (var and name) are followed by =. The absence of = for .data implies that it does not have a default value.\nUsing the default argument values:\n\nhead(pull(starwars, height))\n\n[1] 172 167  96 202 150 178\n\n\nIt is equivalent to:\n\nhead(starwars$height)\n\n[1] 172 167  96 202 150 178"
+  },
+  {
+    "objectID": "notes/lecture-02.html#argument-matching-by-name",
+    "href": "notes/lecture-02.html#argument-matching-by-name",
+    "title": "Lecture 02: Introduction to R",
+    "section": "4.2 Argument Matching by Name",
+    "text": "4.2 Argument Matching by Name\nSpecify the argument values:\n\nhead(pull(.data = starwars, var = eye_color, name = name), 5)\n\nLuke Skywalker          C-3PO          R2-D2    Darth Vader    Leia Organa \n        \"blue\"       \"yellow\"          \"red\"       \"yellow\"        \"brown\" \n\n\nDefault values do not need to be explicitly specified:\n\np_1 &lt;- pull(.data = starwars, var = eye_color, name = NULL)\np_2 &lt;- pull(.data = starwars, var = eye_color)\nidentical(p_1, p_2)\n\n[1] TRUE\n\n\nArguments without default values must be specified:\n\n# pull(var = eye_color, name = NULL) # Error: object 'eye_color' not found\n\nThe order of the arguments does not matter when using names:\n\np_3 &lt;- pull(.data = starwars, var = eye_color, name = name)\np_4 &lt;- pull(name = name, .data = starwars, var = eye_color)\nidentical(p_3, p_4)\n\n[1] TRUE"
+  },
+  {
+    "objectID": "notes/lecture-02.html#argument-matching-by-position",
+    "href": "notes/lecture-02.html#argument-matching-by-position",
+    "title": "Lecture 02: Introduction to R",
+    "section": "4.3 Argument Matching by Position",
+    "text": "4.3 Argument Matching by Position\nWhen matching by position, the arguments can be omitted:\n\np_5 &lt;- pull(.data = starwars, var = eye_color, name = name)\np_6 &lt;- pull(starwars, eye_color, name)\nidentical(p_5, p_6)\n\n[1] TRUE\n\n\nWhen using mixed matching, once an argument is matched by name, the remaining arguments should also be matched by name. Otherwise, the code would be difficult to read.\n\nhead(pull(starwars, eye_color, name = name), 5)\n\nLuke Skywalker          C-3PO          R2-D2    Darth Vader    Leia Organa \n        \"blue\"       \"yellow\"          \"red\"       \"yellow\"        \"brown\" \n\n\ntidyverse style guide stylistically preferred version:\n\nhead(pull(starwars, var = eye_color, name = name))\n\nLuke Skywalker          C-3PO          R2-D2    Darth Vader    Leia Organa \n        \"blue\"       \"yellow\"          \"red\"       \"yellow\"        \"brown\" \n     Owen Lars \n        \"blue\""
+  },
+  {
+    "objectID": "notes/lecture-02.html#pipes-important",
+    "href": "notes/lecture-02.html#pipes-important",
+    "title": "Lecture 02: Introduction to R",
+    "section": "4.4 Pipes (Important!)",
+    "text": "4.4 Pipes (Important!)\nData analysis often involves a lengthy sequence of function calls. Consider the following sequence of steps:\n\nTake the built-in vector rivers, which contains the lengths of 141 major North American rivers in miles.\nExtract a random subset of five values from rivers using the sample() function.\nCalculate the sum of the subset.\nCompute the cumulative distribution function for the normal distribution (mean 2000, sd 1000), evaluated at the sum.\nPrint the result, showing five digits after the decimal point.\n\nThis sequence can be implemented using the following code:\n\ntmp_1 &lt;- sample(rivers, 5)\ntmp_2 &lt;- sum(tmp_1)\ntmp_3 &lt;- pnorm(tmp_2, mean = 2000, sd = 1000)\nprint(tmp_3, digits = 5)\n\n[1] 0.90923\n\n\nDisadvantage: tmp_1, tmp_2, and tmp_3 are required for temporary storage. Possible to eliminate them a long chain of function calls:\n\nprint(pnorm(sum(sample(rivers, 5)), mean = 2000, sd = 1000), digits = 5)\n\n[1] 0.73794\n\n\nDisadvantage: Hard to read and analyze. R’s pipe operator |&gt; was introduced in 2021, which means “then” in the code flow.\nPipe version:\n\nrivers |&gt;\n  sample(5) |&gt;\n  sum() |&gt;\n  pnorm(mean = 2000, sd = 1000) |&gt;\n  print(digits = 5)\n\n[1] 0.5859\n\n\n\n\n\n\n\n\nNote\n\n\n\nAvoid using pipes for simple operations, e.g., a single function call. When there are too many pipes, consider creating intermediate variables."
+  },
+  {
+    "objectID": "notes/lecture-02.html#numeric-operations-1",
+    "href": "notes/lecture-02.html#numeric-operations-1",
+    "title": "Lecture 02: Introduction to R",
+    "section": "5.1 Numeric Operations",
+    "text": "5.1 Numeric Operations\nR’s numeric operations work on vectors element-wise by default. When two vectors of the same length are operated on, R applies the operation to each corresponding pair of elements.\nWhen vectors are of different lengths, R recycles (repeats) the shorter vector until it matches the length of the longer one. If the longer length is not a multiple of the shorter length, R issues a warning.\n\n5.1.1 Element-wise operations\nR applies arithmetic operators to vectors element by element. Given two vectors of the same length, the operation is performed on each corresponding pair of elements.\n\nx &lt;- c(9, 5, 4, 5)\ny &lt;- c(4, 9, 3, 6)\nx + y\n\n[1] 13 14  7 11\n\n\n\nx / y\n\n[1] 2.2500000 0.5555556 1.3333333 0.8333333\n\n\n\n\n5.1.2 Mathematical functions\nBroadcasting a scalar:\nWhen a scalar is combined with a vector, R applies the operation to every element of the vector. This is known as broadcasting.\n\nx + 3\n\n[1] 12  8  7  8\n\n\nBroadcasting a vector:\nWhen a vector is combined with another vector of the same length, R applies the operation element-wise.\n\nx + c(1, -1, -1)\n\nWarning in x + c(1, -1, -1): longer object length is not a multiple of shorter\nobject length\n\n\n[1] 10  4  3  6\n\n\nLine should break after an operator:\nR allows long expressions to be split across multiple lines. The convention is to break after an operator so the continuation is visually clear.\n\n1 + 2 + 3 + 4 + 5 + 6 + 7 + 8 + 9 + 10 +\n  11 + 12 + 13 + 14 + 15 + 16 + 17 + 18 + 19 + 20\n\n[1] 210\n\n\nMathematical function examples:\nR provides built-in mathematical functions that accept vector inputs and return vector outputs:\n\nsqrt(c(9, 16, 25))\n\n[1] 3 4 5\n\nexp(0:3)\n\n[1]  1.000000  2.718282  7.389056 20.085537\n\nlog10(c(1, 10, 100))\n\n[1] 0 1 2\n\n\n\n\n5.1.3 Broadcasting\nVector recycling occurs when two vectors of different lengths are combined. R repeats (recycles) the shorter vector until it matches the length of the longer one.\n\n\n\n\n\n\nWarning\n\n\n\nIf the longer length is not an exact multiple of the shorter length, R issues a warning.\n\n\n\nr &lt;- seq(from = 6, to = 2, by = -2)\ns &lt;- 3:1\nr[r - s]\n\n[1] 2 4 6\n\n\n\nt &lt;- c(TRUE, TRUE, FALSE, FALSE, FALSE)\nu &lt;- c(FALSE, FALSE, TRUE, TRUE, FALSE)\nt[u]\n\n[1] FALSE FALSE\n\n\n\nt &lt;- c(TRUE, TRUE, FALSE, FALSE, FALSE)\nu &lt;- c(TRUE, FALSE, TRUE)\nt[u]\n\n[1]  TRUE FALSE FALSE\n\n\n\n\n\n\n\n\nNote\n\n\n\nWhen the shorter vector is recycled, its elements are repeated from the beginning.\n\n\n\nt &lt;- c(TRUE, TRUE, FALSE, FALSE, FALSE)\nu &lt;- c(TRUE, FALSE, TRUE, TRUE, FALSE)\nt[u]\n\n[1]  TRUE FALSE FALSE"
+  },
+  {
+    "objectID": "notes/lecture-02.html#appendix-list-of-numeric-operations",
+    "href": "notes/lecture-02.html#appendix-list-of-numeric-operations",
+    "title": "Lecture 02: Introduction to R",
+    "section": "5.2 Appendix — List of Numeric Operations",
+    "text": "5.2 Appendix — List of Numeric Operations\nThis appendix provides a quick reference for the most commonly used numeric operations in R.\n\n5.2.1 Basic Arithmetic Operations\nR supports all standard arithmetic operators. Most of these work element-wise on vectors, applying the operation to each pair of corresponding elements. The modulo operator %% and integer division operator %/% are particularly useful for data manipulation tasks such as checking divisibility or extracting specific digits.\n\n\n\nOperator\nDescription\nExample Call\nExample Result\n\n\n\n\nx + y\nx plus y\n3 + 5\n8\n\n\nx - y\nx minus y\n10 - 4\n6\n\n\nx * y\nx multiplied by y\n3 * 7\n21\n\n\nx / y\nx divided by y\n10 / 4\n2.5\n\n\nx^y or x**y\nx raised to the power y\n2^3\n8\n\n\nx %/% y\nInteger division\n7 %/% 3\n2\n\n\nx %% y\nx modulo y\n7 %% 3\n1\n\n\n\n\n\n5.2.2 Basic Summary Statistics\nR provides a comprehensive set of built-in functions for computing summary statistics. These functions accept vector inputs and return a single numeric value that describes some aspect of the data. Most of these functions have an na.rm argument that can be set to TRUE to ignore missing values.\n\n\n\n\n\n\n\n\n\nFunction\nDescription\nExample Call\nExample Result\n\n\n\n\nlength()\nNumber of elements\nlength(c(1, 0, 8, 2, 1))\n5\n\n\nsum()\nSum\nsum(c(1, 0, 8, 2, 1))\n12\n\n\nmean()\nMean (average)\nmean(c(1, 0, 8, 2, 1))\n2.4\n\n\nmedian()\nMedian\nmedian(c(1, 0, 8, 2, 1))\n1\n\n\nsd()\nStandard Deviation\nsd(c(1, 0, 8, 2, 1))\n3.209\n\n\nvar()\nVariance\nvar(c(1, 0, 8, 2, 1))\n10.3\n\n\nIQR()\nInterquartile range\nIQR(c(1, 0, 8, 2, 1))\n1\n\n\nmin()\nMinimum\nmin(c(1, 0, 8, 2, 1))\n0\n\n\nmax()\nMaximum\nmax(c(1, 0, 8, 2, 1))\n8\n\n\nrange()\nRange\nrange(c(1, 0, 8, 2, 1))\nc(0, 8)\n\n\nquantile()\nQuantiles\nquantile(c(1, 0, 8, 2, 1), probs = c(0.25, 0.75))\n25% = 1, 75% = 2\n\n\ncov()\nCovariance\ncov(c(1, 0, 8, 2, 1), 1:5)\n0.5\n\n\ncor()\nCorrelation\ncor(c(1, 0, 8, 2, 1), 1:5)\n0.099\n\n\n\n\n\n5.2.3 Basic Mathematical Functions\nR includes a wide range of mathematical functions that operate on vectors element-wise. These include absolute value, roots, factorials, exponentials, logarithms, and trigonometric functions. R also provides functions for working with the normal distribution, which are essential for statistical analysis and hypothesis testing.\n\n\n\n\n\n\n\nFunction\nDescription\n\n\n\n\nabs(x)\nAbsolute value\n\n\nsqrt(x)\nSquare root\n\n\nfactorial(x)\nFactorial\n\n\nexp(x)\nExponential function\n\n\nlog(x)\nNatural logarithm\n\n\nlog10(x)\nLogarithm with base 10\n\n\ncos(x), sin(x), tan(x)\nTrigonometric functions\n\n\nacos(x), asin(x), atan(x)\nInverse trigonometric functions\n\n\ndnorm(x, mean, sd)\nDensity function of the normal distribution\n\n\npnorm(x, mean, sd)\nCumulative distribution function of the normal distribution"
+  },
+  {
+    "objectID": "notes/lecture-02.html#logical-operators",
+    "href": "notes/lecture-02.html#logical-operators",
+    "title": "Lecture 02: Introduction to R",
+    "section": "6.1 Logical Operators",
+    "text": "6.1 Logical Operators\nLogical operators in R work element-wise on logical vectors. The three primary logical operators are:\n\n& — AND: returns TRUE only when both corresponding elements are TRUE\n| — OR: returns TRUE when at least one of the corresponding elements is TRUE\n! — NOT: inverts the logical value of each element\n\n\nExample: Analyzing website login attempts using two-factor authentication (2FA).\n\n\npassword &lt;- c(TRUE, TRUE, FALSE, FALSE)\ntwo_factor &lt;- c(FALSE, TRUE, FALSE, TRUE)\n\nAccess is granted only if both the password and 2FA are correct:\n\npassword & two_factor\n\n[1] FALSE  TRUE FALSE FALSE\n\n\nIf access is granted given at least one correct input:\n\npassword | two_factor\n\n[1]  TRUE  TRUE FALSE  TRUE\n\n\nNOT operator: !password indicates whether a customer used a wrong password:\n\n!password\n\n[1] FALSE FALSE  TRUE  TRUE\n\n\nCombining logical conditions:\nLogical operators can be combined to form complex conditions. For example, to find customers who are female, younger than 40, and neither married nor divorced:\n\"female\" & age &lt; 40 & !(status %in% c(\"married\", \"divorced\"))\n\nQuestion: What is the difference between & and &&?"
+  },
+  {
+    "objectID": "notes/lecture-02.html#comparison-operators",
+    "href": "notes/lecture-02.html#comparison-operators",
+    "title": "Lecture 02: Introduction to R",
+    "section": "6.2 Comparison Operators",
+    "text": "6.2 Comparison Operators\nComparison operators compare two vectors element-wise and return a logical vector. The operators are:\n\n\n\n\n\n\n\nOperator\nDescription: TRUE if and only if …\n\n\n\n\nx == y\nx equals y\n\n\nx != y\nx does not equal y\n\n\nx &lt; y\nx is less than y\n\n\nx &gt; y\nx is greater than y\n\n\nx &lt;= y\nx is less than or equal to y\n\n\nx &gt;= y\nx is greater than or equal to y\n\n\ndplyr::between(x, left, right)\nx is between left and right, inclusively\n\n\nx %in% y\nx is an element in y\n\n\n\nExample — comparing vectors of different lengths:\n\nvector1 &lt;- c(10, 20, 30, 40)\nvector2 &lt;- c(15, 20, 25, 40, 30)\nvector3 &lt;- c(10, 20, 30, 40, 30)\nvector1 == vector2\n\nWarning in vector1 == vector2: longer object length is not a multiple of\nshorter object length\n\n\n[1] FALSE  TRUE FALSE  TRUE FALSE\n\n\n\n\n\n\n\n\nWarning\n\n\n\nBe careful when working with vectors of different lengths. R recycles the shorter vector.\n\n\nChecking if two vectors are exactly the same:\n\nidentical(vector1, vector3)\n\n[1] FALSE\n\nall(vector1 == vector2)\n\nWarning in vector1 == vector2: longer object length is not a multiple of\nshorter object length\n\n\n[1] FALSE\n\nsum(vector1 - vector2) == 0\n\nWarning in vector1 - vector2: longer object length is not a multiple of shorter\nobject length\n\n\n[1] FALSE\n\n\nNumbers divisible by 2:\n\nnumbers &lt;- c(31, -50, 93, 29, 12, 8)\nnumbers %% 2 == 0\n\n[1] FALSE  TRUE FALSE FALSE  TRUE  TRUE\n\n\nString comparison:\n\n\"farewell\" == \"welcome\"\n\n[1] FALSE\n\n\"farewell\" &lt; \"welcome\"\n\n[1] TRUE\n\n\n\n\n\n\n\n\nNote\n\n\n\nAlphabetical order depends on the user’s “locale,” a set of parameters from which R infers the user’s location. In Danish, “z” falls between “y” and “aa”, whereas in Estonian “z” comes between “s” and “t”. Throughout this course, we adhere to standard English alphabetical order."
+  },
+  {
+    "objectID": "notes/lecture-02.html#na-nan-and-null",
+    "href": "notes/lecture-02.html#na-nan-and-null",
+    "title": "Lecture 02: Introduction to R",
+    "section": "7.1 NA, NaN, and NULL",
+    "text": "7.1 NA, NaN, and NULL\n\n\n\n\n\n\n\nValue\nMeaning\n\n\n\n\nNA\nExists in principle but not available, e.g., missing ages in titanic\n\n\nNaN\nExists in principle but not a number, e.g., sqrt(-3)\n\n\nNULL\nNon-existent object\n\n\n\nNA can adjust its class to match the context:\n\nx &lt;- c(1, 2, NA, 5)\nis.na(x)\n\n[1] FALSE FALSE  TRUE FALSE\n\n\nNaN (Not a Number) results from undefined mathematical operations:\n\n0 / 0\n\n[1] NaN\n\n\n\nInf / Inf\n\n[1] NaN\n\n\n\nlog(-1)\n\nWarning in log(-1): NaNs produced\n\n\n[1] NaN\n\n\nNULL represents a non-existent object. Unlike NA, NULL has length 0:\n\nz &lt;- c(1, Inf, NULL, NaN, NA)\nz\n\n[1]   1 Inf NaN  NA\n\nis.nan(z)\n\n[1] FALSE FALSE  TRUE FALSE\n\n\n\na &lt;- NULL\nexists(\"a\")\n\n[1] TRUE\n\nis.null(a)\n\n[1] TRUE\n\n\n\n\n\n\n\n\nNote\n\n\n\nNever use == NULL. Use is.null() instead.\nComparing with == NULL does not work as expected in R. For example, when doing x == NULL, R recycles NULL and returns logical(0) (an empty logical vector) rather than FALSE. This can lead to subtle bugs in conditional statements where you expect a single TRUE or FALSE value.\n\n\nHandling NA in arithmetic:\nWhen a vector contains NA, most operations return NA unless explicitly told to ignore missing values:\n\nmean(x)\n\n[1] NA\n\nmean(x, na.rm = TRUE)\n\n[1] 2.666667\n\n\nCheck for any missing values using anyNA():\n\nanyNA(x)\n\n[1] TRUE"
+  },
+  {
+    "objectID": "notes/lecture-02.html#handling-missing-values-in-class-exercise",
+    "href": "notes/lecture-02.html#handling-missing-values-in-class-exercise",
+    "title": "Lecture 02: Introduction to R",
+    "section": "7.2 Handling Missing Values: In-Class Exercise",
+    "text": "7.2 Handling Missing Values: In-Class Exercise\nRun the following code on your computer and calculate the mean values of df1 and df2, respectively. As a team, try to find the right built-in function for calculation and the right argument to deal with missing values. What do you observe from the results?\n\nset.seed(0)\n\ndf &lt;- rnorm(100, mean = 5, sd = 5) |&gt;\n  format(digits = 2) |&gt;\n  as.numeric()\n\nindex1 &lt;- sample(1:100, 3)\nindex2 &lt;- sample(1:100, 3)\n\ndf1 &lt;- df\ndf2 &lt;- df\n\ndf1[index1] &lt;- NA\ndf2[index2] &lt;- NaN"
+  },
+  {
+    "objectID": "notes/lecture-02.html#if_else",
+    "href": "notes/lecture-02.html#if_else",
+    "title": "Lecture 02: Introduction to R",
+    "section": "8.1 if_else()",
+    "text": "8.1 if_else()\nif_else() is a vectorised version of the base R ifelse(). It takes a logical condition and returns one value if TRUE and another if FALSE, applied element-wise.\n\nv1 &lt;- c(31, -50, 93, NA, 29, -44, 93)\nv1 %% 2 == 0\n\n[1] FALSE  TRUE FALSE    NA FALSE  TRUE FALSE\n\n\n\nif_else(v1 %% 2 == 0, \"Yes\", \"No\")\n\n[1] \"No\"  \"Yes\" \"No\"  NA    \"No\"  \"Yes\" \"No\" \n\n\nif_else() also works with numeric outputs:\n\nif_else(v1 %% 2 == 0, seq_along(v1), 0)\n\n[1]  0  2  0 NA  0  6  0\n\n\nNested if_else() can handle multiple conditions, but becomes hard to read:\n\nv2 &lt;- c(31, -50, 93, NA, 29, -44, 93)\nif_else(\n  v2 %% 2 == 0, \"even\",\n  if_else(v2 %% 2 == 1, \"odd\", \"neither even nor odd\")\n)\n\n[1] \"odd\"  \"even\" \"odd\"  NA     \"odd\"  \"even\" \"odd\""
+  },
+  {
+    "objectID": "notes/lecture-02.html#case_when",
+    "href": "notes/lecture-02.html#case_when",
+    "title": "Lecture 02: Introduction to R",
+    "section": "8.2 case_when()",
+    "text": "8.2 case_when()\nFor multiple conditions, case_when() provides a cleaner, more readable syntax using the ~ (tilde) operator:\n\ncase_when(\n  v2 %% 2 == 0 ~ \"even\",\n  v2 %% 2 == 1 ~ \"odd\",\n  !is.na(v2) ~ \"neither even nor odd\"\n)\n\n[1] \"odd\"  \"even\" \"odd\"  NA     \"odd\"  \"even\" \"odd\""
+  },
+  {
+    "objectID": "notes/lecture-02.html#case_match",
+    "href": "notes/lecture-02.html#case_match",
+    "title": "Lecture 02: Introduction to R",
+    "section": "8.3 case_match()",
+    "text": "8.3 case_match()\ncase_match() is useful when matching exact values rather than conditions:\n\ndirections &lt;- c(\n  \"east\", \"west\", \"north\", \"north\", NA, \"east\",\n  \"south\", \"west\", \"south\", \"east\", \"north\", \"zigzag\"\n)\n\n\nDisadvantage: code repetition with nested if_else():\n\nif_else(\n  directions == \"north\" ~ \"N\",\n  directions == \"east\" ~ \"E\",\n  directions == \"south\" ~ \"S\",\n  directions == \"west\" ~ \"W\"\n)\n\n\nRecommendation: Use if_else() in single-condition and case_when() and case_match() in multiple conditions. An alternative to dplyr’s if_else() is the built-in function ifelse(). However, if_else() offers faster and more intuitive results.\n\ncase_when(\n  directions == \"north\" ~ \"N\",\n  directions == \"east\" ~ \"E\",\n  directions == \"south\" ~ \"S\",\n  directions == \"west\" ~ \"W\"\n)\n\n [1] \"E\" \"W\" \"N\" \"N\" NA  \"E\" \"S\" \"W\" \"S\" \"E\" \"N\" NA \n\n\n\ncase_match(\n  directions,\n  \"north\" ~ \"N\",\n  \"east\" ~ \"E\",\n  \"south\" ~ \"S\",\n  \"west\" ~ \"W\"\n)\n\nWarning: `case_match()` was deprecated in dplyr 1.2.0.\nℹ Please use `recode_values()` instead.\n\n\n [1] \"E\" \"W\" \"N\" \"N\" NA  \"E\" \"S\" \"W\" \"S\" \"E\" \"N\" NA"
+  },
+  {
+    "objectID": "notes/lecture-02.html#function-basics",
+    "href": "notes/lecture-02.html#function-basics",
+    "title": "Lecture 02: Introduction to R",
+    "section": "9.1 Function Basics",
+    "text": "9.1 Function Basics\n\nlibrary(stringr)\n\n\nsay_hello &lt;- function(name) {\n  print(str_c(\"Hello, \", name, \"!\"))\n}\nsay_hello(\"Parallel Universe\")\n\n[1] \"Hello, Parallel Universe!\""
+  },
+  {
+    "objectID": "notes/lecture-02.html#default-values",
+    "href": "notes/lecture-02.html#default-values",
+    "title": "Lecture 02: Introduction to R",
+    "section": "9.2 Default Values",
+    "text": "9.2 Default Values\nFunctions can have default parameter values:\n\nsay_hello &lt;- function(name = \"World\") {\n  print(str_c(\"Hello, \", name, \"!\"))\n}\nsay_hello()\n\n[1] \"Hello, World!\""
+  },
+  {
+    "objectID": "notes/lecture-02.html#return-function",
+    "href": "notes/lecture-02.html#return-function",
+    "title": "Lecture 02: Introduction to R",
+    "section": "9.3 return() Function",
+    "text": "9.3 return() Function\nExplicit return:\n\nincrement &lt;- function(x) {\n  return(x + 1)\n}\nincrement(5)\n\n[1] 6\n\n\nOptional return():\nR implicitly returns the last evaluated expression, so return() is optional:\n\nincrement &lt;- function(x) {\n  x + 1\n}\nincrement(5)\n\n[1] 6\n\n\nReturn NULL example:\nSome functions return NULL implicitly (e.g., message(), print()):\n\nmy_return_null_example &lt;- function() {\n  message(\"I am showing a lot of\")\n}\nz &lt;- my_return_null_example()\n\nI am showing a lot of\n\nz\n\nNULL\n\n\n\n\n\n\n\n\nNote\n\n\n\nCheck tidyverse style guide for recommended practices of using return()."
+  },
+  {
+    "objectID": "notes/lecture-02.html#data-frames-tibble-1-creating-data-frames",
+    "href": "notes/lecture-02.html#data-frames-tibble-1-creating-data-frames",
+    "title": "Lecture 02: Introduction to R",
+    "section": "10.1 Data Frames (tibble) (1) — Creating Data Frames",
+    "text": "10.1 Data Frames (tibble) (1) — Creating Data Frames\nData Frame: rectangular shaped table. Columns: variables. Rows: observations. Simply put, a data frame is a well-formatted table.\n\n10.1.1 Row-Wise Creation\ntibble::tribble() allows you to create data frames by specifying rows one at a time. Column names are preceded by ~:\n\ntimetable &lt;- tibble::tribble(\n  ~Week, ~`Monday (9–11am)`, ~`Thursday (9–11am)`,\n  1, \"Intro to `RStudio` and `Quarto`\", \"Software Setup\",\n  2, \"Intro to `R`\", \"**Assessment 1**\",\n  3, \"`tidyverse` Single-Table Queries\", \"Team Project Description\",\n  4, \"`tidyverse` Join-Table Queries\", \"**Assessment 2**\",\n  5, \"Time Series Basics\", \"Team Project Q&A\",\n  6, \"Data Engineering Case Study\", \"**Assessment 3**\",\n  8, \"Data Visualization Using `ggplot2`\", \"Team Project Q&A\",\n  9, \"Exploring `geom`\", \"**Assessment 4**\",\n  10, \"Aesthetic Mappings\", \"Team Project Q&A\",\n  11, \"Intro to `gt` Tables\", \"**Assessment 5**\",\n  12, \"Visualizing Geospatial Data\", \"Team Project Q&A\",\n  13, \"Team Project Evaluation\", \"Team Project Evaluation\"\n)\ntimetable\n\n# A tibble: 12 × 3\n    Week `Monday (9–11am)`                  `Thursday (9–11am)`     \n   &lt;dbl&gt; &lt;chr&gt;                              &lt;chr&gt;                   \n 1     1 Intro to `RStudio` and `Quarto`    Software Setup          \n 2     2 Intro to `R`                       **Assessment 1**        \n 3     3 `tidyverse` Single-Table Queries   Team Project Description\n 4     4 `tidyverse` Join-Table Queries     **Assessment 2**        \n 5     5 Time Series Basics                 Team Project Q&A        \n 6     6 Data Engineering Case Study        **Assessment 3**        \n 7     8 Data Visualization Using `ggplot2` Team Project Q&A        \n 8     9 Exploring `geom`                   **Assessment 4**        \n 9    10 Aesthetic Mappings                 Team Project Q&A        \n10    11 Intro to `gt` Tables               **Assessment 5**        \n11    12 Visualizing Geospatial Data        Team Project Q&A        \n12    13 Team Project Evaluation            Team Project Evaluation \n\n\n\n\n10.1.2 Column-Wise Creation\ntibble() creates data frames column by column, similar to data.frame():\n\nny_mayor &lt;- tibble(\n  borough = c(\"Bronx\", \"Brooklyn\", \"Manhattan\", \"Queens\", \"Staten Island\"),\n  de_blasio = c(117712, 254755, 190312, 171867, 25466),\n  malliotakis = c(23715, 74343, 53853, 94911, 70125),\n  other = c(3138, 10602, 10186, 8974, 2747)\n)\nny_mayor\n\n# A tibble: 5 × 4\n  borough       de_blasio malliotakis other\n  &lt;chr&gt;             &lt;dbl&gt;       &lt;dbl&gt; &lt;dbl&gt;\n1 Bronx            117712       23715  3138\n2 Brooklyn         254755       74343 10602\n3 Manhattan        190312       53853 10186\n4 Queens           171867       94911  8974\n5 Staten Island     25466       70125  2747\n\n\nBoth approaches produce tibbles with the same class:\n\nclass(timetable)\n\n[1] \"tbl_df\"     \"tbl\"        \"data.frame\"\n\nclass(ny_mayor)\n\n[1] \"tbl_df\"     \"tbl\"        \"data.frame\""
+  },
+  {
+    "objectID": "notes/lecture-02.html#data-frames-tibble-2-working-with-data-frames",
+    "href": "notes/lecture-02.html#data-frames-tibble-2-working-with-data-frames",
+    "title": "Lecture 02: Introduction to R",
+    "section": "10.2 Data Frames (tibble) (2) — Working with Data Frames",
+    "text": "10.2 Data Frames (tibble) (2) — Working with Data Frames\n\n10.2.1 Extracting Data Frame Content\nThere are multiple ways to extract content from a data frame:\nUsing the $ operator:\n\nny_mayor$other\n\n[1]  3138 10602 10186  8974  2747\n\n\n\nny_mayor$\"other\"\n\n[1]  3138 10602 10186  8974  2747\n\n\nUsing double brackets [[ ]] (returns a vector):\n\nny_mayor[[\"other\"]]\n\n[1]  3138 10602 10186  8974  2747\n\n\n\nny_mayor[[4]]\n\n[1]  3138 10602 10186  8974  2747\n\n\nUsing single brackets [ ] (returns a data frame):\n\nny_mayor[4]\n\n# A tibble: 5 × 1\n  other\n  &lt;dbl&gt;\n1  3138\n2 10602\n3 10186\n4  8974\n5  2747\n\n\n\nny_mayor[\"other\"]\n\n# A tibble: 5 × 1\n  other\n  &lt;dbl&gt;\n1  3138\n2 10602\n3 10186\n4  8974\n5  2747\n\n\n\n\n\n\n\n\nNote\n\n\n\nny_mayor[other] will throw an error (object 'other' not found) because R interprets other as a variable name, not a column name.\n\n\nData frame metadata:\n\nnrow(timetable)\n\n[1] 12\n\nncol(timetable)\n\n[1] 3\n\ndim(timetable)\n\n[1] 12  3\n\ncolnames(timetable)\n\n[1] \"Week\"              \"Monday (9–11am)\"   \"Thursday (9–11am)\"\n\n\n\nsummary(ny_mayor)\n\n      borough     de_blasio       malliotakis        other      \n Length   : 5   Min.   : 25466   Min.   :23715   Min.   : 2747  \n N.unique : 5   1st Qu.:117712   1st Qu.:53853   1st Qu.: 3138  \n N.blank  : 0   Median :171867   Median :70125   Median : 8974  \n Min.nchar: 5   Mean   :152022   Mean   :63389   Mean   : 7129  \n Max.nchar:13   3rd Qu.:190312   3rd Qu.:74343   3rd Qu.:10186  \n                Max.   :254755   Max.   :94911   Max.   :10602  \n\n\n\n\n10.2.2 Slice and Filter\nViewing rows:\n\nslice_head(timetable, n = 2)\n\n# A tibble: 2 × 3\n   Week `Monday (9–11am)`               `Thursday (9–11am)`\n  &lt;dbl&gt; &lt;chr&gt;                           &lt;chr&gt;              \n1     1 Intro to `RStudio` and `Quarto` Software Setup     \n2     2 Intro to `R`                    **Assessment 1**   \n\n\n\nslice_tail(timetable, n = 2)\n\n# A tibble: 2 × 3\n   Week `Monday (9–11am)`           `Thursday (9–11am)`    \n  &lt;dbl&gt; &lt;chr&gt;                       &lt;chr&gt;                  \n1    12 Visualizing Geospatial Data Team Project Q&A       \n2    13 Team Project Evaluation     Team Project Evaluation\n\n\n\n\n\n\n\n\nTip\n\n\n\nTry str(timetable) and glimpse(timetable) to inspect the structure of a data frame.\n\n\n\n\n10.2.3 pull(), select(), slice(), filter()\npull() — extract a single column as a vector:\n\npull(ny_mayor, var = de_blasio, name = borough)\n\n        Bronx      Brooklyn     Manhattan        Queens Staten Island \n       117712        254755        190312        171867         25466 \n\n\nSubsetting with base R:\n\nny_mayor[3:5, \"de_blasio\"]\n\n# A tibble: 3 × 1\n  de_blasio\n      &lt;dbl&gt;\n1    190312\n2    171867\n3     25466\n\n\n\nny_mayor[[3, \"de_blasio\"]]\n\n[1] 190312\n\n\n\n\n\n\n\n\nWarning\n\n\n\nny_mayor[[3:5, \"de_blasio\"]] will throw an error — [[ expects a single row index, not a vector.\n\n\nFiltering with filter():\n\nde_blasio_strongholds_1 &lt;-\n  ny_mayor[ny_mayor$de_blasio &gt; ny_mayor$malliotakis, ]\nde_blasio_strongholds_2 &lt;-\n  filter(ny_mayor, de_blasio &gt; malliotakis)\n\n\nidentical(de_blasio_strongholds_1, de_blasio_strongholds_2)\n\n[1] TRUE"
+  },
+  {
+    "objectID": "notes/lecture-02.html#data-frames-tibble-3-subsetting",
+    "href": "notes/lecture-02.html#data-frames-tibble-3-subsetting",
+    "title": "Lecture 02: Introduction to R",
+    "section": "10.3 Data Frames (tibble) (3) — Subsetting",
+    "text": "10.3 Data Frames (tibble) (3) — Subsetting\nSubsetting data frames can be done with base R or tidyverse functions. All approaches below produce the same result:\nColumn subsetting:\n\nny_dfr_1 &lt;- ny_mayor[1:2]\nny_dfr_2 &lt;- ny_mayor[c(\"borough\", \"de_blasio\")]\nny_dfr_3 &lt;- select(ny_mayor, 1:2)\nny_dfr_4 &lt;- select(ny_mayor, borough, de_blasio)\n\n\nidentical(ny_dfr_1, ny_dfr_2)\n\n[1] TRUE\n\nidentical(ny_dfr_1, ny_dfr_3)\n\n[1] TRUE\n\nidentical(ny_dfr_1, ny_dfr_4)\n\n[1] TRUE\n\n\nRow subsetting:\n\nfirst_three_rows_1 &lt;- ny_mayor[2:3, ]\nfirst_three_rows_2 &lt;- slice(ny_mayor, 2:3)\nidentical(first_three_rows_1, first_three_rows_2)\n\n[1] TRUE"
+  },
+  {
+    "objectID": "notes/lecture-02.html#data-frames-tibble-4-modifying-data-frames",
+    "href": "notes/lecture-02.html#data-frames-tibble-4-modifying-data-frames",
+    "title": "Lecture 02: Introduction to R",
+    "section": "10.4 Data Frames (tibble) (4) — Modifying Data Frames",
+    "text": "10.4 Data Frames (tibble) (4) — Modifying Data Frames\n\n10.4.1 Appending Columns\nUse mutate() to add new columns based on existing ones:\n\nmutate(\n  ny_mayor,\n  total = de_blasio + malliotakis + other,\n  de_blasio_pct = 100 * de_blasio / total\n)\n\n# A tibble: 5 × 6\n  borough       de_blasio malliotakis other  total de_blasio_pct\n  &lt;chr&gt;             &lt;dbl&gt;       &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;         &lt;dbl&gt;\n1 Bronx            117712       23715  3138 144565          81.4\n2 Brooklyn         254755       74343 10602 339700          75.0\n3 Manhattan        190312       53853 10186 254351          74.8\n4 Queens           171867       94911  8974 275752          62.3\n5 Staten Island     25466       70125  2747  98338          25.9\n\n\n\n\n10.4.2 Replacing Columns\nmutate() can also replace existing columns:\n\nmutate(\n  ny_mayor,\n  de_blasio = de_blasio * 1000,\n  malliotakis = malliotakis + 1\n)\n\n# A tibble: 5 × 4\n  borough       de_blasio malliotakis other\n  &lt;chr&gt;             &lt;dbl&gt;       &lt;dbl&gt; &lt;dbl&gt;\n1 Bronx         117712000       23716  3138\n2 Brooklyn      254755000       74344 10602\n3 Manhattan     190312000       53854 10186\n4 Queens        171867000       94912  8974\n5 Staten Island  25466000       70126  2747\n\n\n\n\n10.4.3 Appending Rows\nUse add_row() to append new rows:\n\nfictitious_ny &lt;- add_row(\n  ny_mayor,\n  tribble(\n    ~borough, ~de_blasio, ~malliotakis, ~other,\n    \"Bagelburg\", 1, NA, 4,\n    \"Hipster Haven\", 2, 3, 5\n  )\n)\nslice_tail(fictitious_ny, n = 4)\n\n# A tibble: 4 × 4\n  borough       de_blasio malliotakis other\n  &lt;chr&gt;             &lt;dbl&gt;       &lt;dbl&gt; &lt;dbl&gt;\n1 Queens           171867       94911  8974\n2 Staten Island     25466       70125  2747\n3 Bagelburg             1          NA     4\n4 Hipster Haven         2           3     5\n\n\n\n\n10.4.4 Replacing Rows\nUse rows_update() to replace rows by a key column:\n\nrows_update(\n  ny_mayor,\n  tribble(\n    ~borough, ~de_blasio, ~malliotakis, ~other,\n    \"Manhattan\", 0, 1, 2,\n    \"Staten Island\", 3, NA, 4\n  ),\n  by = \"borough\"\n) |&gt;\n  slice(2:5,)\n\n# A tibble: 4 × 4\n  borough       de_blasio malliotakis other\n  &lt;chr&gt;             &lt;dbl&gt;       &lt;dbl&gt; &lt;dbl&gt;\n1 Brooklyn         254755       74343 10602\n2 Manhattan             0           1     2\n3 Queens           171867       94911  8974\n4 Staten Island         3          NA     4"
+  },
+  {
+    "objectID": "notes/lecture-02.html#data-frames-tibble-5-advanced-manipulation",
+    "href": "notes/lecture-02.html#data-frames-tibble-5-advanced-manipulation",
+    "title": "Lecture 02: Introduction to R",
+    "section": "10.5 Data Frames (tibble) (5) — Advanced Manipulation",
+    "text": "10.5 Data Frames (tibble) (5) — Advanced Manipulation\n\n10.5.1 Replacing Arbitrary Cells\nBase R indexing can replace individual cells or blocks of cells:\n\nny_mayor\n\n# A tibble: 5 × 4\n  borough       de_blasio malliotakis other\n  &lt;chr&gt;             &lt;dbl&gt;       &lt;dbl&gt; &lt;dbl&gt;\n1 Bronx            117712       23715  3138\n2 Brooklyn         254755       74343 10602\n3 Manhattan        190312       53853 10186\n4 Queens           171867       94911  8974\n5 Staten Island     25466       70125  2747\n\n\n\nny_mayor_copy &lt;- ny_mayor\nny_mayor_copy[1, \"de_blasio\"] &lt;- 0\n\n\nny_mayor_copy[3:4, c(1, 3)] &lt;- tribble(\n  ~borough, ~malliotakis,\n  \"Bagelburg\", 1,\n  \"Hipster Haven\", NA\n)\nny_mayor_copy\n\n# A tibble: 5 × 4\n  borough       de_blasio malliotakis other\n  &lt;chr&gt;             &lt;dbl&gt;       &lt;dbl&gt; &lt;dbl&gt;\n1 Bronx                 0       23715  3138\n2 Brooklyn         254755       74343 10602\n3 Bagelburg        190312           1 10186\n4 Hipster Haven    171867          NA  8974\n5 Staten Island     25466       70125  2747\n\n\n\n\n10.5.2 Renaming Columns\nUsing rename():\n\nrename(ny_mayor, democrat = de_blasio, republican = malliotakis)\n\n# A tibble: 5 × 4\n  borough       democrat republican other\n  &lt;chr&gt;            &lt;dbl&gt;      &lt;dbl&gt; &lt;dbl&gt;\n1 Bronx           117712      23715  3138\n2 Brooklyn        254755      74343 10602\n3 Manhattan       190312      53853 10186\n4 Queens          171867      94911  8974\n5 Staten Island    25466      70125  2747\n\n\nUsing select() with renaming syntax:\n\nselect(ny_mayor, democrat = de_blasio, republican = malliotakis, other)\n\n# A tibble: 5 × 3\n  democrat republican other\n     &lt;dbl&gt;      &lt;dbl&gt; &lt;dbl&gt;\n1   117712      23715  3138\n2   254755      74343 10602\n3   190312      53853 10186\n4   171867      94911  8974\n5    25466      70125  2747"
+  },
+  {
+    "objectID": "notes/lecture-02.html#factors-1-types-of-data",
+    "href": "notes/lecture-02.html#factors-1-types-of-data",
+    "title": "Lecture 02: Introduction to R",
+    "section": "11.1 Factors (1) — Types of Data",
+    "text": "11.1 Factors (1) — Types of Data\nfactor is R’s data structure for representing categorical data. There are three main types of data that factors can represent:\n\nIdentifiers: Unique values associated with individual observations. Examples include:\n\nNames of US states\nPassport numbers\nBayer names that identify stars in the sky\n\nQuantitative data: Numbers that allow meaningful arithmetic operations. Example:\n\nUS state area (available in R as built-in numerical state.area vector)\nHeight of a person\nDiameter of a star\n\nCategorical data: Observations split into a small number of groups. Example:\n\nRegion of a US state (Northeast, South, North Central, West)\nUndergraduate years in college (Year 1, Year 2, Year 3, Year 4)\nThe grades you can have (A, B, C, D, F)"
+  },
+  {
+    "objectID": "notes/lecture-02.html#factors-2-working-with-factors",
+    "href": "notes/lecture-02.html#factors-2-working-with-factors",
+    "title": "Lecture 02: Introduction to R",
+    "section": "11.2 Factors (2) — Working with Factors",
+    "text": "11.2 Factors (2) — Working with Factors\n\nlibrary(forcats)\n\nCreating factors:\n\nfactor(c(\"Pomposo\", \"Colossale\", \"Pomposo\", \"Regolare\"))\n\n[1] Pomposo   Colossale Pomposo   Regolare \nLevels: Colossale Pomposo Regolare\n\n\nSetting custom levels:\n\nsizes &lt;- factor(\n  c(\"Pomposo\", \"Colossale\", \"Pomposo\", \"Regolare\"),\n  levels = c(\"Modesto\", \"Regolare\", \"Pomposo\", \"Colossale\")\n)\nsizes\n\n[1] Pomposo   Colossale Pomposo   Regolare \nLevels: Modesto Regolare Pomposo Colossale\n\n\n\nsizes_with_piccolo &lt;- factor(\n  c(\"Colossale\", \"Regolare\", \"Modesto\", \"Piccolo\"),\n  levels = c(\"Modesto\", \"Regolare\", \"Pomposo\", \"Colossale\")\n)\nsizes_with_piccolo\n\n[1] Colossale Regolare  Modesto   &lt;NA&gt;     \nLevels: Modesto Regolare Pomposo Colossale\n\n\n\nlevels(sizes)\n\n[1] \"Modesto\"   \"Regolare\"  \"Pomposo\"   \"Colossale\"\n\nnlevels(sizes)\n\n[1] 4\n\n\nRecode factor levels with forcats::fct_recode():\n\nabbreviated_sizes &lt;- fct_recode(\n  sizes,\n  m = \"Modesto\",\n  r = \"Regolare\",\n  p = \"Pomposo\",\n  c = \"Colossale\"\n)\nabbreviated_sizes\n\n[1] p c p r\nLevels: m r p c\n\n\nCollapse same category with different names using forcats::fct_collapse():\n\nsizes_with_big &lt;- factor(c(\"Pomposo\", \"Big\", \"r\"))\nfct_collapse(sizes_with_big, p = c(\"Pomposo\", \"Big\"))\n\n[1] p p r\nLevels: p r"
+  },
+  {
+    "objectID": "notes/lecture-02.html#factors-3-use-cases",
+    "href": "notes/lecture-02.html#factors-3-use-cases",
+    "title": "Lecture 02: Introduction to R",
+    "section": "11.3 Factors (3) — Use Cases",
+    "text": "11.3 Factors (3) — Use Cases\n\n11.3.1 Counting and Sorting Levels by Frequency\n\nstr(gss_cat)\n\ntibble [21,483 × 9] (S3: tbl_df/tbl/data.frame)\n $ year   : int [1:21483] 2000 2000 2000 2000 2000 2000 2000 2000 2000 2000 ...\n $ marital: Factor w/ 6 levels \"No answer\",\"Never married\",..: 2 4 5 2 4 6 2 4 6 6 ...\n $ age    : int [1:21483] 26 48 67 39 25 25 36 44 44 47 ...\n $ race   : Factor w/ 4 levels \"Other\",\"Black\",..: 3 3 3 3 3 3 3 3 3 3 ...\n $ rincome: Factor w/ 16 levels \"No answer\",\"Don't know\",..: 8 8 16 16 16 5 4 9 4 4 ...\n $ partyid: Factor w/ 10 levels \"No answer\",\"Don't know\",..: 6 5 7 6 9 10 5 8 9 4 ...\n $ relig  : Factor w/ 16 levels \"No answer\",\"Don't know\",..: 15 15 15 6 12 15 5 15 15 15 ...\n $ denom  : Factor w/ 30 levels \"No answer\",\"Don't know\",..: 25 23 3 30 30 25 30 15 4 25 ...\n $ tvhours: int [1:21483] 12 NA 2 4 1 NA 3 NA 0 3 ...\n\n\n\nlevels(gss_cat$race)\n\n[1] \"Other\"          \"Black\"          \"White\"          \"Not applicable\"\n\n\n\nfct_count(gss_cat$race)\n\n# A tibble: 4 × 2\n  f                  n\n  &lt;fct&gt;          &lt;int&gt;\n1 Other           1959\n2 Black           3129\n3 White          16395\n4 Not applicable     0\n\n\n\nfct_count(fct_infreq(gss_cat$race))\n\n# A tibble: 4 × 2\n  f                  n\n  &lt;fct&gt;          &lt;int&gt;\n1 White          16395\n2 Black           3129\n3 Other           1959\n4 Not applicable     0\n\n\n\n\n\n\n\n\nNote\n\n\n\ngss_cat contains 21,483 responses in the General Social Survey. This biannual survey, conducted by the National Opinion Research Center at the University of Chicago, collects demographic information from representative respondents in the US population, along with their opinions, attitudes, and behaviors."
+  },
+  {
+    "objectID": "notes/lecture-02.html#factors-4-advanced-factor-operations",
+    "href": "notes/lecture-02.html#factors-4-advanced-factor-operations",
+    "title": "Lecture 02: Introduction to R",
+    "section": "11.4 Factors (4) — Advanced Factor Operations",
+    "text": "11.4 Factors (4) — Advanced Factor Operations\n\n11.4.1 Drop Unused Factor Levels\n\nraces &lt;- gss_cat$race\nlevels(fct_drop(races))\n\n[1] \"Other\" \"Black\" \"White\"\n\n\n\n\n11.4.2 Ordered Factors\nNominal factors cannot be compared:\n\nsizes &gt; \"Regolare\"\n\nWarning in Ops.factor(sizes, \"Regolare\"): '&gt;' not meaningful for factors\n\n\n[1] NA NA NA NA\n\n\nOrdered factors can be compared:\n\nsizes_ordered &lt;- factor(\n  c(\"Pomposo\", \"Colossale\", \"Pomposo\", \"Regolare\"),\n  levels = c(\"Modesto\", \"Regolare\", \"Pomposo\", \"Colossale\"),\n  ordered = TRUE\n)\nsizes_ordered &gt; \"Regolare\"\n\n[1]  TRUE  TRUE  TRUE FALSE"
+  },
+  {
+    "objectID": "notes/lecture-02.html#styling-code-using-the-styler-package",
+    "href": "notes/lecture-02.html#styling-code-using-the-styler-package",
+    "title": "Lecture 02: Introduction to R",
+    "section": "13.1 Styling Code Using the styler Package",
+    "text": "13.1 Styling Code Using the styler Package\nA consistent code style is a sign of a professional attitude to programming.\nThe styler package installs an RStudio menu option that automatically edits R code so that it adheres to the tidyverse style. It is not a perfect substitute for reading the tidyverse style guide. However, it can implement many aspects of the tidyverse style, such as proper indentation and using the assignment operator &lt;- instead of an equals sign = for assignments.\nInstall styler and use the Style active file option from the Addins menu to style your code:\n\ninstall.packages(\"styler\")\n\nInstalling package into '/opt/homebrew/lib/R/4.6/site-library'\n(as 'lib' is unspecified)"
+  },
+  {
+    "objectID": "notes/lecture-02.html#linting-code-using-the-lintr-package",
+    "href": "notes/lecture-02.html#linting-code-using-the-lintr-package",
+    "title": "Lecture 02: Introduction to R",
+    "section": "13.2 Linting Code Using the lintr Package",
+    "text": "13.2 Linting Code Using the lintr Package\nlintr is a static code analysis tool that checks R code for common style issues and possible semantic problems.\nLike styler, lintr is not a substitute for reading the tidyverse style guide, but it can help to identify potential problems in your code.\nInstallation and usage of lintr:\n\ninstall.packages(\"lintr\")\nlintr::lint(\"week_02/week_02_intro_to_r.qmd\")\n\nIf any problems were detected in the file, they will be displayed in the Markers tab in the bottom left RStudio pane. Clicking any of the detected problems will take you to the corresponding line in the source code.\n\n\n\n\n\n\nNote\n\n\n\nIt is advisable to fix as many issues as possible before sharing your code with others. Under rare circumstances, you may want to suppress a warning by adding the comment # nolint to the end of the corresponding line of code.\n\n\nx &lt;- 3 # nolint"
+  }
+]
