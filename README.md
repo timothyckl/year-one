@@ -12,3 +12,4 @@ Freshman coursework projects, assignments, and notes archived as a single reposi
 | INF1008 | Data Structures and Algorithms |
 | INF1009 | Object-Oriented Programming |
 | INF2008 | Machine Learning |
+| UCS1001 | Critical Thinking and Communicating |
