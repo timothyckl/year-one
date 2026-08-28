@@ -1,7 +1,7 @@
 # Revision Notes - Weeks 10-11: Pointers, Dynamic Memory, Linked Lists
 
-See `../01 Lectures/` for the full lecture notes.
-Use with: `../04 Reference Guides/03 Pointers and Memory Guide.md`.
+See `../../Materials/02 C/01 Lectures/` for the full lecture notes.
+Use with: `../../Materials/02 C/03 Reference Guides/03 Pointers and Memory Guide.md`.
 
 ---
 

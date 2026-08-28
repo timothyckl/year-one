@@ -1,7 +1,7 @@
 # Revision Notes - Weeks 8-9: C Fundamentals, Functions, Arrays, Strings
 
-See `../01 Lectures/` for the full lecture notes.
-Use with: `../04 Reference Guides/01 Syntax Reference.md`.
+See `../../Materials/02 C/01 Lectures/` for the full lecture notes.
+Use with: `../../Materials/02 C/03 Reference Guides/01 Syntax Reference.md`.
 
 ---
 

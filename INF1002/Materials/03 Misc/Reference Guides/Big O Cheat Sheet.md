@@ -1,7 +1,7 @@
 # Big O - Quick Reference (Cheat Sheet)
 
 See the full study notes in
-[`../Algorithms and Complexity/Big O Notation Study Notes.md`](../Algorithms%20and%20Complexity/Big%20O%20Notation%20Study%20Notes.md) for details.
+[`Big O Notation Study Notes.md`](../../../Notes/Misc/Algorithms%20and%20Complexity/Big%20O%20Notation%20Study%20Notes.md) for details.
 
 ## Common complexity classes (slowest to fastest)
 

@@ -1,7 +1,7 @@
 # Reference Guide - Pointers and Memory
 
 See `../01 Lectures/` for the full lecture notes. This is the deeper companion to
-`02 Weeks 10-11 - Pointers Memory Linked Lists` in `../03 Revision Notes/`.
+[`02 Weeks 10-11 - Pointers Memory Linked Lists`](../../../Notes/C/02%20Weeks%2010-11%20-%20Pointers%20Memory%20Linked%20Lists.md).
 
 ---
 
