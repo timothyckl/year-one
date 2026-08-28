@@ -21,26 +21,17 @@ Topics 8--9 from this section.
 Each lecture note consolidates the official topic slides, companion slides, and
 Rosen chapter material.
 
-## Tutorials
-
-- [Tutorial 8: Set Theory](02%20Tutorials/Tutorial%208%20-%20Set%20Theory.md)
-- [Tutorial 9: Functions](02%20Tutorials/Tutorial%209%20-%20Functions.md)
-- [Tutorial 10: Relations](02%20Tutorials/Tutorial%2010%20-%20Relations.md)
-
-Each tutorial guide summarises the skills tested, suggested solution approaches,
-and common pitfalls.
-
 ## Revision Notes
 
-- [Sets, Functions, and Relations Summary](03%20Revision%20Notes/Sets%20Functions%20Relations%20Summary.md)
+- [Sets, Functions, and Relations Summary](02%20Revision%20Notes/Sets%20Functions%20Relations%20Summary.md)
 
 Consolidated revision covering set theory, functions, and relations.
 
 ## Reference Guides
 
-- [Set Theory Reference](04%20Reference%20Guides/Set%20Theory.md)
-- [Functions Reference](04%20Reference%20Guides/Functions.md)
-- [Relations Reference](04%20Reference%20Guides/Relations.md)
+- [Set Theory Reference](03%20Reference%20Guides/Set%20Theory.md)
+- [Functions Reference](03%20Reference%20Guides/Functions.md)
+- [Relations Reference](03%20Reference%20Guides/Relations.md)
 
 Quick-reference sheets with key definitions, set identities, function
 properties, and relation properties.

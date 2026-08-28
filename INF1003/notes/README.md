@@ -1,6 +1,6 @@
 # Discrete Mathematics Tutorial Notes
 
-This repository contains my mathematics tutorial notes in both LaTeX (`.tex`) and compiled PDF (`.pdf`) formats. Each tutorial is maintained as a pair of files with the same tutorial number.
+This directory contains the main tutorial collection for INF1003. It includes my mathematics tutorial notes in both LaTeX (`.tex`) and compiled PDF (`.pdf`) formats. Each tutorial is maintained as a pair of files with the same tutorial number.
 
 ## Requirements
 

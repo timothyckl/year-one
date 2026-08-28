@@ -39,7 +39,7 @@
 
 1. Review lecture notes for Topics 4--6.
 2. Learn the eight propositional rules of inference by heart.
-3. Work through Tutorials 4--6 and check against solutions.
+3. Work through [Tutorials 4--6](../../../Notes/README.md) and check against solutions.
 4. Use the extra Rules of Inference practice material for Topic 6.
 5. Review the revision summary for Logic and Proof.
 6. Practise with the reference guides for Propositional Logic, Predicate Logic, and Rules of Inference.

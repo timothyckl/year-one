@@ -82,8 +82,9 @@ By working through the module material, students develop the ability to:
   and assessment checklists.
 
 For a first pass, study each section's lectures in order and pair them with the
-corresponding tutorials. Use revision notes after completing a topic and
-reference guides when solving problems or preparing for quizzes.
+corresponding [tutorial notes](../Notes/README.md). Use revision notes after
+completing a topic and reference guides when solving problems or preparing for
+quizzes.
 
 ## Weekly Workflow
 

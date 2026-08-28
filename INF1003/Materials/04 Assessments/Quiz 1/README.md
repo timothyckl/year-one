@@ -37,7 +37,7 @@
 ## Study Order
 
 1. Review lecture notes for Topics 1--3.
-2. Work through Tutorials 1--3 and check against solutions.
+2. Work through [Tutorials 1--3](../../../Notes/README.md) and check against solutions.
 3. Review the revision summary for Mathematical Foundations.
 4. Practise with the reference guides for quick formula recall.
 5. Use the supplied trial tutorial to practise the Gradescope submission workflow.
