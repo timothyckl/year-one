@@ -81,11 +81,11 @@ testing, documentation, and demonstration.
 
 - [Materials](Materials/README.md): lecture notes, lab guides, and reference
   guides.
-- [Python materials](Materials/01%20Python/README.md): lectures 0-5, labs 1-5,
+- [Python materials](Materials/01-python/README.md): lectures 0-5, labs 1-5,
   and reference guides.
-- [C materials](Materials/02%20C/README.md): lectures 8-12, labs 1-5, and
+- [C materials](Materials/02-c/README.md): lectures 8-12, labs 1-5, and
   reference guides.
-- [Miscellaneous materials](Materials/03%20Misc/README.md): algorithms,
+- [Miscellaneous materials](Materials/03-misc/README.md): algorithms,
   complexity, Git, and GitHub references.
 - [Notes](Notes/README.md): revision notes organised by language and topic.
 - [Projects](Projects/): the Python and C group projects completed for the
