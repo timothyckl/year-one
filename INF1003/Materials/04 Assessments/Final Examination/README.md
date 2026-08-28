@@ -32,32 +32,32 @@ current examination instructions.
    - AP/GP formulas, summation notation, compound interest
    - Divisibility, modular arithmetic, Euclidean algorithm, primes
    - Counting rules, $P(n,r)$, $C(n,r)$, pigeonhole principle
-   - Review: lecture notes + Tutorials 1--3 + revision summary
+   - Review: lecture notes + [Tutorials 1--3](../../../Notes/README.md) + revision summary
 
 2. **Logic and Proof** (Topics 4--7):
    - Propositional logic: truth tables, equivalences, De Morgan
    - Predicate logic: quantifiers, negation, translation, nesting
    - Rules of inference: all 8 propositional rules, predicate rules, fallacies
    - Proof methods: direct, contrapositive, contradiction, cases, existence, uniqueness
-   - Review: lecture notes + Tutorials 4--7 + revision summary
+   - Review: lecture notes + [Tutorials 4--7](../../../Notes/README.md) + revision summary
 
 3. **Discrete Structures** (Topics 8--10):
    - Set theory: operations, identities, power sets, Cartesian products
    - Functions: injectivity, surjectivity, bijectivity, sum/product,
      composition, inverses
    - Relations: properties (reflexive, symmetric, antisymmetric, transitive), equivalence relations and classes
-   - Review: lecture notes + Tutorials 8--10 + revision summary
+   - Review: lecture notes + [Tutorials 8--10](../../../Notes/README.md) + revision summary
 
 ### Phase 2: Gap Analysis
 
-- Compare your tutorial performance across all 10 topics.
+- Compare your performance across all ten [tutorials](../../../Notes/README.md).
 - Identify topics with lower scores or less confidence.
-- Revisit those lectures, tutorials, and work additional problems.
+- Revisit those lectures and tutorials, and work additional problems.
 - Use the reference guides for formula memorisation.
 
 ### Phase 3: Timed Practice
 
-- Work through full tutorial sets under timed conditions.
+- Work through the full [tutorial set](../../../Notes/README.md) under timed conditions.
 - Practice writing proofs with clear structure.
 - Memorise all key formulas and identities.
 

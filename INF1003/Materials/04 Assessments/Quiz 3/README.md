@@ -44,7 +44,7 @@
 ## Study Order
 
 1. Review lecture notes for Topics 7--9.
-2. Work through Tutorials 7--9 and check against solutions.
+2. Work through [Tutorials 7--9](../../../Notes/README.md) and check against solutions.
 3. Review the revision summary for Logic and Proof, and for Sets, Functions, and Relations.
 4. Practise with the reference guides for Proof Methods, Set Theory, and Functions.
 5. Focus on proof-writing technique: clear structure, logical flow, justified steps.

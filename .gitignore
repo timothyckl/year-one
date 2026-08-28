@@ -1,1 +1,38 @@
 Archive/
+
+# Operating system metadata
+.DS_Store
+._*
+Thumbs.db
+Desktop.ini
+
+# General caches
+.cache/
+*.cache
+
+# Python caches
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.pyre/
+.tox/
+.nox/
+.ipynb_checkpoints/
+
+# Package-manager and build-tool caches
+.npm/
+.pnpm-store/
+.yarn/cache/
+.gradle/
+
+# LaTeX build cache and intermediate files
+*.aux
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+*.synctex.gz
+*.toc

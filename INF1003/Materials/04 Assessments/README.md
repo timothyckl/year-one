@@ -25,6 +25,7 @@ three quizzes, and a final written examination.
 
 ## Tutorial Submissions
 
-Tutorial solutions are submitted individually to Gradescope by Sunday 10 pm
-each week. The supplied trial tutorial can be used to practise the Gradescope
-submission workflow.
+The completed [tutorial notes](../../Notes/README.md) are maintained in
+`INF1003/Notes/`. Tutorial solutions are submitted individually to Gradescope
+by Sunday 10 pm each week. The supplied trial tutorial can be used to practise
+the Gradescope submission workflow.
