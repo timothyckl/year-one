@@ -1,6 +1,6 @@
 # Git and GitHub - Quick Reference
 
-See the full study notes in [`../Development Tools/Git and GitHub Study Notes.md`](../Development%20Tools/Git%20and%20GitHub%20Study%20Notes.md).
+See the full study notes in [`Git and GitHub Study Notes.md`](../../../Notes/Misc/Development%20Tools/Git%20and%20GitHub%20Study%20Notes.md).
 
 ## Setup
 

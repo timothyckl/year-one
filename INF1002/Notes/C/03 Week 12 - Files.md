@@ -1,7 +1,7 @@
 # Revision Notes - Week 12: Files
 
-See `../01 Lectures/` for the full lecture notes.
-Use with: `../04 Reference Guides/04 File Handling Guide.md`.
+See `../../Materials/02 C/01 Lectures/` for the full lecture notes.
+Use with: `../../Materials/02 C/03 Reference Guides/04 File Handling Guide.md`.
 
 ---
 

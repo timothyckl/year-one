@@ -107,8 +107,8 @@
 ## Key takeaways for the INF1002 projects
 
 - The Python and C projects require team collaboration on a shared codebase
-  (GitHub access link is a deliverable for the Python project - see
-  [04 Assessments/Python Project](../../04%20Assessments/Python%20Project/README.md)).
+  (GitHub access was a deliverable for the
+  [Python project](../../../Projects/StalkingStocks/)).
 - Minimum workflow for a team: each member clones the repo, pulls from main
   before starting work, works on their own branch, pushes, and the team
   merges after resolving conflicts.
