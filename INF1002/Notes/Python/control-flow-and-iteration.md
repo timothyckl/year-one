@@ -98,9 +98,9 @@ for iterating_var in sequence:
   name, `sys.argv[1:]` the arguments (all strings).
 - `__name__ == "__main__"` guard:
   ```python
-if __name__ == "__main__":
-    main()
-```
+  if __name__ == "__main__":
+      main()
+  ```
   `__name__` is `"__main__"` when run directly; otherwise the module name.
 
 ## Formatting quick reference

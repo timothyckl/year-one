@@ -87,10 +87,10 @@
   its memory address.
 - Multiple assignment / swap: swap two values using a temp:
   ```python
-temp = first
-first = second
-second = temp
-```
+  temp = first
+  first = second
+  second = temp
+  ```
 
 ## Types and type casting
 

@@ -52,9 +52,9 @@ rule as before: no `quit()`/`exit()`/`sys.exit()` - use `return`.
 3. Docstrings: add proper comments to the `myMath` module from Lab3, put the
    module file into your Python installation's `Lib` folder, then in IDLE:
    ```python
-import myMath
-help(myMath)
-```
+   import myMath
+   help(myMath)
+   ```
 4. Optional: implement the Fibonacci and string-reversal programs.
 
 ## Supplied implementation analysis

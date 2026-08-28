@@ -66,9 +66,9 @@ with open('student.txt', 'w', encoding='utf-8') as file:
 - Auto-closes the file, even on exceptions.
 - Multiple files:
   ```python
-with open('in.txt', 'r') as infile, open('out.txt', 'w') as outfile:
-    ...
-```
+  with open('in.txt', 'r') as infile, open('out.txt', 'w') as outfile:
+      ...
+  ```
 
 ## Worked pattern (append a record)
 

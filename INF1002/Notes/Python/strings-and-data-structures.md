@@ -34,12 +34,12 @@
   objects; fully independent.
 - Example:
   ```python
-import copy
-list1 = [[1], [2], 3, 4]
-list3 = copy.copy(list1)
-list3[0][0] = 100     # list1[0] is now [100] too (shared inner list)
-list3[0] = [200]      # rebinding list3[0] does not affect list1
-```
+  import copy
+  list1 = [[1], [2], 3, 4]
+  list3 = copy.copy(list1)
+  list3[0][0] = 100     # list1[0] is now [100] too (shared inner list)
+  list3[0] = [200]      # rebinding list3[0] does not affect list1
+  ```
 
 ## Tuple
 

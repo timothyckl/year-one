@@ -39,14 +39,14 @@
     answer (1*1 = 1, 2*1 = 2, 3*2 = 6).
 - Implementation:
   ```python
-def factorial(n):
-    # Base case: if n is 0, return 1
-    if n == 0:
-        return 1
-    # Recursive case: n! = n * (n-1)!
-    else:
-        return n * factorial(n - 1)
-```
+  def factorial(n):
+      # Base case: if n is 0, return 1
+      if n == 0:
+          return 1
+      # Recursive case: n! = n * (n-1)!
+      else:
+          return n * factorial(n - 1)
+  ```
 - How it works: the call stack - last in, first out; each call pushes a
   **frame** (function name, local variables, global variables, instruction
   pointer, previous frame). pythontutor.com visualises this.
@@ -62,14 +62,14 @@ def factorial(n):
     programming).
 - General template:
   ```python
-def func(big_problem):
-    if base_case:
-        return value
-    else:
-        # recursive formula
-        tmp = func(smaller_problem)
-        return recursive_formula(tmp)
-```
+  def func(big_problem):
+      if base_case:
+          return value
+      else:
+          # recursive formula
+          tmp = func(smaller_problem)
+          return recursive_formula(tmp)
+  ```
 - Practice: reverse a list `[70, 63, 98, 85, 22]` - find the base case and the
   recursive formula; related LeetCode: reverse linked list.
 - Recursion vs iteration: recursive problems can be written
@@ -92,10 +92,10 @@ def func(big_problem):
   information). Value range of a byte: 2^8 = 256 -> 0..255 (or -128..127).
 - Python int/float memory is not fixed:
   ```python
-import sys
-sys.getsizeof(1.0)   # 24
-sys.getsizeof(1)     # 28
-```
+  import sys
+  sys.getsizeof(1.0)   # 24
+  sys.getsizeof(1)     # 28
+  ```
   due to reference count, type info, and padding/management overhead.
 - ASCII: 7-bit encoding defining 128 characters (0-127): English
   upper/lower case letters, digits, punctuation, control characters. Extended

@@ -23,9 +23,9 @@ def function_name(arguments):
 - **Default arguments**: give a parameter a default value so it can be omitted.
 - `*args`: packs any number of positional args into a tuple.
   ```python
-def sum_numbers(*args):
-    return sum(args)
-```
+  def sum_numbers(*args):
+      return sum(args)
+  ```
 - `**kwargs`: packs keyword args into a dict.
 - Positional-only / keyword-only parameters: robustness when there are many
   parameters (advanced topic).

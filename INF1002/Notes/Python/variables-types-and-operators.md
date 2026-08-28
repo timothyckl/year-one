@@ -8,10 +8,10 @@
 - Values can be reassigned (reset).
 - Swap without a library:
   ```python
-temp = first
-first = second
-second = temp
-```
+  temp = first
+  first = second
+  second = temp
+  ```
 
 ## Naming rules
 

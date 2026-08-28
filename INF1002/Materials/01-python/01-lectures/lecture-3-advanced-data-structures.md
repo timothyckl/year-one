@@ -61,12 +61,12 @@
   affects the original. `copy.copy(list1)` is a shallow copy.
   Example:
   ```python
-import copy
-list1 = [[1], [2], 3, 4]
-list3 = copy.copy(list1)
-list3[0][0] = 100   # mutates the shared inner list -> list1 also changes
-list3[0] = [200]    # rebinds list3[0] -> list1 unchanged here
-```
+  import copy
+  list1 = [[1], [2], 3, 4]
+  list3 = copy.copy(list1)
+  list3[0][0] = 100   # mutates the shared inner list -> list1 also changes
+  list3[0] = [200]    # rebinds list3[0] -> list1 unchanged here
+  ```
   Checking `id(list1[0]) == id(list3[0])` shows they share the same object
   until it is rebound.
 
@@ -87,13 +87,13 @@ list3[0] = [200]    # rebinds list3[0] -> list1 unchanged here
   dict would "lose" the item.
 - Access / update / add / delete:
   ```python
-students = {'000': 'John', '001': 'John', '002': 'Josh', '003': 'Jack'}
-students['001']                    # access -> 'John'
-students['001'] = 'John_no2'       # update (overwrites old value)
-students['004'] = 'Jason'          # add (new key)
-del students[key]                  # delete one pair
-students.clear()                   # delete all
-```
+  students = {'000': 'John', '001': 'John', '002': 'Josh', '003': 'Jack'}
+  students['001']                    # access -> 'John'
+  students['001'] = 'John_no2'       # update (overwrites old value)
+  students['004'] = 'Jason'          # add (new key)
+  del students[key]                  # delete one pair
+  students.clear()                   # delete all
+  ```
 - Built-in functions: `len(dict)`, `str(dict)`.
 - Methods: `keys()`, `values()`, `items()` (returns (key, value)
   pairs), `update(dict2)` (adds dict2's pairs, overwriting).

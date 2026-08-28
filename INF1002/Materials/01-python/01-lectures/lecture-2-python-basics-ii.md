@@ -147,12 +147,12 @@ for iterating_var in sequence:
 - When imported, `__name__` is the module's name (e.g. `"first"`).
 - Guard with:
   ```python
-def main():
-    pass  # put your code here
+  def main():
+      pass  # put your code here
 
-if __name__ == "__main__":
-    main()  # call your main function here
-```
+  if __name__ == "__main__":
+      main()  # call your main function here
+  ```
 
 ## Output and print
 

@@ -31,19 +31,19 @@
 
 - Reading a file line by line:
   ```python
-# while + readline
-while True:
-    line = file.readline()          # empty string -> end of file
-    if not line:
-        break
-    if line.strip():
-        students.append(line.strip())
-# or: for line in file
-for line in file:
-    line = line.strip()
-    if line:
-        students.append(line)
-```
+  # while + readline
+  while True:
+      line = file.readline()          # empty string -> end of file
+      if not line:
+          break
+      if line.strip():
+          students.append(line.strip())
+  # or: for line in file
+  for line in file:
+      line = line.strip()
+      if line:
+          students.append(line)
+  ```
   One-line alternative: `students = [line.strip() for line in file.readlines()
   if line.strip()]`.
 - Read methods:
@@ -56,10 +56,10 @@ for line in file:
   etc.; append a new student whose id = max id + 1, zero-padded to 3 digits
   with `str(new_id).zfill(3)`, then write:
   ```python
-with open('student.txt', 'w', encoding='utf-8') as file:
-    for student in students:
-        file.write(student + '\n')
-```
+  with open('student.txt', 'w', encoding='utf-8') as file:
+      for student in students:
+          file.write(student + '\n')
+  ```
 - Write methods: `write(str)`; `writelines(sequence)` (note whether
   lines include newline characters).
 - File pointer: indicates the current position. After
@@ -68,9 +68,9 @@ with open('student.txt', 'w', encoding='utf-8') as file:
 - `with open(...) as file:`: automatically opens and closes the
   file, even if an exception occurs. Multiple files:
   ```python
-with open('input.txt', 'r') as infile, open('output.txt', 'w') as outfile:
-    ...
-```
+  with open('input.txt', 'r') as infile, open('output.txt', 'w') as outfile:
+      ...
+  ```
 
 ## Functions
 
@@ -78,11 +78,11 @@ with open('input.txt', 'r') as infile, open('output.txt', 'w') as outfile:
   related action (like functions of a smartphone).
 - Definition:
   ```python
-def function_name(arguments):
-    '''function_docstring'''     # optional comment
-    function_suite
-    return [expression]          # optional
-```
+  def function_name(arguments):
+      '''function_docstring'''     # optional comment
+      function_suite
+      return [expression]          # optional
+  ```
   - Function name: the identifier.
   - Arguments: inputs; formal arguments (names used inside) vs actual arguments
     (real values at the call site).
@@ -102,14 +102,14 @@ def function_name(arguments):
 - `*args`: accept any number of positional arguments, packed into a
   tuple:
   ```python
-def sum_numbers(*args):
-    total = 0
-    for number in args:
-        total += number
-    return total
-sum_numbers(10, 20)      # 30
-sum_numbers(1, 2, 3, 4, 5)  # 15
-```
+  def sum_numbers(*args):
+      total = 0
+      for number in args:
+          total += number
+      return total
+  sum_numbers(10, 20)      # 30
+  sum_numbers(1, 2, 3, 4, 5)  # 15
+  ```
 - `**kwargs`: accept any number of keyword arguments, packed into a dictionary.
 - Do function calls change the caller's variables?
   - Immutable (str, int, float, tuple): NOT changed. Example
@@ -160,17 +160,17 @@ sum_numbers(1, 2, 3, 4, 5)  # 15
   any reference.
 - Returning a function:
   ```python
-def operation_factory(operation):
-    def add(a, b):
-        return a + b
-    def subtract(a, b):
-        return a - b
-    if operation == 'add':
-        return add
-    elif operation == 'subtract':
-        return subtract
-add_fn = operation_factory('add')     # add_fn(10, 5) -> 15
-```
+  def operation_factory(operation):
+      def add(a, b):
+          return a + b
+      def subtract(a, b):
+          return a - b
+      if operation == 'add':
+          return add
+      elif operation == 'subtract':
+          return subtract
+  add_fn = operation_factory('add')     # add_fn(10, 5) -> 15
+  ```
 - `sorted(iterable, key=func)`: custom sort. `key` is a function
   that takes one value and returns the value to sort by; e.g. sort by absolute
   value with `key=abs`, or by last character with a custom function.
@@ -190,11 +190,11 @@ add_fn = operation_factory('add')     # add_fn(10, 5) -> 15
     `next()`); list comprehension is eager (immediate full list).
   - Equivalent forms shown:
   ```python
-result = map(double, numbers)          # lazy iterator
-result = [double(x) for x in numbers]  # eager list
-result = filter(is_even, numbers)
-result = [x for x in numbers if is_even(x)]
-```
+  result = map(double, numbers)          # lazy iterator
+  result = [double(x) for x in numbers]  # eager list
+  result = filter(is_even, numbers)
+  result = [x for x in numbers if is_even(x)]
+  ```
 - `reduce(func, seq)`: takes a sequence and returns a single
   value. `func` takes two values and returns one: consume first two -> return a
   value -> consume next with the returned value -> repeat -> return final value.
