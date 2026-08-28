@@ -15,17 +15,29 @@ Folder availability varies according to the content retained for each module.
 
 ## Modules
 
+### Trimester 1
+
+| Module | Module Name |
+|---|---|
+| [INF1002](INF1002/) | Programming Fundamentals |
+| [INF1003](INF1003/) | Discrete Mathematics |
+| [UCS1001](UCS1001/) | Critical Thinking and Communicating |
+
+### Trimester 2
+
+| Module | Module Name |
+|---|---|
+| [INF1004](INF1004/) | Statistics and Linear Algebra |
+| [INF1005](INF1005/) | Web Systems and Technologies |
+| [INF1008](INF1008/) | Data Structures and Algorithms |
+| [INF1009](INF1009/) | Object-Oriented Programming |
+| [INF2008](INF2008/) | Machine Learning |
+
+### Trimester 3
+
 | Module | Module Name |
 |---|---|
 | [AAI1001](AAI1001/) | Data Engineering and Visualization |
 | [AAI2007](AAI2007/) | Artificial Intelligence in Business and Society |
-| [INF1002](INF1002/) | Programming Fundamentals |
-| [INF1003](INF1003/) | Discrete Mathematics |
-| [INF1004](INF1004/) | Statistics and Linear Algebra |
-| [INF1005](INF1005/) | Web Systems and Technologies |
 | [INF1007](INF1007/) | Ethics and Professional Conduct |
-| [INF1008](INF1008/) | Data Structures and Algorithms |
-| [INF1009](INF1009/) | Object-Oriented Programming |
-| [INF2008](INF2008/) | Machine Learning |
-| [UCS1001](UCS1001/) | Critical Thinking and Communicating |
 | [UDE2222](UDE2222/) | Design Innovation |
