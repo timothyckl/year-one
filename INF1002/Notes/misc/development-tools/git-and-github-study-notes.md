@@ -108,7 +108,7 @@
 
 - The Python and C projects require team collaboration on a shared codebase
   (GitHub access was a deliverable for the
-  [Python project](../../../Projects/stalkingstocks/)).
+  [Python project](../../../Projects/StalkingStocks/)).
 - Minimum workflow for a team: each member clones the repo, pulls from main
   before starting work, works on their own branch, pushes, and the team
   merges after resolving conflicts.
