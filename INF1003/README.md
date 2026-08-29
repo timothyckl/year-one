@@ -71,14 +71,14 @@ By working through the module material, students develop the ability to:
 
 ## Study Library
 
-- [Mathematical Foundations](Materials/01%20Mathematical%20Foundations/README.md):
+- [Mathematical Foundations](Materials/01-mathematical-foundations/README.md):
   Topics 1--3. Sequences, number theory, combinatorics.
-- [Logic and Proof](Materials/02%20Logic%20and%20Proof/README.md):
+- [Logic and Proof](Materials/02-logic-and-proof/README.md):
   Topics 4--7. Propositional and predicate logic, rules of inference, proof
   methods.
-- [Sets, Functions, and Relations](Materials/03%20Sets%20Functions%20and%20Relations/README.md):
+- [Sets, Functions, and Relations](Materials/03-sets-functions-and-relations/README.md):
   Topics 8--10. Set theory, functions, relations.
-- [Assessments](Materials/04%20Assessments/README.md): Quiz preparation, exam
+- [Assessments](Materials/04-assessments/README.md): Quiz preparation, exam
   revision, and assessment checklists.
 
 For a first pass, study each section's lectures in order and pair them with the

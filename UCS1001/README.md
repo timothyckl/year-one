@@ -63,22 +63,22 @@ By working through the module material, students develop the ability to:
 | Student Engagement | Individual | 20% | Throughout the trimester |
 | **Total graded components** | | **100%** | |
 
-See [Assessments](04%20Assessments/README.md) for requirements, rubric guidance,
+See [Assessments](Materials/04-assessments/README.md) for requirements, rubric guidance,
 and submission checklists. Where module-level schedules differ from an
 assignment's instructions, confirm the current requirement on the LMS.
 
 ## Study Library
 
-- [Critical Thinking and Reflection](01%20Critical%20Thinking%20and%20Reflection/README.md):
+- [Critical Thinking and Reflection](Materials/01-critical-thinking-and-reflection/README.md):
   Weeks 1-2, including Paul-Elder, systems thinking, academic writing, and
   reflective practice.
-- [Critical Reading and Academic Writing](02%20Critical%20Reading%20and%20Academic%20Writing/README.md):
+- [Critical Reading and Academic Writing](Materials/02-critical-reading-and-academic-writing/README.md):
   Weeks 3-4, including reader response, synthesis, logical fallacies,
   paraphrasing, cohesion, summary writing, source credibility, and APA 7.
-- [Proposal Writing and Presentation](03%20Proposal%20Writing%20and%20Presentation/README.md):
+- [Proposal Writing and Presentation](Materials/03-proposal-writing-and-presentation/README.md):
   distinct Week 6, Week 8, Week 9, and Weeks 10-11 materials for proposal and
   presentation work.
-- [Assessments](04%20Assessments/README.md): assignment requirements, rubric
+- [Assessments](Materials/04-assessments/README.md): assignment requirements, rubric
   interpretations, preparation sequences, and checklists.
 
 ## Suggested Workflow
